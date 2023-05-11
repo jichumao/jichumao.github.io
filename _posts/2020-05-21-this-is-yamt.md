@@ -1,29 +1,22 @@
 ---
-title: This is YAMT!
+title: Jichu!
 layout: post
 categories: [Typography, Markdown, Tips]
 image: /assets/img/logo.jpg
-description: "Welcome to YAMT - Yet Another Minimal Theme."
+description: "Make Something Wonderful - Steve Jobs"
 ---
 
-Welcome to YAMT - Yet Another Minimal Theme. YAMT is a minimal Jekyll theme focused on simplicity and ease-of-use. It has great modularity, allowing you to easily decide what you actually want on your website.
+Welcome to Jichu's Page. 
+My name is Jichu. I am currently a senior student at Beijing Jiaotong University and will be attending the University of Pennsylvania in the fall of 2023 to study computer graphics. I was an intern in the medical image processing and mixed reality program at the University of Alberta in Canada from July 2022 to October 2022. From January 2023 to May 2023, I worked at Apple on Python visualization software development and computer vision-related engineering development.
 
 * hello
 {:toc}
 
-## Features 
+## Internship 
 - Minimal and clean design.
-- Fully modular: activate and load only what you really need.
-- Works great on mobile and smaller screens.
-- Supports [Disqus](https://disqus.com/) comments activated only on button press, if you activate them.
-- [Google Analytics](https://www.google.com/analytics/) support.
-- [Open Graph](https://ogp.me/) and [Twitter Cards](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started) support to better index the website content on search engines and social networks.
-- [MathJAX](https://www.mathjax.org/) and [LaTeX](https://www.latex-project.org/) optional support. Write beautiful math!
-- [RSS](https://github.com/jekyll/jekyll-feed) support.
-- Beautiful [Syntax Highlight](https://yamt.netlify.app/2020/05/19/special-formatting.html#syntax-highlight). Write some code and show it in a graceful way.
 
-## Installation
+## Social Activities
 [Read here](https://github.com/PandaSekh/Jekyll-YAMT#installation).
 
-## Customization
+## Others
 [Read here](https://github.com/PandaSekh/Jekyll-YAMT#customize).
