@@ -7,7 +7,9 @@ description: "Make Something Wonderful - Steve Jobs"
 ---
 
 Welcome to Jichu's Page. 
-My name is Jichu. I am currently a senior student at Beijing Jiaotong University and will be attending the University of Pennsylvania in the fall of 2023 to study computer graphics. I was an intern in the medical image processing and mixed reality program at the University of Alberta in Canada from July 2022 to October 2022. From January 2023 to May 2023, I worked at Apple on Python visualization software development and computer vision-related engineering development.
+My name is Jichu. I am currently a senior student at Beijing Jiaotong University and will be attending the University of Pennsylvania in the fall of 2023 to study computer graphics.
+From Jan to May 2023, I worked as an intern at Apple on Python visualization software development and computer vision-related engineering development.
+From Jul to Oct 2022, I was an intern at the University of Alberta in Canada on the medical image processing and mixed reality program. 
 
 * hello
 {:toc}
