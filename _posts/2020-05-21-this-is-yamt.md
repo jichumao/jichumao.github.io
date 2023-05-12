@@ -1,5 +1,5 @@
 ---
-title: Jichu!
+title: Hello!
 layout: post
 categories: [Typography, Markdown, Tips]
 image: /assets/img/logo.mp4
