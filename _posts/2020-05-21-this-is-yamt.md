@@ -2,7 +2,7 @@
 title: Jichu!
 layout: post
 categories: [Typography, Markdown, Tips]
-image: /assets/img/logo.jpg
+image: /assets/img/logo.mp4
 description: "Make Something Wonderful - Steve Jobs"
 ---
 
