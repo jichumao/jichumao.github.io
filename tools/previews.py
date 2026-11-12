@@ -81,7 +81,7 @@ PREVIEWS = {
     "mini-minecraft": ("stills-full", [(S("mini-minecraft", n), None) for n in ("biome-grassland", "biome-desert", "biome-snow", "biome-mountain")]),
     "monte-carlo-path-tracer": ("stills", [(S("monte-carlo-path-tracer", n), (4, 4, 972, 972)) for n in
                                            ("specular-btdfs", "microfacet-brdfs", "veach-naive", "veach-direct", "veach-mis")]),
-    "glsl-shaders": ("stills", [(C(f"glsl-cow-{n}.png"), (0, 0, 1200, 1200)) for n in ("chrome", "jade", "red", "gradient", "sobel", "copper", "bloom")]),
+    "glsl-shaders": ("stills", [(S("glsl-shaders", n), GL) for n in ("matcap-pearl", "matcap-red-plastic", "surface-normals", "color-gradient", "sobel", "worley-noise")]),
     "procedural-fireball": ("video", V("fireball"), (0, 0, 800, 800), 0, 5.9),
     "tree-creator": ("stills-full", [(C(f"tree-grow-{n}.png"), None) for n in range(1, 7)]),   # one plant, iterations 1 to 6
     "animation-toolkit": ("stills", [(C("animation-curve.jpg"), (560, 150, 1010, 600)), (C("animation-particle.jpg"), (430, 78, 860, 508))]),

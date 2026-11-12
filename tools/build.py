@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "10"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "11"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 EMAIL = "maojichu@gmail.com"
 SOCIAL = [
@@ -398,11 +398,10 @@ PROJECTS = [
     "tags": ["GLSL", "OpenGL", "C++", "Shader Programming", "Post-Processing"],
     "excerpt": "Vertex and fragment shaders for OpenGL: Blinn-Phong lighting, matcaps, vertex deformation, and post-process effects such as bloom, blur, Sobel edges and Worley noise.",
     "lead": "Portions of OpenGL’s graphics pipeline, programmed by hand: a set of vertex and fragment shaders that apply different coloration effects to the surfaces of 3D models.",
-    "cover_alt": "A cow model shaded three ways: a gold matcap, an iridescent gradient and a Sobel edge filter",
+    "cover_alt": "The same 3D model rendered with a chrome matcap shader, a Sobel edge filter and a surface-normal shader",
     "facts": [("Year", "2023"), ("Type", "Individual project"), ("Built with", "GLSL, OpenGL, C++, Qt")],
     "links": [("Source code", GH + "GLSL-Shaders", "code")],
     "blocks": [
-      ("p", "The image at the top of this page and the preview on its card are new renders: these same shader files running on the cow model from the repository, drawn in WebGL for this site. The screenshots below are from the original Qt application."),
       ("features", [
           ("droplet", "Surface shaders", "Lambert, Blinn-Phong, matcaps, surface normals and a colour gradient"),
           ("wind", "Vertex deformation", "Vertices displaced along the normal over time"),
@@ -640,6 +639,8 @@ HOBBIES = [
                       "Enjoys experiencing and collecting a wide variety of games, including: VR and XR games, FPS, Rhythm games, Survival games, Souls-like games, Open-world Role-Playing Games (RPGs)."]),
     ("Singing:", ["Served as the tenor section leader in the Beijing Jiaotong University Choir.",
                   "Participated in the National College Students’ Choral Competition and won a second-place award."]),
+    ("Photography:", ["Shoots landscapes, cities after dark and portraits, mostly on a Sony α7C II.",
+                       "The photographs have their own section of this site, under Photography in the menu."]),
     ("Volunteering:", ["Served as the Deputy Director of the Volunteer Work Department at Beijing Jiaotong University.",
                        "Organized activities to select volunteers for the Winter Olympics.",
                        "Participated in volunteer activities with several public welfare organizations, such as the Apple Volunteers and Wheat Project."]),
@@ -661,12 +662,21 @@ def tags_html(p, indent="        "):
     items = "".join(f'<li class="cat">{E(CAT_LABEL[c])}</li>' for c in p["cats"]) + "".join(f"<li>{E(t)}</li>" for t in p["tags"])
     return f'{indent}<ul class="tags" aria-label="Category and tech stack">{items}</ul>'
 
-def page(*, root, path, title, desc, body, og_image, current="", scripts=()):
+PERSON = json.dumps({
+    "@context": "https://schema.org", "@type": "Person", "name": "Jichu Mao", "url": SITE + "/",
+    "jobTitle": "Graphics Performance Engineer", "worksFor": {"@type": "Organization", "name": "TikTok"},
+    "alumniOf": [{"@type": "CollegeOrUniversity", "name": "University of Pennsylvania"},
+                 {"@type": "CollegeOrUniversity", "name": "Beijing Jiaotong University"}],
+    "sameAs": [u for _, u, _ in SOCIAL],
+}, ensure_ascii=False)
+
+def page(*, root, path, title, desc, body, og_image, current="", scripts=(), person=False):
     canonical = f"{SITE}/{path}"
     nav = [("Works", f"{root}#works", "works"), ("About", f"{root}about/", "about"), ("Photography", f"{root}photography/", "photography")]
     cur = ' aria-current="page"'
     nav_html = "".join(f'\n      <a href="{u}"{cur if key == current else ""}>{n}</a>' for n, u, key in nav)
     js = "".join(f'\n<script src="{root}assets/js/{s}?v={ASSET_V}" defer></script>' for s in scripts)
+    ld = f'\n<script type="application/ld+json">{PERSON}</script>' if person else ""
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -681,6 +691,10 @@ def page(*, root, path, title, desc, body, og_image, current="", scripts=()):
 <meta property="og:description" content="{E(desc)}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{SITE}/{og_image}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#000000">{ld}
 <link rel="icon" href="{root}assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="{root}assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{root}assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -915,7 +929,7 @@ def build_home():
 </section>"""
     write("index.html", page(root=root, path="", title="Jichu Mao – Graphics Performance Engineer | Jichu · Art",
                              desc="Portfolio of Jichu Mao, Graphics Performance Engineer at TikTok: real-time rendering, GPU path tracing, shaders, graphics tools, games and animation.",
-                             body=body, og_image="assets/img/home/hero-thumb.webp", current="", scripts=("hero.js", "works.js", "previews.js")))
+                             body=body, og_image="assets/img/home/og.jpg", current="", scripts=("hero.js", "works.js", "previews.js"), person=True))
 
 def build_projects():
     root = "../../"
@@ -958,7 +972,7 @@ def build_projects():
 </article>"""
         write(f'works/{p["slug"]}/index.html',
               page(root=root, path=f'works/{p["slug"]}/', title=f'{p["title"]} – Jichu · Art', desc=p["excerpt"],
-                   body=body, og_image=f'assets/img/{p["img"]}/cover-thumb.webp', current="works", scripts=tuple(sorted(set(scripts) | {"clips.js"}))))
+                   body=body, og_image=f'assets/img/{p["img"]}/og.jpg', current="works", scripts=tuple(sorted(set(scripts) | {"clips.js"}))))
 
 def build_about():
     root = "../"
@@ -1008,7 +1022,7 @@ def build_about():
 </div>"""
     write("about/index.html", page(root=root, path="about/", title="About – Jichu · Art",
                                    desc="About Jichu Mao, Graphics Performance Engineer at TikTok: background, work experience, education, skills and hobbies.",
-                                   body=body, og_image="assets/img/home/avatar.webp", current="about"))
+                                   body=body, og_image="assets/img/home/og.jpg", current="about", person=True))
 
 def redirect(rel_dir, target_rel, target_abs_path):
     """Keep old WordPress URLs alive: /index.php/<slug>/ -> new page."""
