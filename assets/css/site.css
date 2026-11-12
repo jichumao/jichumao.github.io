@@ -218,6 +218,7 @@ a.button-fill:hover { background: transparent; color: var(--text); }
 .work-thumb { width: 100%; height: 100%; object-fit: cover; }
 /* The preview covers the square main panel: the left two thirds of the 3:2 cover. */
 .work-preview { position: absolute; left: 0; top: 0; width: 66.6667%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .35s ease; pointer-events: none; }
+.full > .work-preview { width: 100%; }
 .work.playing .work-preview, .project-cover .work-preview.on { opacity: 1; }
 .work-live {
   position: absolute; left: 12px; bottom: 12px; display: none; align-items: center; gap: 6px;

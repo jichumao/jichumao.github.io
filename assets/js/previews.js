@@ -1,49 +1,47 @@
-// Card previews: the main panel of a cover plays a short silent loop while the card is
-// hovered or focused. On touch screens the card crossing the middle of the screen plays.
-// Nothing is downloaded until a preview is first needed. Off with reduced motion or data saver.
+// Card previews: a cover plays a short silent loop while its card sits in the middle of the
+// screen, so one row of the grid is in motion at a time. Hovering or focusing a card plays it
+// too. Nothing is downloaded until a preview is first needed. Off with reduced motion or data saver.
 (function () {
   var cards = Array.prototype.slice.call(document.querySelectorAll(".work"));
   if (!cards.length || !window.matchMedia) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   if (navigator.connection && navigator.connection.saveData) return;
   document.documentElement.classList.add("previews");
-  var current = null;
 
-  function stop(card) {
-    var v = card.querySelector(".work-preview");
-    card.classList.remove("playing");
-    if (current === card) current = null;
-    if (!v) return;
-    v.pause();
-    setTimeout(function () { if (current !== card) { try { v.currentTime = 0; } catch (e) {} } }, 400);
-  }
-
-  function start(card) {
-    if (current === card) return;
-    if (current) stop(current);
+  function update(card) {
     var v = card.querySelector(".work-preview");
     if (!v) return;
-    if (!v.getAttribute("src")) v.src = v.getAttribute("data-src");
-    current = card;
-    var show = function () { if (current === card) card.classList.add("playing"); };
-    var p = v.play();
-    if (p && p.then) p.then(show, function () {}); else show();
+    var want = card._band || card._hover;
+    if (want && !card._on) {
+      card._on = true;
+      if (!v.getAttribute("src")) v.src = v.getAttribute("data-src");
+      var show = function () { if (card._on) card.classList.add("playing"); };
+      var p = v.play();
+      if (p && p.then) p.then(show, function () {}); else show();
+    } else if (!want && card._on) {
+      card._on = false;
+      card.classList.remove("playing");
+      v.pause();
+      setTimeout(function () { if (!card._on) { try { v.currentTime = 0; } catch (e) {} } }, 400);
+    }
   }
 
-  if (window.matchMedia("(hover: hover)").matches) {
-    cards.forEach(function (c) {
-      c.addEventListener("pointerenter", function () { start(c); });
-      c.addEventListener("pointerleave", function () { stop(c); });
-      c.addEventListener("focusin", function () { start(c); });
-      c.addEventListener("focusout", function () { stop(c); });
-    });
-  } else if ("IntersectionObserver" in window) {
+  cards.forEach(function (c) {
+    c.addEventListener("pointerenter", function (e) { if (e.pointerType !== "touch") { c._hover = true; update(c); } });
+    c.addEventListener("pointerleave", function () { c._hover = false; update(c); });
+    c.addEventListener("focusin", function () { c._hover = true; update(c); });
+    c.addEventListener("focusout", function () { c._hover = false; update(c); });
+  });
+
+  if ("IntersectionObserver" in window) {
+    // the observed band is the middle 30% of the viewport
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         var card = e.target.parentNode;
-        if (e.isIntersecting) start(card); else if (current === card) stop(card);
+        card._band = e.isIntersecting;
+        update(card);
       });
-    }, { rootMargin: "-40% 0px -40% 0px" });
+    }, { rootMargin: "-35% 0px -35% 0px" });
     cards.forEach(function (c) { io.observe(c.querySelector(".work-frame")); });
   }
 })();

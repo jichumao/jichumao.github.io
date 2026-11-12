@@ -1,7 +1,8 @@
 """Build the project covers: one layout for every project.
 
-Each cover is 1500x1000 (3:2): a square main panel on the left and two square-ish
-tiles on the right, separated by 10px black gutters. Also written: cover-thumb (900x600),
+Each cover is 1500x1000 (3:2). Most use a square main panel on the left and two square-ish
+tiles on the right, separated by 10px black gutters; a project with one strong wide image
+uses it across the whole frame instead ("full"). Also written: cover-thumb (900x600),
 cover-mini (360x240, for the Previous / Next links) and glow (blurred, behind the page header). Sources are the project's own
 renders, screenshots and video frames; crops are chosen by hand so the subject is
 never cut by the card frame.
@@ -105,25 +106,22 @@ COVERS = {
         (S("webgpu-clustered-shading", "gbuffer-color"), (23, 0, 321, 298)),
     ],
     "vulkan-grass-rendering": [
-        (C("grass-showcase.jpg"), (88, 170, 708, 790)),
+        (C("grass-showcase.jpg"), (176, 263, 620, 707)),
         (C("grass-closeup.jpg"), (86, 0, 550, 464)),
         (C("grass-lod.jpg"), None),
     ],
     "cuda-flocking": [
-        (C("flocking-swarm.png"), None),
+        (C("flocking-swarm.png"), (40, 40, 600, 600)),
         (C("flocking-dense.png"), None),
-        (C("flocking-sparse.png"), None),
+        (C("flocking-red.png"), (60, 40, 580, 560)),
     ],
     "procedural-fireball": [
         (C("fireball-spiky.png"), None),
         (C("fireball-molten.png"), None),
         (C("fireball-smooth.png"), None),
     ],
-    "mini-minecraft": [
-        (S("mini-minecraft", "screenshot-2"), (263, 6, 1628, 1371)),
-        (C("minecraft-desert.png"), (0, 0, 480, 480)),
-        (C("minecraft-mountain.png"), (300, 0, 811, 511)),
-    ],
+    # the team's own title art, shown whole: the terrain only reads as a landscape when it is wide
+    "mini-minecraft": ("full", C("minecraft-title.png"), (0, 40, 1611, 1114)),
     "monte-carlo-path-tracer": [
         (S("monte-carlo-path-tracer", "dielectric-materials"), (4, 4, 975, 975)),
         (S("monte-carlo-path-tracer", "veach-mis"), (4, 4, 972, 972)),
@@ -189,13 +187,19 @@ COVERS = {
 def main():
     man = json.load(open(MANP, encoding="utf-8"))
     only = sys.argv[3:]
-    for proj, (m, t1, t2) in COVERS.items():
+    for proj, spec in COVERS.items():
         if only and proj not in only:
             continue
-        canvas = Image.new("RGB", (W, H), (0, 0, 0))
-        for spec, rect in ((m, MAIN), (t1, T1), (t2, T2)):
-            x0, y0, x1, y1 = rect
-            canvas.paste(panel(spec, (x1 - x0, y1 - y0)), (x0, y0))
+        if spec[0] == "full":                      # one image across the whole frame
+            layout = "full"
+            canvas = fit(load(spec[1]), spec[2], (W, H))
+        else:                                      # main panel and two tiles
+            layout = "panels"
+            m, t1, t2 = spec
+            canvas = Image.new("RGB", (W, H), (0, 0, 0))
+            for s, rect in ((m, MAIN), (t1, T1), (t2, T2)):
+                x0, y0, x1, y1 = rect
+                canvas.paste(panel(s, (x1 - x0, y1 - y0)), (x0, y0))
         d = os.path.join(IMG, proj)
         canvas.save(os.path.join(d, "cover.webp"), "WEBP", quality=88, method=6)
         th = canvas.resize((900, 600), Image.LANCZOS)
@@ -204,7 +208,7 @@ def main():
         # a tiny, heavily blurred copy: the project page stretches it behind its header as ambient colour
         glow = canvas.resize((96, 64), Image.LANCZOS).filter(ImageFilter.GaussianBlur(9))
         glow.save(os.path.join(d, "glow.webp"), "WEBP", quality=70, method=6)
-        man[f"{proj}/cover"] = {"w": W, "h": H, "tw": 900, "th": 600, "alpha": False}
+        man[f"{proj}/cover"] = {"w": W, "h": H, "tw": 900, "th": 600, "alpha": False, "layout": layout}
         print(proj, round(os.path.getsize(os.path.join(d, "cover.webp")) / 1024), "KB /",
               round(os.path.getsize(os.path.join(d, "cover-thumb.webp")) / 1024), "KB")
     json.dump(man, open(MANP, "w", encoding="utf-8"), indent=1, sort_keys=True)

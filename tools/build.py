@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "7"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "8"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 EMAIL = "maojichu@gmail.com"
 SOCIAL = [
@@ -347,7 +347,7 @@ PROJECTS = [
     "tags": ["C++", "OpenGL", "GLSL", "Qt", "Procedural Generation", "Game Development"],
     "excerpt": "A Minecraft-like game in C++ and OpenGL with no game engine. I built the procedural terrain, the biomes, texture animation and shape-grammar buildings.",
     "lead": "A Minecraft-like game written in C++ and OpenGL. We did not use a game engine: every visual effect is built from OpenGL and Qt.",
-    "cover_alt": "Procedurally generated voxel terrain under a purple sky, with desert and mountain biomes",
+    "cover_alt": "Mini Minecraft title over procedurally generated voxel terrain under a purple sky",
     "facts": [("Year", "2023"), ("Type", "Team project"), ("Built with", "C++, OpenGL, GLSL, Qt 6")],
     "links": [("Source code", GH + "miniMC", "code")],
     "blocks": [
@@ -813,6 +813,10 @@ def cover_tag(p, root, *, cls, sizes, lazy=True, alt=""):
     return (f'<img class="{cls}" src="{base}-thumb.webp" srcset="{base}-thumb.webp {m["tw"]}w, {base}.webp {m["w"]}w" sizes="{sizes}" '
             f'width="{m["w"]}" height="{m["h"]}" alt="{E(alt)}"{load}>')
 
+def frame_cls(p):
+    """A full-frame cover's preview spans the whole frame, not just the main panel."""
+    return " full" if MAN[f'{p["img"]}/cover'].get("layout") == "full" else ""
+
 def meta_html(p, indent="        "):
     parts = [p["year"]] + ([p["kind"]] if p.get("kind") else [])
     return f'{indent}<p class="work-meta">' + "".join(f"<span>{E(t)}</span>" for t in parts) + "</p>"
@@ -850,7 +854,7 @@ def build_home():
     cards = []
     for p in PROJECTS:
         cards.append(f"""      <li class="work" data-cats="{" ".join(p["cats"])}">
-        <div class="work-frame">{cover_tag(p, root, cls="work-thumb", sizes="(max-width: 900px) calc(100vw - 40px), 668px")}<video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-{p["img"]}.mp4"></video><span class="work-live" aria-hidden="true">{icon("play")}Preview</span></div>
+        <div class="work-frame{frame_cls(p)}">{cover_tag(p, root, cls="work-thumb", sizes="(max-width: 900px) calc(100vw - 40px), 668px")}<video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-{p["img"]}.mp4"></video><span class="work-live" aria-hidden="true">{icon("play")}Preview</span></div>
 {meta_html(p)}
         <h3><a href="works/{p["slug"]}/">{E(p["title"])}</a></h3>
 {tags_html(p)}
@@ -925,7 +929,7 @@ def build_projects():
           <p class="project-lead">{E(p["lead"])}</p>
 {tags_html(p, indent="          ")}{links_html(p)}
         </div>
-        <figure class="project-cover">{cover_tag(p, root, cls="", sizes="(max-width: 900px) calc(100vw - 40px), 780px", lazy=False, alt=p["cover_alt"])}<video class="work-preview" data-autoplay muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="{root}assets/video/preview-{p["img"]}.mp4" type="video/mp4"></video></figure>
+        <figure class="project-cover{frame_cls(p)}">{cover_tag(p, root, cls="", sizes="(max-width: 900px) calc(100vw - 40px), 780px", lazy=False, alt=p["cover_alt"])}<video class="work-preview" data-autoplay muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="{root}assets/video/preview-{p["img"]}.mp4" type="video/mp4"></video></figure>
       </div>
       {facts_html(p)}{stats_html(p)}
     </div>
