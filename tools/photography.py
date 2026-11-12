@@ -32,30 +32,36 @@ SERIES = [
     dict(slug="salt", title="Salt", where="Alviso, California", when="June 2025",
          note="Salt ponds at the southern end of San Francisco Bay.",
          rows=[[58], [57, 54], [61], [62, 52, 64], [63, 53]], cover=58),
-    dict(slug="rose", title="Rose", where="", when="",
-         note="A portrait session in a café.",
-         rows=[[127, 136], [129, 132, 137], [145, 146]], cover=132, focus="50% 30%"),
     dict(slug="subway", title="Subway", where="", when="April 2025",
          note="One subway car in black and white, on a 50 mm lens.",
          rows=[[398], [399, 397], [391], [394, 396], [392, 395], [400]], cover=391),
+    dict(slug="rose", title="Rose", where="", when="",
+         note="A portrait session in a café.",
+         rows=[[127, 136], [129, 132, 137], [145, 146]], cover=132, focus="50% 30%"),
     dict(slug="guangzhou", title="Guangzhou", where="", when="January 2026",
          note="Museum halls by day, the Pearl River after dark.",
          rows=[[214, 216], [213, 215], [219, 308, 220], [221]], cover=214, focus="50% 62%"),
     dict(slug="pacific", title="Pacific", where="San Francisco", when="July 2025",
          note="The western edge of the city on a clear afternoon.",
          rows=[[90], [95, 96], [101, 97], [91], [98, 104], [87, 88]], cover=90),
-    dict(slug="fourth-of-july", title="Fourth of July", where="San Francisco Bay", when="July 2025",
-         note="From dusk to the fireworks, seen from across the bay.",
-         rows=[[114, 115], [116], [118], [120, 122], [126, 124]], cover=120),
     dict(slug="dry-hills", title="Dry Hills", where="California", when="July 2025",
          note="Sunset from the grazing land above the valley.",
          rows=[[71], [77, 79], [76], [80]], cover=80),
-    dict(slug="zhuhai", title="Zhuhai", where="", when="January 2026",
-         note="The opera house on the water, from late afternoon into the night.",
-         rows=[[228, 222], [230], [232], [240], [256, 238]], cover=232),
+    dict(slug="rooftop", title="Rooftop", where="Chongqing", when="June 2026",
+         note="LED glasses and two light sticks, high above the city at night.",
+         rows=[[18, 20, 22], [25, 21]], cover=21, focus="50% 55%"),
+    dict(slug="fourth-of-july", title="Fourth of July", where="San Francisco Bay", when="July 2025",
+         note="From dusk to the fireworks, seen from across the bay.",
+         rows=[[114, 115], [116], [118], [120, 122], [126, 124]], cover=120),
     dict(slug="tea-hills", title="Tea Hills", where="Zhejiang", when="December 2025",
          note="A tea estate built around a château-style hotel.",
          rows=[[200, 201], [202, 198], [206, 205]], cover=206),
+    dict(slug="evening-walk", title="Evening Walk", where="", when="May 2025",
+         note="Portraits in a park, from the last daylight until the lamps came on.",
+         rows=[[43, 38, 40], [46, 49, 51]], cover=38, focus="50% 30%"),
+    dict(slug="zhuhai", title="Zhuhai", where="", when="January 2026",
+         note="The opera house on the water, from late afternoon into the night.",
+         rows=[[228, 222], [230], [232], [240], [256, 238]], cover=232),
     dict(slug="off-season", title="Off-season", where="Atlantic City and Cape May, New Jersey", when="March 2025",
          note="The Jersey Shore before the summer crowds.",
          rows=[[261], [373, 372, 368], [289], [285], [288]], cover=261),
@@ -68,10 +74,11 @@ SERIES = [
 # The first series has no tile: the opening picture is its link.
 HOME_ROWS = [
     ["macau", "salt"],
-    ["rose", "subway"],
+    ["subway", "rose"],
     ["guangzhou", "pacific"],
-    ["fourth-of-july", "dry-hills"],
-    ["zhuhai", "tea-hills"],
+    ["dry-hills", "rooftop"],
+    ["fourth-of-july", "tea-hills"],
+    ["evening-walk", "zhuhai"],
     ["off-season", "pennsylvania"],
 ]
 # Opening picture of the index page: one photograph for wide screens, one for upright phones.
@@ -163,6 +170,19 @@ ALT = {
     79: "The sun touching a dark ridge above a fenced hillside road.",
     76: "People in silhouette on a hilltop watching the sunset.",
     80: "A black cow seen from behind, looking out over a valley of city lights at dusk.",
+    # Rooftop
+    18: "A man in LED glasses stands on a rooftop stairway at night, small against neon-lit towers.",
+    20: "He leans on the stair rail holding two light sticks, his glasses glowing.",
+    22: "Seen from above in profile, he crouches by the railing with a red light stick, the city spread out below.",
+    25: "He stands with the light sticks crossed over his chest, lit red by them.",
+    21: "With his back to the camera he raises a red light stick toward the skyline.",
+    # Evening Walk
+    43: "A woman in a grey cap and sleeveless top stands on a lawn and looks at the camera, a pagoda behind the trees.",
+    38: "Close profile: the peak of her cap hides her eyes.",
+    40: "Seen from behind, she tilts her head back with her eyes closed.",
+    46: "She sits on a wooden bench in profile, one arm resting on her knee.",
+    49: "She stands on a path at dusk holding the strap of her bag, looking at the camera.",
+    51: "She looks back from a winding path as the park lamps come on.",
     # Zhuhai
     228: "Two people standing on an empty beach under a wide turquoise sky.",
     222: "A white lighthouse at the end of a pier, seen from the beach.",
@@ -202,7 +222,7 @@ ABOUT = [
     "I’m Jichu Mao. I work on real-time rendering and GPU performance, and I photograph on the side: "
     "landscapes, cities after dark, and now and then a portrait.",
     "These pictures were made in 2025 and 2026 in California, on the East Coast of the United States and in "
-    "southern China, on a Sony α7C II and a Canon EOS 5D Mark IV.",
+    "China, on a Sony α7C II and a Canon EOS 5D Mark IV.",
 ]
 
 BY_SLUG = {s["slug"]: s for s in SERIES}
@@ -305,7 +325,7 @@ def page(*, title, desc, path, home, body, og, v, series="", viewer=False):
 {body}
 </main>
 <footer class="foot">
-  <p>© Jichu Mao. All photographs are my own.</p>
+  <p>© Jichu Mao. All rights reserved. Please ask before using a photograph.</p>
   <p><a href="{site}">jichu.art</a></p>
 </footer>{js}
 </body>
