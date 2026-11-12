@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CUDA Path Tracer – Jichu · Art</title>
-<meta name="description" content="A GPU-accelerated path tracer built with CUDA: glTF model loading, BSDF shading, stream compaction of ray paths, stochastic anti-aliasing, physically-based depth of field, environment maps, tone mapping and bounding-volume culling.">
+<meta name="description" content="A GPU path tracer in CUDA with glTF scenes, physically based materials, depth of field and environment lighting. Stream compaction cuts frame time from 25.7 to 18.2 ms in open scenes.">
 <link rel="canonical" href="https://jichu.art/works/cuda-path-tracer/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jichu · Art">
 <meta property="og:title" content="CUDA Path Tracer – Jichu · Art">
-<meta property="og:description" content="A GPU-accelerated path tracer built with CUDA: glTF model loading, BSDF shading, stream compaction of ray paths, stochastic anti-aliasing, physically-based depth of field, environment maps, tone mapping and bounding-volume culling.">
+<meta property="og:description" content="A GPU path tracer in CUDA with glTF scenes, physically based materials, depth of field and environment lighting. Stream compaction cuts frame time from 25.7 to 18.2 ms in open scenes.">
 <meta property="og:url" content="https://jichu.art/works/cuda-path-tracer/">
 <meta property="og:image" content="https://jichu.art/assets/img/cuda-path-tracer/cover-thumb.webp">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=4">
+<link rel="stylesheet" href="../../assets/css/site.css?v=5">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,14 +32,40 @@
 </header>
 
 <main id="main">
-<article class="project wrap">
-  <a class="back" href="../../#works">← All works</a>
-  <div class="project-grid">
-    <header class="project-info">
-      <h1>CUDA Path Tracer</h1>
-      <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>CUDA</li><li>Path tracing</li><li>glTF</li></ul>
-      <div class="prose">
-        <p>A GPU path tracer built on CUDA, based on CIS 5650 at UPenn. It is rooted in physically-based rendering, loads glTF meshes and materials, and simulates light transport to produce soft shadows, caustics and depth of field.</p>
+<article class="project">
+  <header class="project-hero">
+    <div class="project-glow" style="background-image: url(../../assets/img/cuda-path-tracer/glow.webp)" aria-hidden="true"></div>
+    <div class="wrap">
+      <a class="back" href="../../#works">← All works</a>
+      <div class="project-head">
+        <div class="project-title">
+          <h1>CUDA Path Tracer</h1>
+          <p class="project-lead">A GPU path tracer written in CUDA. It loads glTF meshes and materials and simulates light transport for soft shadows, caustics and depth of field, with stream compaction and bounding-box culling to cut the work per frame.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>CUDA</li><li>GPU Programming</li><li>Path Tracing</li><li>glTF</li><li>Performance Optimization</li></ul>
+          <ul class="project-links">
+            <li><a class="button" href="https://github.com/jichumao/CUDA-Path-Tracer"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
+          </ul>
+        </div>
+        <figure class="project-cover"><img class="" src="../../assets/img/cuda-path-tracer/cover-thumb.webp" srcset="../../assets/img/cuda-path-tracer/cover-thumb.webp 900w, ../../assets/img/cuda-path-tracer/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Path-traced renders: a toy dog with two rubber ducks, a glass dragon and a mirror ball in front of a night skyline" fetchpriority="high"></figure>
+      </div>
+      <dl class="facts">
+        <div><dt>Year</dt><dd>2024</dd></div>
+        <div><dt>Type</dt><dd>Individual project</dd></div>
+        <div><dt>Course</dt><dd>CIS 5650 GPU Programming and Architecture at UPenn</dd></div>
+        <div><dt>Tested on</dt><dd>RTX 4090, i7-13700K, Windows 11</dd></div>
+      </dl>
+      <ul class="stats" aria-label="Measured results">
+        <li><strong>25.7 → 18.2 ms</strong><span>per frame with stream compaction, open scene</span></li>
+        <li><strong>20–40%</strong><span>faster with bounding-box culling on low- to mid-poly models</span></li>
+        <li><strong>43,200</strong><span>samples per pixel in the dragon render</span></li>
+      </ul>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="project-grid">
+      <div class="project-info">
+        <h2>Overview</h2>
+        <div class="prose">
         <p>The highlight renders use 5,000 samples per pixel or more, with up to 8 bounces per ray.</p>
         <p>Visual features:</p>
         <ul>
@@ -56,12 +82,9 @@
           <li>Bounding-box culling for glTF meshes, 20–40% faster on low- to mid-poly models</li>
           <li>Material sorting was measured too, and turned out slower on small scenes</li>
         </ul>
+        </div>
       </div>
-      <ul class="project-links">
-        <li><a class="button" href="https://github.com/jichumao/CUDA-Path-Tracer"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
-      </ul>
-    </header>
-    <div class="project-media">
+      <div class="project-media">
       <h2>Highlights</h2>
       <ul class="gallery two">
         <li>
@@ -252,12 +275,13 @@
           </figure>
         </li>
       </ul>
+      </div>
     </div>
+    <nav class="pager" aria-label="More works">
+      <a class="prev" href="../world-space-restir/"><img src="../../assets/img/world-space-restir/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"><span class="pager-text"><span class="pager-label">Previous</span>World-Space ReSTIR in Vulkan</span></a>
+      <a class="next" href="../webgpu-clustered-shading/"><span class="pager-text"><span class="pager-label">Next</span>WebGPU Forward+ and Clustered Deferred Shading</span><img src="../../assets/img/webgpu-clustered-shading/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"></a>
+    </nav>
   </div>
-  <nav class="pager" aria-label="More works">
-    <a class="prev" href="../world-space-restir/"><span>Previous</span>World-Space ReSTIR in Vulkan</a>
-    <a class="next" href="../webgpu-clustered-shading/"><span>Next</span>WebGPU Forward+ and Clustered Deferred Shading</a>
-  </nav>
 </article>
 </main>
 
@@ -277,6 +301,6 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/lightbox.js?v=4" defer></script>
+<script src="../../assets/js/lightbox.js?v=5" defer></script>
 </body>
 </html>

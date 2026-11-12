@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WebGPU Forward+ and Clustered Deferred Shading – Jichu · Art</title>
-<meta name="description" content="Forward+ and clustered deferred shading implemented in WebGPU. It handles more than 1,000 dynamic lights and raises the frame rate by about 25%.">
+<meta name="description" content="Forward+ and clustered deferred shading in the browser. With 5,000 moving lights at 4K, clustered deferred runs above 100 fps where naive forward shading manages 3.">
 <link rel="canonical" href="https://jichu.art/works/webgpu-clustered-shading/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jichu · Art">
 <meta property="og:title" content="WebGPU Forward+ and Clustered Deferred Shading – Jichu · Art">
-<meta property="og:description" content="Forward+ and clustered deferred shading implemented in WebGPU. It handles more than 1,000 dynamic lights and raises the frame rate by about 25%.">
+<meta property="og:description" content="Forward+ and clustered deferred shading in the browser. With 5,000 moving lights at 4K, clustered deferred runs above 100 fps where naive forward shading manages 3.">
 <meta property="og:url" content="https://jichu.art/works/webgpu-clustered-shading/">
 <meta property="og:image" content="https://jichu.art/assets/img/webgpu-clustered-shading/cover-thumb.webp">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=4">
+<link rel="stylesheet" href="../../assets/css/site.css?v=5">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,15 +32,42 @@
 </header>
 
 <main id="main">
-<article class="project wrap">
-  <a class="back" href="../../#works">← All works</a>
-  <div class="project-grid">
-    <header class="project-info">
-      <h1>WebGPU Forward+ and Clustered Deferred Shading</h1>
-      <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>TypeScript</li><li>WebGPU</li><li>WGSL</li><li>Compute shaders</li></ul>
-      <div class="prose">
-        <p>Forward+ and clustered deferred shading in WebGPU. The scene is the Sponza atrium with a large number of moving point lights, and the project compares the shading methods at high resolution with thousands of lights.</p>
-        <p>In a 4K scene with 5,000 randomly moving lights, naive forward shading reaches about 3 frames per second, while clustered deferred shading stays above 100.</p>
+<article class="project">
+  <header class="project-hero">
+    <div class="project-glow" style="background-image: url(../../assets/img/webgpu-clustered-shading/glow.webp)" aria-hidden="true"></div>
+    <div class="wrap">
+      <a class="back" href="../../#works">← All works</a>
+      <div class="project-head">
+        <div class="project-title">
+          <h1>WebGPU Forward+ and Clustered Deferred Shading</h1>
+          <p class="project-lead">Three ways to light the Sponza atrium with thousands of moving point lights, in the browser: naive forward, Forward+ and clustered deferred shading, compared at 4K.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>TypeScript</li><li>WebGPU</li><li>WGSL</li><li>Compute Shaders</li><li>Deferred Shading</li><li>Real-Time Rendering</li></ul>
+          <ul class="project-links">
+            <li><a class="button" href="https://jichu.art/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred/"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Live demo</a></li>
+            <li><a class="button" href="https://github.com/jichumao/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
+          </ul>
+        </div>
+        <figure class="project-cover"><img class="" src="../../assets/img/webgpu-clustered-shading/cover-thumb.webp" srcset="../../assets/img/webgpu-clustered-shading/cover-thumb.webp 900w, ../../assets/img/webgpu-clustered-shading/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Sponza atrium lit by thousands of coloured point lights, next to its normal and colour G-buffers" fetchpriority="high"></figure>
+      </div>
+      <dl class="facts">
+        <div><dt>Year</dt><dd>2024</dd></div>
+        <div><dt>Type</dt><dd>Individual project</dd></div>
+        <div><dt>Course</dt><dd>CIS 5650 GPU Programming and Architecture at UPenn</dd></div>
+        <div><dt>Tested on</dt><dd>RTX 4090, i7-13700K, Windows 11</dd></div>
+      </dl>
+      <ul class="stats" aria-label="Measured results">
+        <li><strong>3 → 100+ fps</strong><span>5,000 lights at 4K, naive forward against clustered deferred</span></li>
+        <li><strong>550.8 → 15.1 ms</strong><span>per frame at 8,192 lights</span></li>
+        <li><strong>0.5 ms</strong><span>per frame at 256 lights with clustered deferred</span></li>
+      </ul>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="project-grid">
+      <div class="project-info">
+        <h2>Overview</h2>
+        <div class="prose">
+        <p>The project compares the three shading methods at high resolution with thousands of lights:</p>
         <ul>
           <li>Three pipelines: forward, clustered forward (Forward+) and clustered deferred</li>
           <li>A compute shader splits the view frustum into clusters, logarithmically along depth, and assigns lights to them</li>
@@ -48,13 +75,9 @@
           <li>Compressed G-buffer</li>
         </ul>
         <p>The live demo needs a browser with WebGPU.</p>
+        </div>
       </div>
-      <ul class="project-links">
-        <li><a class="button" href="https://jichu.art/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred/"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Live demo</a></li>
-        <li><a class="button" href="https://github.com/jichumao/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
-      </ul>
-    </header>
-    <div class="project-media">
+      <div class="project-media">
       <ul class="gallery wide one">
         <li>
           <figure>
@@ -120,12 +143,13 @@
           </figure>
         </li>
       </ul>
+      </div>
     </div>
+    <nav class="pager" aria-label="More works">
+      <a class="prev" href="../cuda-path-tracer/"><img src="../../assets/img/cuda-path-tracer/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"><span class="pager-text"><span class="pager-label">Previous</span>CUDA Path Tracer</span></a>
+      <a class="next" href="../vulkan-grass-rendering/"><span class="pager-text"><span class="pager-label">Next</span>Vulkan Grass Rendering</span><img src="../../assets/img/vulkan-grass-rendering/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"></a>
+    </nav>
   </div>
-  <nav class="pager" aria-label="More works">
-    <a class="prev" href="../cuda-path-tracer/"><span>Previous</span>CUDA Path Tracer</a>
-    <a class="next" href="../vulkan-grass-rendering/"><span>Next</span>Vulkan Grass Rendering</a>
-  </nav>
 </article>
 </main>
 
@@ -145,7 +169,7 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/clips.js?v=4" defer></script>
-<script src="../../assets/js/lightbox.js?v=4" defer></script>
+<script src="../../assets/js/clips.js?v=5" defer></script>
+<script src="../../assets/js/lightbox.js?v=5" defer></script>
 </body>
 </html>
