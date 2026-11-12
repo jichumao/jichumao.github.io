@@ -5,15 +5,18 @@ Static portfolio site (it used to run on WordPress). Plain HTML, CSS and a few s
 ## Layout
 
 ```
-index.html                    home page (hero, works grid with category filter, about)
+index.html                    home page (opening, five large projects, the rest as a compact grid with a category filter, about)
 about/index.html              about page (experience, education, skills)
+resume/index.html             one-page résumé, written from the same data as the about page
+assets/Jichu-Mao-Resume.pdf   the résumé as a PDF (the "Résumé (PDF)" buttons link to it)
 works/<project>/index.html    one page per project
 index.php/<old-slug>/         redirects from the old WordPress URLs
 404.html
 assets/css/site.css           all styles
-assets/js/hero.js             home hero: WebGL shader that makes the artwork drift (falls back to the plain image)
-assets/js/works.js            category filter on the works grid
-assets/js/previews.js         plays a card's preview while the card is in the middle of the screen, or hovered
+assets/js/hero.js             home opening: runs the Procedural Fireball project's own shaders live (falls back to a still frame)
+assets/shaders/               those shaders, copied unchanged from the project's repository
+assets/js/works.js            category filter on the compact grid ("More work")
+assets/js/previews.js         plays a large card's preview while the card is in the middle of the screen, or hovered
 assets/js/clips.js            plays the short looping clips, and the preview on a project page's cover, while they are on screen
 assets/js/lightbox.js         full-size image viewer for galleries
 assets/img/<project>/         images (WebP): name.webp is full size, name-thumb.webp is the thumbnail
@@ -22,15 +25,19 @@ assets/fonts/                 Playfair Display (titles, figures), Open Sans (tex
 tools/build.py                generator for every HTML page; all the text lives in it
 tools/covers.py               builds the project covers
 tools/previews.py             builds the short preview loops that play on the cards
-tools/cover-src/              video frames and screenshots that the covers use
+tools/cover-src/              video frames and screenshots that the covers use, and the scripts behind the three drawn covers
+tools/resume.py               prints resume/index.html to the PDF
+tools/og.py                   writes the pictures shown when a page is shared (og.jpg)
 tools/manifest.json           image and clip dimensions the generator reads
 
 photography/index.html        photography: opening slideshow, subject links, one tile per series, about
 photography/<series>/         one page per series
 photography/<subject>/        one page per subject (landscape, coast, night ...), plus all/ with every photograph
+photography/zh/               the same pages in Chinese (same photographs, stylesheet and scripts)
 photography/assets/           photo.css (all styles), viewer.js (full-screen viewer), hero.js (opening slideshow); written by hand
 photography/img/              NNN-2400.webp, NNN-1400.webp, NNN-700.webp for each photograph (long side in pixels)
 tools/photography.py          generator for the photography pages: series, order, rows, captions
+tools/photography_zh.py       the Chinese text of the photography section
 tools/photos.py               prepares new photographs (resize, sRGB, strip metadata)
 tools/photos.json             pixel sizes, placeholder colour and camera settings of each photograph
 ```
@@ -39,17 +46,20 @@ tools/photos.json             pixel sizes, placeholder colour and camera setting
 
 The pages are generated, so the text of the whole site sits in one file, `tools/build.py`:
 
-- `PROJECTS`: one entry per project. The order of the list is the order on the home page.
-- `CATEGORIES`: the filter buttons on the home page.
-- `ABOUT_INTRO`, `WORK`, `EDU`, `SKILLS`, `HOBBIES`: the about page.
+- `PROJECTS`: one entry per project. The order of the list is the order of the compact grid on the home page and of the Previous / Next links.
+- `FEATURED`: the five projects shown large at the top of the home page, in order. The first gets the full-width card with its `stats`. Every other project appears under "More work".
+- `CATEGORIES`: the filter buttons above "More work".
+- `HOME_ABOUT`: the two paragraphs at the foot of the home page.
+- `ABOUT_INTRO`, `WORK`, `EDU`, `SKILLS`, `HOBBIES`: the about page. `WORK`, `EDU`, `SKILLS` and `FEATURED` also fill the résumé.
 - `EMAIL`, `SOCIAL`: contact links in the footer and on the about page.
+- `GOATCOUNTER`: visitor statistics, off while it is empty (see below).
 
 Fields of a project:
 
 | Field | Where it shows |
 | --- | --- |
 | `title`, `year`, `kind` | card and page header (`kind` is "Team project", "Individual project" or empty) |
-| `tags` | tech stack under the title, spelled the way a résumé or job posting spells it |
+| `tags` | tech stack under the title, spelled the way a résumé or job posting spells it. The home page shows the first three; the project page shows all |
 | `excerpt` | card text and the page's meta description |
 | `lead` | opening sentence of the project page |
 | `facts` | label and value pairs under the page header |
@@ -67,9 +77,28 @@ python3 tools/build.py . tools/manifest.json
 
 A quick text fix can also be made straight in the HTML. Make the same change in `tools/build.py`, otherwise the next rebuild overwrites it.
 
-The stylesheet and scripts are linked as `site.css?v=8`, `hero.js?v=8`, and so on. After changing one of them, raise `ASSET_V` in `tools/build.py` and rebuild, so browsers fetch the new file instead of a cached one.
+The stylesheet and scripts are linked as `site.css?v=12`, `hero.js?v=12`, and so on. After changing one of them, raise `ASSET_V` in `tools/build.py` and rebuild, so browsers fetch the new file instead of a cached one.
 
 All links are relative, so the site works both at a domain root and under a sub-path.
+
+## Home page opening
+
+The fireball on the home page is not a picture: `assets/js/hero.js` loads the two shader files of the Procedural Fireball project and draws them with WebGL 2, with the colours and settings of that project's defaults. If WebGL 2 is missing, or a shader fails to compile, the still frame `assets/img/home/fireball.webp` stays in place; visitors who ask their system for reduced motion get one drawn frame that does not move. `data-distance` on the canvas (in `build_home()`) is the camera distance: smaller is closer.
+
+## Résumé
+
+`resume/index.html` is written by `tools/build.py` from `WORK`, `EDU`, `SKILLS` and the `FEATURED` projects; it carries the e-mail address and the public links and nothing more personal. The PDF is that page printed:
+
+```
+python3 tools/build.py . tools/manifest.json
+python3 tools/resume.py .          # needs Chrome, Chromium or Edge; or print the page to PDF by hand
+```
+
+To use a résumé written elsewhere, replace `assets/Jichu-Mao-Resume.pdf` with it and skip `tools/resume.py`. Keep it to one page: if the text grows, lower the font size in the `<style>` of `build_resume()`.
+
+## Visitor statistics
+
+Off by default. The site is prepared for GoatCounter, which counts page views without cookies, so no consent banner is needed, and is free for personal sites. To switch it on: create an account at goatcounter.com, choose a code (the `mysite` in `mysite.goatcounter.com`), set `GOATCOUNTER = "mysite"` near the top of `tools/build.py` and rebuild. Every page, photography included, then loads one small script from `gc.zgo.at`. Set it back to `""` to remove it.
 
 ## Covers
 
@@ -92,14 +121,21 @@ python3 tools/previews.py .                    # all previews
 python3 tools/previews.py . cuda-path-tracer   # one project
 ```
 
-One cover is not made from screenshots: `tree-creator` uses a new render produced by running the plugin's own L-system core outside Maya. `tools/cover-src/tree-plate/README.md` says exactly how, and the project page says so too.
+Three covers are not made from screenshots; each has its script next to its source in `tools/cover-src/`:
+
+- `tree-creator`: a new render produced by running the plugin's own L-system core outside Maya. `tools/cover-src/tree-plate/README.md` says exactly how, and the project page says so too.
+- `motion-capture`: five poses cut out of the finished animation's own video frames and set side by side (`tools/cover-src/mocap-poses/poses.py`; needs ffmpeg, NumPy and SciPy).
+- `stream-compaction`: a drawing of the algorithm, each kept element joined to its compacted position (`tools/cover-src/stream-compaction/diagram.py`). It also writes the two stage pictures the preview fades through.
 
 ## Adding a project
 
 1. Put images in `assets/img/<project>/`: a full-size WebP (long side up to 2000 px) and a `-thumb` version about 800 px wide.
 2. Add each image to `tools/manifest.json` with its width and height (`w`, `h` for the full size, `tw`, `th` for the thumbnail). Copy the shape of an existing entry.
 3. Add the project's three cover panels to `COVERS` in `tools/covers.py` and its preview to `PREVIEWS` in `tools/previews.py`, then run both.
-4. Add an entry to `PROJECTS` in `tools/build.py` and rebuild. The card, the project page, the Previous / Next links and `sitemap.xml` are all written for you.
+4. Add an entry to `PROJECTS` in `tools/build.py` and rebuild. The card, the project page, the Previous / Next links and `sitemap.xml` are all written for you. Add its slug to `FEATURED` if it should be one of the large cards.
+5. Run `python3 tools/og.py .` so the new page has its sharing picture.
+
+A project made of photographs that are already in the photography section (Virtual Subway is one) can reuse them instead of steps 1 and 2: `python3 tools/photos.py --project virtual-subway 391:interior 398:side` copies photographs 391 and 398 into `assets/img/virtual-subway/` under those names and records them in the manifest.
 
 ## Photography
 
@@ -116,11 +152,14 @@ One cover is not made from screenshots: `tree-creator` uses a new render produce
 - `PLACE`: where a single photograph was taken, when that is more exact than its series' `where`. Shown in the viewer's caption.
 - `ALT`: one plain sentence per photograph. The build stops if one is missing.
 - `ABOUT`: the text at the foot of the index page.
+- A series can carry `link=("How it was made", "works/virtual-subway/")`: a line under its note that leads to a page of the main site.
+
+**The Chinese edition.** `photography/zh/` holds every page again in Chinese, and each page links to its counterpart in the top bar (中文 / EN). The Chinese text is in `tools/photography_zh.py`: `ZH` maps each English title, place and note, exactly as written in `tools/photography.py`, to its Chinese, and `ALT_ZH` holds the photograph descriptions. Whatever is missing there is shown in English, and the build prints a list of it, so a new series still builds before it is translated.
 
 **Adding photographs.**
 
 1. Pick an unused number for each and run `python3 tools/photos.py 401 path/to/a.jpg 402 path/to/b.jpg`. It writes the three sizes into `photography/img/` and records them in `tools/photos.json`. Nothing from the file's metadata is copied (no GPS, serial number or date); only focal length, aperture, shutter speed and ISO are kept for the caption. Each output file is then tagged with the author and a rights statement (XMP, invisible; `AUTHOR`, `RIGHTS` in `tools/photos.py`). Numbers listed in `UNTAGGED` are left without the tag: use it for pictures someone else took. `python3 tools/photos.py --stamp` tags every file again after a change, without touching the picture data.
-2. Put the numbers into a series' `rows` (or add a new series and list it in `HOME_ROWS`), write their `ALT` lines, and rebuild.
+2. Put the numbers into a series' `rows` (or add a new series and list it in `HOME_ROWS`), write their `ALT` lines (and the Chinese ones in `tools/photography_zh.py`), and rebuild.
 
 Rows read best when the aspect ratios in a row add up to between 1.5 and 3.5: one landscape; a landscape and a portrait; two squares; three portraits. A portrait on its own leaves most of a wide screen empty.
 

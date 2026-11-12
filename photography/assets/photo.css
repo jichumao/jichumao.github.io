@@ -22,8 +22,8 @@
   --body: #c4c4c4;
   --muted: #8f8f8f;
   --accent: #db4f3d;
-  --serif: "Playfair Display", "Songti SC", Georgia, serif;
-  --sans: "Open Sans", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --serif: "Playfair Display", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", Georgia, serif;
+  --sans: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
   --gap: 6px;
   --edge: clamp(20px, 3.4vw, 48px);
   --top: 76px;
@@ -57,9 +57,17 @@ a { color: inherit; }
 .top nav a {
   color: var(--text); text-decoration: none;
   font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
-  padding: 4px 0; border-bottom: 1px solid transparent;
+  padding: 4px 0; border-bottom: 1px solid transparent; white-space: nowrap;
 }
 .top nav a:hover, .top nav a[aria-current="page"] { border-bottom-color: var(--accent); }
+.top nav .lang { padding-left: clamp(14px, 2vw, 26px); border-left: 1px solid rgba(255, 255, 255, .28); letter-spacing: .06em; }
+
+/* Chinese edition (photography/zh/). The Latin faces have no Chinese glyphs, so the system's own are used;
+   Chinese needs no letter-spacing and a little more line height. */
+:lang(zh) body { line-height: 1.85; }
+:lang(zh) .top nav a, :lang(zh) .more h2 { letter-spacing: .08em; font-size: 14px; }
+:lang(zh) .top nav .lang { letter-spacing: .06em; font-size: 13px; }
+:lang(zh) .hero h1, :lang(zh) .panel h1, :lang(zh) .head h1, :lang(zh) .tile-title, :lang(zh) .subjects a, :lang(zh) .about h2 { letter-spacing: .04em; }
 
 /* Rows: every photograph keeps its own aspect ratio. A row is as wide as the
    screen unless that would make it taller than the screen; then it is as tall
@@ -165,6 +173,8 @@ a.ph { cursor: zoom-in; }
 .panel p { margin: 0 0 10px; }
 .panel .where { color: var(--text); }
 .panel .count { color: var(--muted); font-size: 13px; }
+.panel .how a { color: var(--text); text-decoration-color: var(--accent); text-underline-offset: 4px; }
+.panel .how a:hover { color: var(--accent); }
 .lead .row {
   flex: 0 1 calc((var(--vh) - var(--top) - 12px) * var(--sum) + (var(--n) - 1) * var(--gap));
   width: auto;
@@ -183,6 +193,9 @@ a.ph { cursor: zoom-in; }
   .panel { padding: 20px var(--edge) 28px; }
 }
 
+/* The narrowest phones: the Subjects link gives way; the subjects are listed right under the opening picture. */
+@media (max-width: 374px) { html:not(:lang(zh)) .top nav .opt2 { display: none; } }
+
 /* Phones held upright: one photograph per line, full width. */
 @media (max-width: 760px) and (orientation: portrait) {
   :root { --top: 64px; }
@@ -193,7 +206,12 @@ a.ph { cursor: zoom-in; }
   .slide-cap { left: var(--edge); right: auto; text-align: left; bottom: 58px; }
   .slide-cap b { font-size: 19px; }
   .hero-text { bottom: 168px; }
-  .top nav { gap: 12px; }
+  .top { gap: 12px; }
+  .top nav { gap: 10px; }
+  .top nav a { letter-spacing: .08em; }
+  .top nav .lang { padding-left: 10px; }
+  :lang(zh) .top nav { gap: 12px; }
+  :lang(zh) .top nav a { font-size: 13px; }
   .top nav .wide, .top nav .opt { display: none; }
   .top nav a { padding: 10px 0; }
   /* Subject pages: a three-column grid of square crops to browse; the viewer shows each photograph whole. */

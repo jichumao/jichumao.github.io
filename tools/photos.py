@@ -14,9 +14,14 @@ statement (XMP, invisible, see STAMP below).
     python3 tools/photos.py --stamp     tags every file in photography/img again
                                         (safe to repeat; the picture data is not touched)
 
+    python3 tools/photos.py --project virtual-subway 391:interior 398:side
+                                        reuses published photographs as the images of a project page:
+                                        writes assets/img/<project>/<name>.webp and -thumb.webp
+                                        and records them in tools/manifest.json
+
 Needs Pillow:  pip install pillow
 """
-import glob, io, json, os, struct, sys
+import glob, io, json, os, shutil, struct, sys
 from PIL import Image, ImageCms, ImageOps
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -126,6 +131,31 @@ if __name__ == "__main__":
         for f in files:
             stamp(f)
         sys.exit(f"tagged {len(files)} files")
+    if args[:1] == ["--project"]:
+        # Reuse published photographs as images of a project page on the main site:
+        #   python3 tools/photos.py --project virtual-subway 391:interior 398:side …
+        # Copies the largest file as assets/img/<project>/<name>.webp, writes an 800px -thumb, and records both in tools/manifest.json.
+        proj, pairs = args[1], [a.split(":") for a in args[2:]]
+        manp = os.path.join(ROOT, "tools", "manifest.json")
+        man = json.load(open(manp, encoding="utf-8"))
+        photos = json.load(open(DATA, encoding="utf-8"))
+        dst = os.path.join(ROOT, "assets", "img", proj)
+        os.makedirs(dst, exist_ok=True)
+        for n, name in pairs:
+            n = int(n)
+            big = max(size for size, _ in photos[f"{n:03d}"]["files"])
+            full = os.path.join(dst, name + ".webp")
+            shutil.copyfile(os.path.join(IMG, f"{n:03d}-{big}.webp"), full)
+            im = Image.open(full).convert("RGB")
+            th = im.resize((800, round(im.height * 800 / im.width)), Image.LANCZOS)
+            th.save(os.path.join(dst, name + "-thumb.webp"), "WEBP", quality=80, method=6)
+            if n not in UNTAGGED:
+                stamp(os.path.join(dst, name + "-thumb.webp"))
+            man[f"{proj}/{name}"] = {"w": im.width, "h": im.height, "tw": th.width, "th": th.height, "alpha": False}
+            print(f"{proj}/{name}  {im.width}x{im.height}")
+        with open(manp, "w", encoding="utf-8") as f:
+            json.dump(man, f, indent=1, sort_keys=True)
+        sys.exit(0)
     if not args or len(args) % 2:
         sys.exit(__doc__)
     os.makedirs(IMG, exist_ok=True)

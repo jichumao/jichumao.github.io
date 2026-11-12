@@ -47,7 +47,8 @@
   pause.addEventListener("click", function () {
     paused = !paused;
     pause.setAttribute("aria-pressed", String(paused));
-    pause.setAttribute("aria-label", paused ? "Play slideshow" : "Pause slideshow");
+    var zh = /^zh/.test(document.documentElement.lang);
+    pause.setAttribute("aria-label", paused ? (zh ? "播放轮播" : "Play slideshow") : (zh ? "暂停轮播" : "Pause slideshow"));
     play();
   });
   document.addEventListener("visibilitychange", play);

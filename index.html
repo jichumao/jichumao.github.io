@@ -20,199 +20,170 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=11">
+<link rel="stylesheet" href="assets/css/site.css?v=12">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="site-header">
-  <div class="wrap">
-    <p class="site-title"><a href="">Jichu · Art</a></p>
-    <p class="site-tagline">A site about Jichu &amp; Art</p>
+  <div class="wrap site-bar">
+    <a class="site-name" href="./">Jichu Mao</a>
     <nav class="site-nav" aria-label="Main">
       <a href="#works">Works</a>
-      <a href="about/">About</a>
       <a href="photography/">Photography</a>
+      <a href="about/">About</a>
     </nav>
   </div>
 </header>
 
 <main id="main">
 <section class="hero">
-  <div class="hero-media">
-    <img class="hero-art" src="assets/img/home/hero.webp" srcset="assets/img/home/hero-thumb.webp 1200w, assets/img/home/hero.webp 2400w" sizes="100vw" width="2400" height="702" alt="" fetchpriority="high">
-    <canvas class="hero-canvas" aria-hidden="true"></canvas>
-  </div>
-  <div class="wrap hero-text">
-    <p class="hero-year" id="year">2026</p>
-    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
-    <h1>Jichu Mao</h1>
-    <p class="hero-role">Graphics Performance Engineer at TikTok</p>
-    <p class="hero-lead">I work on real-time rendering and GPU performance. This site is my hub for art, CG and games: the renderers, shaders, tools and games I’ve built along the way.</p>
-    <p class="hero-actions"><a class="button-fill" href="#works">See the work</a><a class="button" href="about/">About me</a></p>
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <h1>Graphics performance engineer at TikTok</h1>
+      <p class="hero-lead">I work on real-time rendering and GPU performance. These are the renderers, shaders, tools and games I’ve built along the way.</p>
+      <p class="hero-actions"><a class="button-fill" href="#works">See the work</a><a class="button" href="about/">About me</a></p>
+    </div>
+    <figure class="hero-stage">
+      <div class="hero-media">
+        <img class="hero-art" src="assets/img/home/fireball.webp" srcset="assets/img/home/fireball-thumb.webp 600w, assets/img/home/fireball.webp 1200w" sizes="(max-width: 900px) 72vw, 600px" width="1200" height="1200" alt="A ball of orange, yellow and red flame-like spikes" fetchpriority="high">
+        <canvas class="hero-canvas" data-shaders="assets/shaders/" data-distance="2.9" aria-hidden="true"></canvas>
+      </div>
+      <figcaption><a href="works/procedural-fireball/">Procedural Fireball</a>, running live in your browser: about 240 lines of GLSL</figcaption>
+    </figure>
   </div>
 </section>
 
 <section class="works" id="works">
   <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Portfolio</p>
-      <h2>Selected Works</h2>
-      <p>Renderers, shaders, tools, games and animation. Open a project for demos, renders and source code.</p>
-      <div class="work-filter" role="group" aria-label="Filter works by category" hidden><button type="button" data-cat="all" aria-pressed="true">All <span>19</span></button><button type="button" data-cat="rendering" aria-pressed="false">Rendering &amp; GPU <span>11</span></button><button type="button" data-cat="tools" aria-pressed="false">Tools <span>3</span></button><button type="button" data-cat="games" aria-pressed="false">Games <span>2</span></button><button type="button" data-cat="animation" aria-pressed="false">Animation <span>4</span></button><button type="button" data-cat="art" aria-pressed="false">Art <span>1</span></button></div>
-    </div>
-    <ul class="work-grid">
-      <li class="work" data-cats="rendering">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/world-space-restir/cover-thumb.webp" srcset="assets/img/world-space-restir/cover-thumb.webp 900w, assets/img/world-space-restir/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-world-space-restir.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Team of two</span></p>
-        <h3><a href="works/world-space-restir/">World-Space ReSTIR in Vulkan</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Ray Tracing</li><li>Global Illumination</li><li>ReSTIR</li></ul>
-        <p class="work-excerpt">World-space global illumination in a Vulkan ray-tracing pipeline. About 40% more accurate than screen-space ReSTIR in large scenes, for roughly 5% more render time.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+    <h2 class="section-title">Selected work</h2>
+    <ul class="feat-grid">
+      <li class="work feat lead">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/world-space-restir/cover-thumb.webp" srcset="assets/img/world-space-restir/cover-thumb.webp 900w, assets/img/world-space-restir/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="" fetchpriority="high"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-world-space-restir.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
+        <div class="feat-text">
+          <p class="work-meta"><span>2024</span><span>Team of two</span></p>
+          <h3><a href="works/world-space-restir/">World-Space ReSTIR in Vulkan</a></h3>
+          <p class="work-excerpt">World-space global illumination in a Vulkan ray-tracing pipeline. About 40% more accurate than screen-space ReSTIR in large scenes, for roughly 5% more render time.</p>
+          <ul class="feat-stats"><li><strong>≈40%</strong><span>higher accuracy than screen-space ReSTIR in large scenes</span></li><li><strong>≈5%</strong><span>extra render time</span></li><li><strong>1.3 M</strong><span>triangles in the subway test scene, at 1 sample per pixel</span></li></ul>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>Vulkan</li><li>GLSL</li></ul>
+        </div>
       </li>
-      <li class="work" data-cats="rendering">
+      <li class="work feat">
         <div class="work-frame"><img class="work-thumb" src="assets/img/cuda-path-tracer/cover-thumb.webp" srcset="assets/img/cuda-path-tracer/cover-thumb.webp 900w, assets/img/cuda-path-tracer/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-cuda-path-tracer.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
-        <h3><a href="works/cuda-path-tracer/">CUDA Path Tracer</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>CUDA</li><li>GPU Programming</li><li>Path Tracing</li><li>glTF</li><li>Performance Optimization</li></ul>
-        <p class="work-excerpt">A GPU path tracer in CUDA with glTF scenes, physically based materials, depth of field and environment lighting. Stream compaction cuts frame time from 25.7 to 18.2 ms in open scenes.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <div class="feat-text">
+          <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+          <h3><a href="works/cuda-path-tracer/">CUDA Path Tracer</a></h3>
+          <p class="work-excerpt">A GPU path tracer in CUDA with glTF scenes, physically based materials, depth of field and environment lighting. Stream compaction cuts frame time from 25.7 to 18.2 ms in open scenes.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>CUDA</li><li>GPU Programming</li></ul>
+        </div>
       </li>
-      <li class="work" data-cats="rendering">
+      <li class="work feat">
         <div class="work-frame"><img class="work-thumb" src="assets/img/webgpu-clustered-shading/cover-thumb.webp" srcset="assets/img/webgpu-clustered-shading/cover-thumb.webp 900w, assets/img/webgpu-clustered-shading/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-webgpu-clustered-shading.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
-        <h3><a href="works/webgpu-clustered-shading/">WebGPU Forward+ and Clustered Deferred Shading</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>TypeScript</li><li>WebGPU</li><li>WGSL</li><li>Compute Shaders</li><li>Deferred Shading</li><li>Real-Time Rendering</li></ul>
-        <p class="work-excerpt">Forward+ and clustered deferred shading in the browser. With 5,000 moving lights at 4K, clustered deferred runs above 100 fps where naive forward shading manages 3.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <div class="feat-text">
+          <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+          <h3><a href="works/webgpu-clustered-shading/">WebGPU Forward+ and Clustered Deferred Shading</a></h3>
+          <p class="work-excerpt">Forward+ and clustered deferred shading in the browser. With 5,000 moving lights at 4K, clustered deferred runs above 100 fps where naive forward shading manages 3.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>TypeScript</li><li>WebGPU</li><li>WGSL</li></ul>
+        </div>
       </li>
-      <li class="work" data-cats="rendering">
+      <li class="work feat">
         <div class="work-frame"><img class="work-thumb" src="assets/img/vulkan-grass-rendering/cover-thumb.webp" srcset="assets/img/vulkan-grass-rendering/cover-thumb.webp 900w, assets/img/vulkan-grass-rendering/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-vulkan-grass-rendering.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
-        <h3><a href="works/vulkan-grass-rendering/">Vulkan Grass Rendering</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Compute Shaders</li><li>Tessellation</li><li>Real-Time Rendering</li></ul>
-        <p class="work-excerpt">Real-time grass in Vulkan. A compute shader simulates and culls every blade; with 32,768 blades, culling lifts the frame rate from 70 to 228 fps.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <div class="feat-text">
+          <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+          <h3><a href="works/vulkan-grass-rendering/">Vulkan Grass Rendering</a></h3>
+          <p class="work-excerpt">Real-time grass in Vulkan. A compute shader simulates and culls every blade; with 32,768 blades, culling lifts the frame rate from 70 to 228 fps.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>Vulkan</li><li>GLSL</li></ul>
+        </div>
       </li>
-      <li class="work" data-cats="rendering">
+      <li class="work feat">
         <div class="work-frame"><img class="work-thumb" src="assets/img/cuda-flocking/cover-thumb.webp" srcset="assets/img/cuda-flocking/cover-thumb.webp 900w, assets/img/cuda-flocking/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-cuda-flocking.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
-        <h3><a href="works/cuda-flocking/">CUDA Flocking</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>CUDA</li><li>GPU Programming</li><li>Parallel Computing</li><li>Spatial Data Structures</li><li>Performance Optimization</li></ul>
-        <p class="work-excerpt">Reynolds’ boids simulated on the GPU with CUDA. A coherent uniform grid runs 100,000 boids at 2,677 fps where brute force manages 43.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <div class="feat-text">
+          <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+          <h3><a href="works/cuda-flocking/">CUDA Flocking</a></h3>
+          <p class="work-excerpt">Reynolds’ boids simulated on the GPU with CUDA. A coherent uniform grid runs 100,000 boids at 2,677 fps where brute force manages 43.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>CUDA</li><li>GPU Programming</li></ul>
+        </div>
       </li>
-      <li class="work" data-cats="rendering">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/stream-compaction/cover-thumb.webp" srcset="assets/img/stream-compaction/cover-thumb.webp 900w, assets/img/stream-compaction/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-stream-compaction.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+    </ul>
+    <div class="more-head">
+      <h2 class="section-title">More work</h2>
+      <div class="work-filter" role="group" aria-label="Filter the projects below by category" hidden><button type="button" data-cat="all" aria-pressed="true">All <span>15</span></button><button type="button" data-cat="rendering" aria-pressed="false">Rendering &amp; GPU <span>6</span></button><button type="button" data-cat="tools" aria-pressed="false">Tools <span>3</span></button><button type="button" data-cat="games" aria-pressed="false">Games <span>2</span></button><button type="button" data-cat="animation" aria-pressed="false">Animation <span>4</span></button><button type="button" data-cat="art" aria-pressed="false">Art <span>2</span></button></div>
+    </div>
+    <ul class="mini-grid">
+      <li class="work mini" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/stream-compaction/cover-mini.webp" srcset="assets/img/stream-compaction/cover-mini.webp 360w, assets/img/stream-compaction/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/cuda-stream-compaction/">CUDA Stream Compaction</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>CUDA</li><li>GPU Programming</li><li>Parallel Algorithms</li><li>Performance Profiling</li><li>Nsight Compute</li></ul>
-        <p class="work-excerpt">Scan and stream compaction on the GPU in CUDA, profiled with Nsight Compute. The work-efficient scan handles 134 million elements in 26 ms; the CPU needs 190.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Rendering &amp; GPU</span><span>2024</span></p>
       </li>
-      <li class="work" data-cats="rendering">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/physically-based-shaders/cover-thumb.webp" srcset="assets/img/physically-based-shaders/cover-thumb.webp 900w, assets/img/physically-based-shaders/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-physically-based-shaders.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2023</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/physically-based-shaders/cover-mini.webp" srcset="assets/img/physically-based-shaders/cover-mini.webp 360w, assets/img/physically-based-shaders/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/physically-based-shaders/">Physically-Based Shaders</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>OpenGL</li><li>GLSL</li><li>PBR</li><li>Image-Based Lighting</li><li>Qt</li></ul>
-        <p class="work-excerpt">Physically based shading in OpenGL: a Cook-Torrance BRDF with image-based lighting, plus metallic, roughness, normal-map and displacement controls.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Rendering &amp; GPU</span><span>2023</span></p>
       </li>
-      <li class="work" data-cats="games">
-        <div class="work-frame full"><img class="work-thumb" src="assets/img/mini-minecraft/cover-thumb.webp" srcset="assets/img/mini-minecraft/cover-thumb.webp 900w, assets/img/mini-minecraft/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-mini-minecraft.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2023</span><span>Team project</span></p>
+      <li class="work mini" data-cats="games">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/mini-minecraft/cover-mini.webp" srcset="assets/img/mini-minecraft/cover-mini.webp 360w, assets/img/mini-minecraft/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/mini-minecraft/">Mini Minecraft</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Games</li><li>C++</li><li>OpenGL</li><li>GLSL</li><li>Qt</li><li>Procedural Generation</li><li>Game Development</li></ul>
-        <p class="work-excerpt">A Minecraft-like game in C++ and OpenGL with no game engine. I built the procedural terrain, the biomes, texture animation and shape-grammar buildings.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Games</span><span>2023</span></p>
       </li>
-      <li class="work" data-cats="rendering">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/monte-carlo-path-tracer/cover-thumb.webp" srcset="assets/img/monte-carlo-path-tracer/cover-thumb.webp 900w, assets/img/monte-carlo-path-tracer/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-monte-carlo-path-tracer.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="art">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/virtual-subway/cover-mini.webp" srcset="assets/img/virtual-subway/cover-mini.webp 360w, assets/img/virtual-subway/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
+        <h3><a href="works/virtual-subway/">Virtual Subway</a></h3>
+        <p class="work-meta"><span>Art</span><span>2025</span></p>
+      </li>
+      <li class="work mini" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/monte-carlo-path-tracer/cover-mini.webp" srcset="assets/img/monte-carlo-path-tracer/cover-mini.webp 360w, assets/img/monte-carlo-path-tracer/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/monte-carlo-path-tracer/">Monte Carlo Path Tracer</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>GLSL</li><li>OpenGL</li><li>Path Tracing</li><li>Multiple Importance Sampling</li><li>BSDF</li></ul>
-        <p class="work-excerpt">A Monte Carlo path tracer in C++ and GLSL with naive, direct-lighting and multiple-importance-sampling integrators, and BRDF / BTDF materials with Fresnel.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Rendering &amp; GPU</span><span>2024</span></p>
       </li>
-      <li class="work" data-cats="rendering">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/glsl-shaders/cover-thumb.webp" srcset="assets/img/glsl-shaders/cover-thumb.webp 900w, assets/img/glsl-shaders/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-glsl-shaders.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2023</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/glsl-shaders/cover-mini.webp" srcset="assets/img/glsl-shaders/cover-mini.webp 360w, assets/img/glsl-shaders/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/glsl-shaders/">GLSL Shaders</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>GLSL</li><li>OpenGL</li><li>C++</li><li>Shader Programming</li><li>Post-Processing</li></ul>
-        <p class="work-excerpt">Vertex and fragment shaders for OpenGL: Blinn-Phong lighting, matcaps, vertex deformation, and post-process effects such as bloom, blur, Sobel edges and Worley noise.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Rendering &amp; GPU</span><span>2023</span></p>
       </li>
-      <li class="work" data-cats="rendering">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/procedural-fireball/cover-thumb.webp" srcset="assets/img/procedural-fireball/cover-thumb.webp 900w, assets/img/procedural-fireball/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-procedural-fireball.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/procedural-fireball/cover-mini.webp" srcset="assets/img/procedural-fireball/cover-mini.webp 360w, assets/img/procedural-fireball/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/procedural-fireball/">Procedural Fireball</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>WebGL</li><li>GLSL</li><li>TypeScript</li><li>Procedural Graphics</li><li>Shader Programming</li><li>Noise Functions</li></ul>
-        <p class="work-excerpt">A WebGL fireball shaped by 3D Perlin noise and FBM, with live controls for colour, amplitude and frequency. It runs in the browser.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Rendering &amp; GPU</span><span>2024</span></p>
       </li>
-      <li class="work" data-cats="rendering">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/unity-stylization/cover-thumb.webp" srcset="assets/img/unity-stylization/cover-thumb.webp 900w, assets/img/unity-stylization/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-unity-stylization.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/unity-stylization/cover-mini.webp" srcset="assets/img/unity-stylization/cover-mini.webp 360w, assets/img/unity-stylization/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/unity-stylized-scene/">Stylized 3D Scene in Unity</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>Unity</li><li>Shader Graph</li><li>C#</li><li>Non-Photorealistic Rendering</li><li>Post-Processing</li><li>Technical Art</li></ul>
-        <p class="work-excerpt">A stylized real-time scene in Unity after concept art from the game GRIS: rim lighting, textured shadows, animated colours, Sobel outlines and ACES tone mapping.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Rendering &amp; GPU</span><span>2024</span></p>
       </li>
-      <li class="work" data-cats="tools">
-        <div class="work-frame full"><img class="work-thumb" src="assets/img/tree-creator/cover-thumb.webp" srcset="assets/img/tree-creator/cover-thumb.webp 900w, assets/img/tree-creator/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-tree-creator.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="tools">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/tree-creator/cover-mini.webp" srcset="assets/img/tree-creator/cover-mini.webp 360w, assets/img/tree-creator/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/tree-creator-plugin-for-maya-houdini/">Tree Creator – Plugin for Maya &amp; Houdini</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Tools</li><li>C++</li><li>Python</li><li>Maya API</li><li>Houdini HDK</li><li>L-System</li><li>Plugin Development</li></ul>
-        <p class="work-excerpt">Two plugins, one for Maya and one for Houdini, that grow fractal plants from an L-system grammar the user writes.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Tools</span><span>2024</span></p>
       </li>
-      <li class="work" data-cats="animation tools">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/houdini-procedural/cover-thumb.webp" srcset="assets/img/houdini-procedural/cover-thumb.webp 900w, assets/img/houdini-procedural/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-houdini-procedural.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="animation tools">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/houdini-procedural/cover-mini.webp" srcset="assets/img/houdini-procedural/cover-mini.webp 360w, assets/img/houdini-procedural/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/houdini-procedural-modeling/">Procedural Jellyfish and Buildings in Houdini</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Animation</li><li class="cat">Tools</li><li>Houdini</li><li>Procedural Modeling</li><li>Vellum Simulation</li><li>Houdini Digital Asset</li><li>Technical Art</li></ul>
-        <p class="work-excerpt">A jellyfish modelled and animated procedurally in Houdini, and a digital asset that generates multi-floor buildings with adjustable windows, doors and balconies.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Animation</span><span>2024</span></p>
       </li>
-      <li class="work" data-cats="animation tools">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/animation-toolkit/cover-thumb.webp" srcset="assets/img/animation-toolkit/cover-thumb.webp 900w, assets/img/animation-toolkit/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-animation-toolkit.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="animation tools">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/animation-toolkit/cover-mini.webp" srcset="assets/img/animation-toolkit/cover-mini.webp 360w, assets/img/animation-toolkit/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/animation-toolkit/">Animation Toolkit</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Animation</li><li class="cat">Tools</li><li>Computer Animation</li><li>Inverse Kinematics</li><li>Particle Systems</li><li>Behavioral Animation</li><li>Spline Curves</li></ul>
-        <p class="work-excerpt">An interactive animation toolkit: curve and rotation editors, forward and inverse kinematics, particle systems with fireworks, and behavioural animation.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Animation</span><span>2024</span></p>
       </li>
-      <li class="work" data-cats="games">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/gem-match-game/cover-thumb.webp" srcset="assets/img/gem-match-game/cover-thumb.webp 900w, assets/img/gem-match-game/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-gem-match-game.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2021</span><span>Team project</span></p>
+      <li class="work mini" data-cats="games">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/gem-match-game/cover-mini.webp" srcset="assets/img/gem-match-game/cover-mini.webp 360w, assets/img/gem-match-game/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/gem-match-game/">Gem Match Game</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Games</li><li>C++</li><li>Qt</li><li>Easy2D</li><li>Game Development</li></ul>
-        <p class="work-excerpt">A classic gem puzzle game in C++ with Qt Widgets and the Easy2D engine. I wrote the client logic and the gem animations.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Games</span><span>2021</span></p>
       </li>
-      <li class="work" data-cats="art">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/maya-3d-scene-modeling/cover-thumb.webp" srcset="assets/img/maya-3d-scene-modeling/cover-thumb.webp 900w, assets/img/maya-3d-scene-modeling/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-maya-3d-scene-modeling.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2023</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="art">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/maya-3d-scene-modeling/cover-mini.webp" srcset="assets/img/maya-3d-scene-modeling/cover-mini.webp 360w, assets/img/maya-3d-scene-modeling/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/maya-3d-scene-modeling-project/">Maya 3D Scene Modeling Project</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Art</li><li>Maya</li><li>3D Modeling</li><li>Texturing</li><li>Lighting</li></ul>
-        <p class="work-excerpt">A bedroom modelled, textured and lit in Maya 2024.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Art</span><span>2023</span></p>
       </li>
-      <li class="work" data-cats="animation">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/motion-capture/cover-thumb.webp" srcset="assets/img/motion-capture/cover-thumb.webp 900w, assets/img/motion-capture/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-motion-capture.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2023</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="animation">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/motion-capture/cover-mini.webp" srcset="assets/img/motion-capture/cover-mini.webp 360w, assets/img/motion-capture/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/motion-capture/">Motion Capture</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Animation</li><li>Motion Capture</li><li>MotionBuilder</li><li>Character Animation</li></ul>
-        <p class="work-excerpt">Motion capture recorded at UPenn’s SIG Lab and finished in MotionBuilder: three actions cleaned up and blended into one animation.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Animation</span><span>2023</span></p>
       </li>
-      <li class="work" data-cats="animation">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/houdini-fireworks/cover-thumb.webp" srcset="assets/img/houdini-fireworks/cover-thumb.webp 900w, assets/img/houdini-fireworks/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-houdini-fireworks.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
-        <p class="work-meta"><span>2023</span><span>Individual project</span></p>
+      <li class="work mini" data-cats="animation">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/houdini-fireworks/cover-mini.webp" srcset="assets/img/houdini-fireworks/cover-mini.webp 360w, assets/img/houdini-fireworks/cover-thumb.webp 900w" sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="1500" height="1000" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/houdini-based-fireworks-simulation/">Houdini-based Fireworks Simulation</a></h3>
-        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Animation</li><li>Houdini</li><li>Particle Simulation</li><li>VFX</li></ul>
-        <p class="work-excerpt">A fireworks physics simulation in Houdini: particle simulations shaped by bounce and wind, attractive, repulsive and interparticle forces.</p>
-        <span class="button" aria-hidden="true">Read more</span>
+        <p class="work-meta"><span>Animation</span><span>2023</span></p>
       </li>
     </ul>
   </div>
@@ -229,14 +200,10 @@
       </ul>
     </div>
     <div class="about-main">
-      <p class="eyebrow">About me</p>
-      <h2>Jichu Mao</h2>
-      <p>Hi! I’m Jichu! I am really glad that you have come to my website!</p>
-      <p>I’m a <strong>Graphics Performance Engineer</strong> at <strong>TikTok</strong>, optimizing its real-time effect rendering engine. I graduated from the University of Pennsylvania (UPenn) in <strong>May 2026</strong> with a master’s in <strong>Computer Science &amp; Computer Graphics</strong>.</p>
-      <p>Before that, I interned at TikTok, <a href="https://www.infoldgames.com/en/home">Infold Games</a>, <a href="https://www.apple.com/">Apple Inc.</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a>, and was a teaching assistant for UPenn’s computer graphics courses. During my studies in Software Engineering and Computer Graphics, I designed &amp; developed various interesting games and software toolkits.</p>
-      <p>I have shared my previous works here, and I will be really excited if you like it! &lt;3</p>
-      <p>Away from the GPU I take photographs: landscapes, cities after dark and the odd portrait. <a href="photography/">See the photographs</a>.</p>
-      <a class="button-fill" href="about/">Read more</a>
+      <h2>About</h2>
+      <p>I’m a <strong>Graphics Performance Engineer</strong> at <strong>TikTok</strong>, working on the real-time effect rendering engine. I hold a master’s in Computer Science &amp; Computer Graphics from the University of Pennsylvania (May 2026).</p>
+      <p>Before that I interned at TikTok, <a href="https://www.infoldgames.com/en/home">Infold Games</a>, <a href="https://www.apple.com/">Apple</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a>, and was a teaching assistant for Penn’s computer graphics courses. Away from the GPU I take <a href="photography/">photographs</a>.</p>
+      <p class="about-actions"><a class="button-fill" href="about/">More about me</a><a class="button" href="assets/Jichu-Mao-Resume.pdf">Résumé (PDF)</a></p>
     </div>
   </div>
 </section>
@@ -258,8 +225,8 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="assets/js/hero.js?v=11" defer></script>
-<script src="assets/js/works.js?v=11" defer></script>
-<script src="assets/js/previews.js?v=11" defer></script>
+<script src="assets/js/hero.js?v=12" defer></script>
+<script src="assets/js/works.js?v=12" defer></script>
+<script src="assets/js/previews.js?v=12" defer></script>
 </body>
 </html>

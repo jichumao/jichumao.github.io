@@ -7,8 +7,15 @@ Everything editable is in this file: SERIES (order, titles, rows), HOME_ROWS,
 SLIDES, SUBJECTS, PLACE and ALT (one description per photograph). tools/photos.json holds what was measured
 from the files (pixel sizes, placeholder colour, camera settings).
 The stylesheet and the viewer are hand-written: photography/assets/.
+
+The section is written twice: in English at photography/ and in Chinese at photography/zh/.
+Both editions share the photographs, the stylesheet and the scripts. The Chinese text is in
+tools/photography_zh.py; anything missing there appears in English and is listed when the build runs.
 """
 import html, json, os, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from photography_zh import ZH, ALT_ZH
 
 SITE = "https://jichu.art"
 EMAIL = "maojichu@gmail.com"
@@ -16,12 +23,48 @@ E = html.escape
 HERE = os.path.dirname(os.path.abspath(__file__))
 P = json.load(open(os.path.join(HERE, "photos.json")))
 
+LANG = "en"          # the edition being written; build() switches it
+ANALYTICS = ""       # the analytics tag for <head>, or nothing; build() sets it
+MISSING = set()      # English strings that had no Chinese when the Chinese edition was built
+MONTHS = "January February March April May June July August September October November December".split()
+
+
+def T(s):
+    """A piece of text in the edition being written: as it is for English, looked up in photography_zh.py for Chinese."""
+    if LANG == "en" or not s:
+        return s
+    if s not in ZH:
+        MISSING.add(s)
+    return ZH.get(s, s)
+
+
+def alt_text(n):
+    if LANG == "zh":
+        if n not in ALT_ZH:
+            MISSING.add(f"ALT_ZH[{n}]")
+        return ALT_ZH.get(n) or ALT.get(n, "")
+    return ALT.get(n, "")
+
+
+def when(s):
+    """'July 2025' as it is, or as '2025 年 7 月' in the Chinese edition."""
+    w = s["when"]
+    if LANG == "en" or not w:
+        return w
+    parts = w.split()
+    return f"{parts[1]} 年 {MONTHS.index(parts[0]) + 1} 月" if len(parts) == 2 else f"{w} 年"
+
+
+def comma():
+    return ", " if LANG == "en" else "，"
+
 # One entry per series, in the order they appear on the index page.
 #   rows   the sequence. Each inner list is one row on a wide screen; on a
 #          phone held upright the same order runs top to bottom.
 #   cover  the photograph used for the tile on the index page.
 #   focus  optional. Where to hold the cover when a tile has to crop it
 #          ("More series" at the foot of a series page), as a CSS position.
+#   link   optional. (text, page on the main site) shown under the note.
 SERIES = [
     dict(slug="above-the-fog", title="Above the Fog", where="Ridge Trailhead, California", when="July 2025",
          note="An evening on a ridge trail while the marine layer filled the valleys below.",
@@ -55,7 +98,7 @@ SERIES = [
          rows=[[71], [73, 74], [72], [77, 79], [76], [68, 81], [80]], cover=80),
     dict(slug="subway", title="Subway", where="", when="April 2025",
          note="A subway car I built in Unreal Engine, photographed off a 4K monitor with a Canon 5D Mark IV, a 50 mm lens and a polarising filter, then finished to take the digital edge off. Final project for a photography class.",
-         rows=[[398], [399, 397], [391], [393, 396], [394, 392], [395, 400]], cover=398),
+         rows=[[398], [399, 397], [391], [393, 396], [394, 392], [395, 400]], cover=398, link=("How it was made", "works/virtual-subway/")),
     dict(slug="cherry-blossom", title="Cherry Blossom", where="Philadelphia", when="March 2026",
          note="The spring festival: blossom overhead, drums on the stage.",
          rows=[[173, 165, 171], [168, 172]], cover=165),
@@ -348,16 +391,16 @@ SERIES_OF = {n: s for s in SERIES for n in ids(s)}
 
 
 def meta_line(s):
-    return ", ".join(x for x in (s["where"], s["when"]) if x)
+    return comma().join(x for x in (T(s["where"]), when(s)) if x)
 
 
 def count(n):
-    return f"{n} photographs"
+    return f"{n} photographs" if LANG == "en" else f"{n} 张照片"
 
 
 def place(n):
     """Caption for one photograph: the exact place if known, else where its series was made."""
-    return PLACE.get(n) or SERIES_OF[n]["where"]
+    return T(PLACE.get(n) or SERIES_OF[n]["where"])
 
 
 def srcset(n, img):
@@ -369,7 +412,7 @@ def img_tag(n, img, sizes, *, eager=False, alt=None):
     k = p["files"][0][0]
     load = ' fetchpriority="high"' if eager else ' loading="lazy" decoding="async"'
     return (f'<img src="{img}{n:03d}-{k}.webp" srcset="{srcset(n, img)}" sizes="{sizes}" width="{p["w"]}" height="{p["h"]}" '
-            f'alt="{E(ALT.get(n, "") if alt is None else alt)}"{load}>')
+            f'alt="{E(alt_text(n) if alt is None else alt)}"{load}>')
 
 
 def share(a, total):
@@ -385,8 +428,8 @@ def row_html(row, img, *, eager=False, with_series=False):
         st = f' data-settings="{E(p["settings"])}"' if p["settings"] else ""
         cap = place(n)
         if with_series:
-            title = SERIES_OF[n]["title"]
-            cap = title if not cap or cap == title else f"{title}, {cap}"
+            title = T(SERIES_OF[n]["title"])
+            cap = title if not cap or cap == title else f"{title}{comma()}{cap}"
         cp = f' data-cap="{E(cap)}"' if cap else ""
         cells.append(f'<a class="ph" href="{img}{n:03d}-{big}.webp" style="--ar:{ar(n):.4f};--c:{p["color"]}" '
                      f'data-w="{p["w"]}" data-h="{p["h"]}" data-srcset="{srcset(n, img)}"{st}{cp}>'
@@ -414,7 +457,7 @@ def auto_rows(photos, target=2.7, most=4.3):
 def tile(s, home, img, total, *, fixed=False):
     n = s["cover"]
     meta = meta_line(s)
-    text = (f'<span class="tile-text"><span class="tile-title">{E(s["title"])}</span>'
+    text = (f'<span class="tile-text"><span class="tile-title">{E(T(s["title"]))}</span>'
             f'<span class="tile-meta">{E(meta) + "<br>" if meta else ""}{count(len(ids(s)))}</span></span>')
     sizes = "(max-width: 760px) and (orientation: portrait) 100vw, 50vw" if fixed else share(ar(n), total)
     pos = f';--pos:{s["focus"]}' if fixed and s.get("focus") else ""
@@ -424,26 +467,42 @@ def tile(s, home, img, total, *, fixed=False):
 
 def subjects_nav(home, current=""):
     cur = ' aria-current="page"'
-    links = [f'<a href="{home}all/"{cur if current == "all" else ""}>All<sup>{len(ORDER)}</sup></a>']
-    links += [f'<a href="{home}{g["slug"]}/"{cur if current == g["slug"] else ""}>{E(g["title"])}<sup>{len(g["photos"])}</sup></a>' for g in SUBJECTS]
-    return f'<nav class="subjects" id="subjects" aria-label="Subjects"><span class="subjects-label">By subject</span>{"".join(links)}</nav>'
+    links = [f'<a href="{home}all/"{cur if current == "all" else ""}>{T("All")}<sup>{len(ORDER)}</sup></a>']
+    links += [f'<a href="{home}{g["slug"]}/"{cur if current == g["slug"] else ""}>{E(T(g["title"]))}<sup>{len(g["photos"])}</sup></a>' for g in SUBJECTS]
+    return f'<nav class="subjects" id="subjects" aria-label="{T("Subjects")}"><span class="subjects-label">{T("By subject")}</span>{"".join(links)}</nav>'
 
 
-def page(*, title, desc, path, home, body, og, v, series="", scripts=()):
-    site = home + "../"
+def base(rel):
+    """From a page to photography/ itself, where img/ and assets/ are. `rel` is the page's place in its edition: "" or "macau/"."""
+    return ("../" if rel else "") + ("../" if LANG == "zh" else "")
+
+
+def page(*, title, desc, rel, body, og, v, series="", scripts=()):
+    home = "../" if rel else ""            # the index page of this edition
+    root = base(rel)                       # photography/
+    site = root + "../"                    # the main site
+    zh = LANG == "zh"
+    path = f"photography/{'zh/' if zh else ''}{rel}"
+    other = f'{root}{rel}' if zh else f'{root}zh/{rel}'
+    switch = (f'<a class="lang" href="{other or "./"}" lang="en" hreflang="en" aria-label="English edition">EN</a>' if zh
+              else f'<a class="lang" href="{other}" lang="zh-Hans" hreflang="zh-Hans" aria-label="中文版">中文</a>')
     data = f' data-series="{E(series)}"' if series else ""
-    js = "".join(f'\n<script src="{home}assets/{s}?v={v}" defer></script>' for s in scripts)
-    over = "" if home else " over"
+    js = "".join(f'\n<script src="{root}assets/{s}?v={v}" defer></script>' for s in scripts)
+    over = "" if rel else " over"
     return f"""<!doctype html>
-<html lang="en">
+<html lang="{"zh-Hans" if zh else "en"}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{E(title)}</title>
 <meta name="description" content="{E(desc)}">
 <link rel="canonical" href="{SITE}/{path}">
+<link rel="alternate" hreflang="en" href="{SITE}/photography/{rel}">
+<link rel="alternate" hreflang="zh-Hans" href="{SITE}/photography/zh/{rel}">
+<link rel="alternate" hreflang="x-default" href="{SITE}/photography/{rel}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jichu · Art">
+<meta property="og:locale" content="{"zh_CN" if zh else "en_US"}">
 <meta property="og:title" content="{E(title)}">
 <meta property="og:description" content="{E(desc)}">
 <meta property="og:url" content="{SITE}/{path}">
@@ -454,24 +513,25 @@ def page(*, title, desc, path, home, body, og, v, series="", scripts=()):
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="{site}assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="{site}assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{home}assets/photo.css?v={v}">
+<link rel="stylesheet" href="{root}assets/photo.css?v={v}">{ANALYTICS}
 </head>
 <body{data}>
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">{T("Skip to content")}</a>
 <header class="top{over}">
   <a class="name" href="{home or "./"}">Jichu Mao</a>
   <nav aria-label="Main">
-    <a href="{home}#series">Series</a>
-    <a href="{home}#subjects">Subjects</a>
-    <a class="opt" href="{home}#about">About</a>
-    <a href="{site}">Graphics<span class="wide"> work</span></a>
+    <a href="{home}#series">{T("Series")}</a>
+    <a class="opt2" href="{home}#subjects">{T("Subjects")}</a>
+    <a class="opt" href="{home}#about">{T("About")}</a>
+    <a href="{site}">{T("Graphics")}<span class="wide">{T(" work")}</span></a>
+    {switch}
   </nav>
 </header>
 <main id="main">
 {body}
 </main>
 <footer class="foot">
-  <p>© Jichu Mao. All rights reserved. Please ask before using a photograph.</p>
+  <p>{T("© Jichu Mao. All rights reserved. Please ask before using a photograph.")}</p>
   <p><a href="{site}">jichu.art</a></p>
 </footer>{js}
 </body>
@@ -480,7 +540,8 @@ def page(*, title, desc, path, home, body, og, v, series="", scripts=()):
 
 
 def build_home(v):
-    img = "img/"
+    img = base("") + "img/"
+    site = base("") + "../"
     slides, dots = [], []
     for i, (wide, tall, slug) in enumerate(SLIDES):
         s = BY_SLUG[slug]
@@ -492,18 +553,18 @@ def build_home(v):
         slides.append(f"""    <a class="slide{" on" if first else ""}" href="{slug}/"{hidden}>
       <picture>
         <source media="(max-aspect-ratio: 4/5)" {a}="{srcset(tall, img)}" sizes="118vw" width="{t["w"]}" height="{t["h"]}">
-        <img {src}{a}="{srcset(wide, img)}" sizes="100vw" width="{w["w"]}" height="{w["h"]}" alt="{E(ALT[wide])}"{' fetchpriority="high"' if first else ""}>
+        <img {src}{a}="{srcset(wide, img)}" sizes="100vw" width="{w["w"]}" height="{w["h"]}" alt="{E(alt_text(wide))}"{' fetchpriority="high"' if first else ""}>
       </picture>
-      <span class="slide-cap"><b>{E(s["title"])}</b><span>{E(meta_line(s))}<br>{count(len(ids(s)))}</span></span>
+      <span class="slide-cap"><b>{E(T(s["title"]))}</b><span>{E(meta_line(s))}<br>{count(len(ids(s)))}</span></span>
     </a>""")
-        dots.append(f'<button class="dot" type="button" aria-label="Show {E(s["title"])}"{" aria-current=" + chr(34) + "true" + chr(34) if first else ""}></button>')
-    hero = f"""<section class="hero" aria-roledescription="carousel" aria-label="Selected photographs">
+        dots.append(f'<button class="dot" type="button" aria-label="{E(("Show " + s["title"]) if LANG == "en" else ("显示" + T(s["title"])))}"{" aria-current=" + chr(34) + "true" + chr(34) if first else ""}></button>')
+    hero = f"""<section class="hero" aria-roledescription="carousel" aria-label="{T("Selected photographs")}">
   <div class="slides">
 {chr(10).join(slides)}
   </div>
-  <div class="hero-text"><h1>Photographs</h1><p>Jichu Mao, 2025 to 2026</p></div>
+  <div class="hero-text"><h1>{T("Photographs")}</h1><p>{T("Jichu Mao, 2025 to 2026")}</p></div>
   <div class="hero-ctl">
-    <button class="hero-pause" type="button" aria-label="Pause slideshow" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M8 5v14M16 5v14"/><path class="i-play" d="M8 5l11 7-11 7z"/></svg></button>
+    <button class="hero-pause" type="button" aria-label="{T("Pause slideshow")}" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M8 5v14M16 5v14"/><path class="i-play" d="M8 5l11 7-11 7z"/></svg></button>
     {"".join(dots)}
   </div>
 </section>
@@ -515,27 +576,36 @@ def build_home(v):
         ss = [BY_SLUG[x] for x in row]
         total = sum(ar(s["cover"]) for s in ss)
         rows.append(f'<div class="row" style="--sum:{total:.4f};--n:{len(ss)}">' + "".join(tile(s, "", img, total) for s in ss) + "</div>")
-    about = "".join(f"<p>{E(x)}</p>" for x in ABOUT)
+    about = "".join(f"<p>{E(T(x))}</p>" for x in ABOUT)
     body = hero + f"""{subjects_nav("")}
-<section class="series-index rows" id="series" aria-label="Series">
-<h2 class="hide">Series</h2>
+<section class="series-index rows" id="series" aria-label="{T("Series")}">
+<h2 class="hide">{T("Series")}</h2>
 {chr(10).join(rows)}
 </section>
 <section class="about" id="about">
-  <h2>About</h2>
-  <div>{about}<p><a href="mailto:{EMAIL}">{EMAIL}</a><br><a href="../">Rendering and graphics work</a></p></div>
+  <h2>{T("About")}</h2>
+  <div>{about}<p><a href="mailto:{EMAIL}">{EMAIL}</a><br><a href="{site}">{T("Rendering and graphics work")}</a></p></div>
 </section>"""
-    return page(title="Photographs – Jichu Mao", path="photography/", home="", body=body, og="index", v=v, scripts=("hero.js",),
-                desc=f"Photographs by Jichu Mao, 2025 to 2026: {len(ORDER)} pictures in {len(SERIES)} series, from the California coast to Macau at night.")
+    if LANG == "zh":
+        title = "摄影 – Jichu Mao"
+        desc = f"Jichu Mao 的摄影作品，2025–2026：{len(ORDER)} 张照片，{len(SERIES)} 个系列，从加州海岸到夜色中的澳门。"
+    else:
+        title = "Photographs – Jichu Mao"
+        desc = f"Photographs by Jichu Mao, 2025 to 2026: {len(ORDER)} pictures in {len(SERIES)} series, from the California coast to Macau at night."
+    return page(title=title, rel="", body=body, og="index", v=v, scripts=("hero.js",), desc=desc)
 
 
 def build_series(i, v):
     s = SERIES[i]
-    img, home = "../img/", "../"
+    rel = s["slug"] + "/"
+    img, home, site = base(rel) + "img/", "../", base(rel) + "../"
     meta = meta_line(s)
-    panel = (f'<div class="panel"><h1>{E(s["title"])}</h1>'
+    title, note = T(s["title"]), T(s["note"])
+    link = f'<p class="how"><a href="{site}{s["link"][1]}">{E(T(s["link"][0]))}</a></p>' if s.get("link") else ""
+    panel = (f'<div class="panel"><h1>{E(title)}</h1>'
              + (f'<p class="where">{E(meta)}</p>' if meta else "")
-             + (f'<p>{E(s["note"])}</p>' if s["note"] else "")
+             + (f'<p>{E(note)}</p>' if note else "")
+             + link
              + f'<p class="count">{count(len(ids(s)))}</p></div>')
     lead = f'<div class="lead">{panel}{row_html(s["rows"][0], img, eager=True)}</div>'
     rest = "\n".join(row_html(r, img) for r in s["rows"][1:])
@@ -546,33 +616,47 @@ def build_series(i, v):
 {rest}
 </div>
 <section class="more">
-  <h2>More series</h2>
+  <h2>{T("More series")}</h2>
   <div class="row">{more}</div>
 </section>"""
-    desc = (s["note"] + " " if s["note"] else "") + f"{count(len(ids(s))).capitalize()} by Jichu Mao" + (f", {meta}." if meta else ".")
-    return page(title=f'{s["title"]} – Photographs by Jichu Mao', path=f'photography/{s["slug"]}/', home=home, body=body,
-                og=s["slug"], v=v, series=s["title"], scripts=("viewer.js",), desc=desc)
+    if LANG == "zh":
+        desc = note + f"{count(len(ids(s)))}，Jichu Mao 摄" + (f"，{meta}。" if meta else "。")
+        full = f"{title} – Jichu Mao 摄影"
+    else:
+        desc = (note + " " if note else "") + f"{count(len(ids(s))).capitalize()} by Jichu Mao" + (f", {meta}." if meta else ".")
+        full = f"{title} – Photographs by Jichu Mao"
+    return page(title=full, rel=rel, body=body, og=s["slug"], v=v, series=title, scripts=("viewer.js",), desc=desc)
 
 
 def build_subject(slug, title, photos, v):
     """A subject page: every photograph of one kind, across all series, packed into rows automatically."""
-    img, home = "../img/", "../"
+    rel = slug + "/"
+    img, home = base(rel) + "img/", "../"
+    title = T(title)
     photos = sorted(photos, key=ORDER.index)
     rows = auto_rows(photos)
     names = []
     for n in photos:
-        t = SERIES_OF[n]["title"]
+        t = T(SERIES_OF[n]["title"])
         if t not in names:
             names.append(t)
-    head = (f'<div class="head"><h1>{E(title)}</h1><p class="count">{count(len(photos))} from {len(names)} series</p></div>'
-            + subjects_nav(home, slug))
+    if LANG == "zh":
+        sub = f"{count(len(photos))}，来自 {len(names)} 个系列"
+        desc = f"{title}：{count(len(photos))}，Jichu Mao 摄，来自{'、'.join(names[:6])}{'等系列' if len(names) > 6 else ''}。"
+        full = f"{title} – Jichu Mao 摄影"
+    else:
+        sub = f"{count(len(photos))} from {len(names)} series"
+        desc = f"{title}: {count(len(photos))} by Jichu Mao, from {', '.join(names[:6])}{' and more' if len(names) > 6 else ''}."
+        full = f"{title} – Photographs by Jichu Mao"
+    head = f'<div class="head"><h1>{E(title)}</h1><p class="count">{sub}</p></div>' + subjects_nav(home, slug)
     body = head + '\n<div class="rows grid">\n' + "\n".join(row_html(r, img, eager=i == 0, with_series=True) for i, r in enumerate(rows)) + "\n</div>"
-    return page(title=f"{title} – Photographs by Jichu Mao", path=f"photography/{slug}/", home=home, body=body, og=slug, v=v,
-                series=title, scripts=("viewer.js",), desc=f"{title}: {count(len(photos))} by Jichu Mao, from {', '.join(names[:6])}{' and more' if len(names) > 6 else ''}.")
+    return page(title=full, rel=rel, body=body, og=slug, v=v, series=title, scripts=("viewer.js",), desc=desc)
 
 
-def build(root, v="1", strict=True):
-    """Writes the pages and returns their site-relative paths (for the sitemap)."""
+def build(root, v="1", strict=True, analytics=""):
+    """Writes both editions and returns the pages' site-relative paths (for the sitemap)."""
+    global LANG, ANALYTICS
+    ANALYTICS = analytics
     assert len(ORDER) == len(set(ORDER)), "a photograph is used twice"
     tagged = {n for g in SUBJECTS for n in g["photos"]}
     assert tagged <= set(ORDER), f"SUBJECTS lists photographs that are in no series: {sorted(tagged - set(ORDER))}"
@@ -580,21 +664,30 @@ def build(root, v="1", strict=True):
     assert set(PLACE) <= set(ORDER), f"PLACE names photographs that are in no series: {sorted(set(PLACE) - set(ORDER))}"
     slugs = [s["slug"] for s in SERIES] + [g["slug"] for g in SUBJECTS] + ["all"]
     assert len(slugs) == len(set(slugs)), "a series and a subject share a slug"
+    assert "zh" not in slugs, "'zh' is the address of the Chinese edition"
     if strict:
         missing = [n for n in ORDER if not ALT.get(n)]
         assert not missing, f"no ALT text for {missing}"
-    out = {"photography/index.html": build_home(v)}
-    for i, s in enumerate(SERIES):
-        out[f'photography/{s["slug"]}/index.html'] = build_series(i, v)
-    out["photography/all/index.html"] = build_subject("all", "All photographs", ORDER, v)
-    for g in SUBJECTS:
-        out[f'photography/{g["slug"]}/index.html'] = build_subject(g["slug"], g["title"], g["photos"], v)
+    out, pages = {}, []
+    for LANG, pre in (("en", "photography/"), ("zh", "photography/zh/")):
+        out[pre + "index.html"] = build_home(v)
+        for i, s in enumerate(SERIES):
+            out[f'{pre}{s["slug"]}/index.html'] = build_series(i, v)
+        out[pre + "all/index.html"] = build_subject("all", "All photographs", ORDER, v)
+        for g in SUBJECTS:
+            out[f'{pre}{g["slug"]}/index.html'] = build_subject(g["slug"], g["title"], g["photos"], v)
+        pages += [pre] + [f"{pre}{x}/" for x in slugs]
+    LANG = "en"
     for path, text in out.items():
         full = os.path.join(root, path)
         os.makedirs(os.path.dirname(full), exist_ok=True)
         with open(full, "w", encoding="utf-8", newline="\n") as f:
             f.write(text)
-    return ["photography/"] + [f"photography/{x}/" for x in slugs]
+    if MISSING:
+        print("photography/zh: no Chinese yet for", len(MISSING), "items (shown in English); add them to tools/photography_zh.py:")
+        for x in sorted(MISSING):
+            print("   ", x)
+    return pages
 
 
 if __name__ == "__main__":
