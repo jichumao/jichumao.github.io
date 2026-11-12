@@ -109,6 +109,16 @@ COVERS = {
         (C("grass-closeup.jpg"), (86, 0, 550, 464)),
         (C("grass-lod.jpg"), None),
     ],
+    "cuda-flocking": [
+        (C("flocking-swarm.png"), None),
+        (C("flocking-dense.png"), None),
+        (C("flocking-sparse.png"), None),
+    ],
+    "procedural-fireball": [
+        (C("fireball-spiky.png"), None),
+        (C("fireball-molten.png"), None),
+        (C("fireball-smooth.png"), None),
+    ],
     "mini-minecraft": [
         (S("mini-minecraft", "screenshot-2"), (263, 6, 1628, 1371)),
         (C("minecraft-desert.png"), (0, 0, 480, 480)),

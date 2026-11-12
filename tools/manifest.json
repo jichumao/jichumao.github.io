@@ -27,6 +27,18 @@
   "tw": 800,
   "w": 1015
  },
+ "clip/fireball": {
+  "h": 800,
+  "w": 800
+ },
+ "clip/flocking-dense": {
+  "h": 640,
+  "w": 640
+ },
+ "clip/flocking-swarm": {
+  "h": 640,
+  "w": 640
+ },
  "clip/grass-culling-distance": {
   "h": 464,
   "w": 636
@@ -62,6 +74,41 @@
  "clip/webgpu-moving-lights": {
   "h": 488,
   "w": 622
+ },
+ "cuda-flocking/chart-block-size": {
+  "alpha": false,
+  "h": 824,
+  "th": 753,
+  "tw": 800,
+  "w": 876
+ },
+ "cuda-flocking/chart-boids-1x": {
+  "alpha": false,
+  "h": 610,
+  "th": 556,
+  "tw": 800,
+  "w": 878
+ },
+ "cuda-flocking/chart-boids-2x": {
+  "alpha": false,
+  "h": 764,
+  "th": 699,
+  "tw": 800,
+  "w": 875
+ },
+ "cuda-flocking/chart-visualization": {
+  "alpha": false,
+  "h": 723,
+  "th": 667,
+  "tw": 800,
+  "w": 867
+ },
+ "cuda-flocking/cover": {
+  "alpha": false,
+  "h": 1000,
+  "th": 600,
+  "tw": 900,
+  "w": 1500
  },
  "cuda-path-tracer/aa-off": {
   "alpha": false,
@@ -734,6 +781,13 @@
   "th": 570,
   "tw": 800,
   "w": 1354
+ },
+ "procedural-fireball/cover": {
+  "alpha": false,
+  "h": 1000,
+  "th": 600,
+  "tw": 900,
+  "w": 1500
  },
  "tree-creator/cover": {
   "alpha": false,

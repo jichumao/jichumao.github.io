@@ -10,11 +10,16 @@
       var v = e.target;
       if (e.isIntersecting) {
         var p = v.play();
-        if (p && p.catch) p.catch(function () { v.controls = true; });
+        if (p && p.catch) p.catch(function () { if (!v.classList.contains("work-preview")) v.controls = true; });
       } else {
         v.pause();
       }
     });
   }, { threshold: 0.25 });
-  vids.forEach(function (v) { v.controls = false; io.observe(v); });
+  vids.forEach(function (v) {
+    v.controls = false;
+    // the preview over a project page's cover fades in once it is actually playing
+    v.addEventListener("playing", function () { v.classList.add("on"); });
+    io.observe(v);
+  });
 })();
