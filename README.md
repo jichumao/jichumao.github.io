@@ -11,6 +11,7 @@ works/<project>/index.html    one page per project
 index.php/<old-slug>/         redirects from the old WordPress URLs
 404.html
 assets/css/site.css           all styles
+assets/js/hero.js             home hero: WebGL shader that makes the artwork drift (falls back to the plain image)
 assets/js/lightbox.js         full-size image viewer for galleries
 assets/img/<project>/         images (WebP): name.webp is full size, name-thumb.webp is the thumbnail
 assets/video/                 videos (H.264 MP4, faststart) and their poster images
@@ -38,4 +39,4 @@ assets/fonts/                 Playfair Display and Open Sans (SIL Open Font Lice
 
 ## Custom domain
 
-The domain is set in the repository settings (Settings → Pages → Custom domain), which adds a `CNAME` file to this branch.
+The `CNAME` file holds the custom domain (`jichu.art`). DNS: `@` A records point at GitHub Pages, `www` is a CNAME to `jichumao.github.io`. HTTPS is enforced in Settings → Pages.

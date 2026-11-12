@@ -13,6 +13,7 @@
 <meta property="og:url" content="https://jichu.art/works/physically-based-shaders/">
 <meta property="og:image" content="https://jichu.art/assets/img/physically-based-shaders/cover-thumb.webp">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/css/site.css">
 </head>
@@ -33,113 +34,119 @@
 <main id="main">
 <article class="project wrap">
   <a class="back" href="../../#works">← All works</a>
-  <h1>Physically-Based Shaders</h1>
-  <p class="work-cat">Softwares</p>
-  <div class="prose">
-    <p>Based on the paper <a href="http://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf">“Real Shading in Unreal Engine 4”</a>, the PBR implementation uses the Cook-Torrance model in a physically based rendering pipeline, along with image-based lighting, as well as custom scenes and environment maps.</p>
+  <div class="project-grid">
+    <header class="project-info">
+      <h1>Physically-Based Shaders</h1>
+      <p class="work-cat">Softwares</p>
+      <div class="prose">
+        <p>Based on the paper <a href="http://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf">“Real Shading in Unreal Engine 4”</a>, the PBR implementation uses the Cook-Torrance model in a physically based rendering pipeline, along with image-based lighting, as well as custom scenes and environment maps.</p>
+      </div>
+    </header>
+    <div class="project-media">
+      <h2>Renders (RGB = 1, 1, 1)</h2>
+      <ul class="gallery">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/white-metal0-rough0.webp" data-caption="0 Metallic 0 Roughness"><img src="../../assets/img/physically-based-shaders/white-metal0-rough0-thumb.webp" width="800" height="569" alt="0 Metallic 0 Roughness" loading="lazy" decoding="async"></a>
+          <figcaption>0 Metallic 0 Roughness</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/white-metal1-rough0.webp" data-caption="1 Metallic 0 Roughness"><img src="../../assets/img/physically-based-shaders/white-metal1-rough0-thumb.webp" width="800" height="569" alt="1 Metallic 0 Roughness" loading="lazy" decoding="async"></a>
+          <figcaption>1 Metallic 0 Roughness</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/white-metal1-rough025.webp" data-caption="1 Metallic 0.25 Roughness"><img src="../../assets/img/physically-based-shaders/white-metal1-rough025-thumb.webp" width="800" height="570" alt="1 Metallic 0.25 Roughness" loading="lazy" decoding="async"></a>
+          <figcaption>1 Metallic 0.25 Roughness</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Renders (RGB = 0.5, 0, 0)</h2>
+      <ul class="gallery">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/red-metal0-rough0.webp" data-caption="0 Metallic 0 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal0-rough0-thumb.webp" width="800" height="569" alt="0 Metallic 0 Roughness" loading="lazy" decoding="async"></a>
+          <figcaption>0 Metallic 0 Roughness</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/red-metal1-rough0.webp" data-caption="1 Metallic 0 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal1-rough0-thumb.webp" width="800" height="569" alt="1 Metallic 0 Roughness" loading="lazy" decoding="async"></a>
+          <figcaption>1 Metallic 0 Roughness</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/red-metal1-rough025.webp" data-caption="1 Metallic 0.25 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal1-rough025-thumb.webp" width="800" height="569" alt="1 Metallic 0.25 Roughness" loading="lazy" decoding="async"></a>
+          <figcaption>1 Metallic 0.25 Roughness</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/red-metal1-rough050.webp" data-caption="1 Metallic 0.5 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal1-rough050-thumb.webp" width="800" height="569" alt="1 Metallic 0.5 Roughness" loading="lazy" decoding="async"></a>
+          <figcaption>1 Metallic 0.5 Roughness</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/red-metal1-rough075.webp" data-caption="1 Metallic 0.75 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal1-rough075-thumb.webp" width="800" height="569" alt="1 Metallic 0.75 Roughness" loading="lazy" decoding="async"></a>
+          <figcaption>1 Metallic 0.75 Roughness</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/red-metal1-rough100.webp" data-caption="1 Metallic 1 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal1-rough100-thumb.webp" width="800" height="569" alt="1 Metallic 1 Roughness" loading="lazy" decoding="async"></a>
+          <figcaption>1 Metallic 1 Roughness</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Normal Mapping and Displacement Mapping</h2>
+      <ul class="gallery">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/displacement-000.webp" data-caption="With no Displacement"><img src="../../assets/img/physically-based-shaders/displacement-000-thumb.webp" width="800" height="568" alt="With no Displacement" loading="lazy" decoding="async"></a>
+          <figcaption>With no Displacement</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/displacement-020.webp" data-caption="With 0.20 Displacement"><img src="../../assets/img/physically-based-shaders/displacement-020-thumb.webp" width="800" height="569" alt="With 0.20 Displacement" loading="lazy" decoding="async"></a>
+          <figcaption>With 0.20 Displacement</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/displacement-040.webp" data-caption="With 0.40 Displacement"><img src="../../assets/img/physically-based-shaders/displacement-040-thumb.webp" width="800" height="568" alt="With 0.40 Displacement" loading="lazy" decoding="async"></a>
+          <figcaption>With 0.40 Displacement</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/displacement-100.webp" data-caption="With 1.00 Displacement"><img src="../../assets/img/physically-based-shaders/displacement-100-thumb.webp" width="800" height="569" alt="With 1.00 Displacement" loading="lazy" decoding="async"></a>
+          <figcaption>With 1.00 Displacement</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Other JSON Scenes</h2>
+      <ul class="gallery">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/scene-skull.webp" data-caption="A Skull"><img src="../../assets/img/physically-based-shaders/scene-skull-thumb.webp" width="800" height="569" alt="A Skull" loading="lazy" decoding="async"></a>
+          <figcaption>A Skull</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/physically-based-shaders/scene-gun.webp" data-caption="Gun"><img src="../../assets/img/physically-based-shaders/scene-gun-thumb.webp" width="800" height="569" alt="Gun" loading="lazy" decoding="async"></a>
+          <figcaption>Gun</figcaption>
+          </figure>
+        </li>
+      </ul>
+    </div>
   </div>
-  <h2>Renders (RGB = 1, 1, 1)</h2>
-  <ul class="gallery">
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/white-metal0-rough0.webp" data-caption="0 Metallic 0 Roughness"><img src="../../assets/img/physically-based-shaders/white-metal0-rough0-thumb.webp" width="800" height="569" alt="0 Metallic 0 Roughness" loading="lazy" decoding="async"></a>
-        <figcaption>0 Metallic 0 Roughness</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/white-metal1-rough0.webp" data-caption="1 Metallic 0 Roughness"><img src="../../assets/img/physically-based-shaders/white-metal1-rough0-thumb.webp" width="800" height="569" alt="1 Metallic 0 Roughness" loading="lazy" decoding="async"></a>
-        <figcaption>1 Metallic 0 Roughness</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/white-metal1-rough025.webp" data-caption="1 Metallic 0.25 Roughness"><img src="../../assets/img/physically-based-shaders/white-metal1-rough025-thumb.webp" width="800" height="570" alt="1 Metallic 0.25 Roughness" loading="lazy" decoding="async"></a>
-        <figcaption>1 Metallic 0.25 Roughness</figcaption>
-      </figure>
-    </li>
-  </ul>
-  <h2>Renders (RGB = 0.5, 0, 0)</h2>
-  <ul class="gallery">
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/red-metal0-rough0.webp" data-caption="0 Metallic 0 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal0-rough0-thumb.webp" width="800" height="569" alt="0 Metallic 0 Roughness" loading="lazy" decoding="async"></a>
-        <figcaption>0 Metallic 0 Roughness</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/red-metal1-rough0.webp" data-caption="1 Metallic 0 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal1-rough0-thumb.webp" width="800" height="569" alt="1 Metallic 0 Roughness" loading="lazy" decoding="async"></a>
-        <figcaption>1 Metallic 0 Roughness</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/red-metal1-rough025.webp" data-caption="1 Metallic 0.25 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal1-rough025-thumb.webp" width="800" height="569" alt="1 Metallic 0.25 Roughness" loading="lazy" decoding="async"></a>
-        <figcaption>1 Metallic 0.25 Roughness</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/red-metal1-rough050.webp" data-caption="1 Metallic 0.5 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal1-rough050-thumb.webp" width="800" height="569" alt="1 Metallic 0.5 Roughness" loading="lazy" decoding="async"></a>
-        <figcaption>1 Metallic 0.5 Roughness</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/red-metal1-rough075.webp" data-caption="1 Metallic 0.75 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal1-rough075-thumb.webp" width="800" height="569" alt="1 Metallic 0.75 Roughness" loading="lazy" decoding="async"></a>
-        <figcaption>1 Metallic 0.75 Roughness</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/red-metal1-rough100.webp" data-caption="1 Metallic 1 Roughness"><img src="../../assets/img/physically-based-shaders/red-metal1-rough100-thumb.webp" width="800" height="569" alt="1 Metallic 1 Roughness" loading="lazy" decoding="async"></a>
-        <figcaption>1 Metallic 1 Roughness</figcaption>
-      </figure>
-    </li>
-  </ul>
-  <h2>Normal Mapping and Displacement Mapping</h2>
-  <ul class="gallery">
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/displacement-000.webp" data-caption="With no Displacement"><img src="../../assets/img/physically-based-shaders/displacement-000-thumb.webp" width="800" height="568" alt="With no Displacement" loading="lazy" decoding="async"></a>
-        <figcaption>With no Displacement</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/displacement-020.webp" data-caption="With 0.20 Displacement"><img src="../../assets/img/physically-based-shaders/displacement-020-thumb.webp" width="800" height="569" alt="With 0.20 Displacement" loading="lazy" decoding="async"></a>
-        <figcaption>With 0.20 Displacement</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/displacement-040.webp" data-caption="With 0.40 Displacement"><img src="../../assets/img/physically-based-shaders/displacement-040-thumb.webp" width="800" height="568" alt="With 0.40 Displacement" loading="lazy" decoding="async"></a>
-        <figcaption>With 0.40 Displacement</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/displacement-100.webp" data-caption="With 1.00 Displacement"><img src="../../assets/img/physically-based-shaders/displacement-100-thumb.webp" width="800" height="569" alt="With 1.00 Displacement" loading="lazy" decoding="async"></a>
-        <figcaption>With 1.00 Displacement</figcaption>
-      </figure>
-    </li>
-  </ul>
-  <h2>Other JSON Scenes</h2>
-  <ul class="gallery">
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/scene-skull.webp" data-caption="A Skull"><img src="../../assets/img/physically-based-shaders/scene-skull-thumb.webp" width="800" height="569" alt="A Skull" loading="lazy" decoding="async"></a>
-        <figcaption>A Skull</figcaption>
-      </figure>
-    </li>
-    <li>
-      <figure>
-        <a class="shot" href="../../assets/img/physically-based-shaders/scene-gun.webp" data-caption="Gun"><img src="../../assets/img/physically-based-shaders/scene-gun-thumb.webp" width="800" height="569" alt="Gun" loading="lazy" decoding="async"></a>
-        <figcaption>Gun</figcaption>
-      </figure>
-    </li>
-  </ul>
   <nav class="pager" aria-label="More works">
     <span></span>
     <a class="next" href="../tree-creator-plugin-for-maya-houdini/"><span>Next</span>Tree Creator – Plugin for Maya &amp; Houdini</a>
@@ -148,14 +155,18 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
-    <h2>Contact me</h2>
-    <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+  <div class="contact-band">
+    <div class="wrap">
+      <h2>Contact me</h2>
+      <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="wrap footer-end">
     <ul class="social">
-        <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
-        <li><a href="https://github.com/jichumao">GitHub</a></li>
-        <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
-      </ul>
+      <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
+      <li><a href="https://github.com/jichumao">GitHub</a></li>
+      <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
+    </ul>
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>

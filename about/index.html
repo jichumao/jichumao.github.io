@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About – Jichu · Art</title>
-<meta name="description" content="About Jichu Mao: background, work experience, education and hobbies.">
+<meta name="description" content="About Jichu Mao, Graphics Performance Engineer at TikTok: background, work experience, education and hobbies.">
 <link rel="canonical" href="https://jichu.art/about/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jichu · Art">
 <meta property="og:title" content="About – Jichu · Art">
-<meta property="og:description" content="About Jichu Mao: background, work experience, education and hobbies.">
+<meta property="og:description" content="About Jichu Mao, Graphics Performance Engineer at TikTok: background, work experience, education and hobbies.">
 <meta property="og:url" content="https://jichu.art/about/">
 <meta property="og:image" content="https://jichu.art/assets/img/home/avatar.webp">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/site.css">
 </head>
@@ -33,82 +34,108 @@
 <main id="main">
 <div class="about-page wrap">
   <div class="about-grid">
-    <img class="avatar" src="../assets/img/home/avatar.webp" width="480" height="480" alt="Portrait of Jichu Mao" fetchpriority="high">
-    <div>
-      <h1>Jichu Mao</h1>
+    <div class="about-side">
+      <img class="avatar" src="../assets/img/home/avatar.webp" width="480" height="480" alt="Portrait of Jichu Mao">
       <ul class="social">
-        <li><a href="https://github.com/jichumao">GitHub</a></li>
-        <li><a href="https://www.youtube.com/channel/UCl4oU4bTe93a_MdDr25b59Q">YouTube</a></li>
         <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
+        <li><a href="https://github.com/jichumao">GitHub</a></li>
+        <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
       </ul>
-      <p>Hi! I’m Jichu! I am really glad that you have come to my website!</p>
-      <p>I’m a Graphics Performance Engineer at TikTok. I graduated from the University of Pennsylvania (UPenn) in May 2026, where I studied Computer Graphics and Game Technology (CGGT).</p>
-      <p>I am also an Ex-Intern at Apple and the University of Alberta (UAlberta) focused on software development and 3D model processing.</p>
-      <p>During my studies in Software Engineering and Computer Graphics, I designed &amp; developed various interesting games and software toolkits.</p>
     </div>
-  </div>
-  <div class="cv">
-    <h2>Work Experience</h2>
-    <ul class="cv-list">
-      <li>
-        <span class="cv-org">TikTok</span>
-        <span class="cv-when">07/2026 – Present</span>
-        <span class="cv-role">Graphics Performance Engineer</span>
-      </li>
-      <li>
-        <span class="cv-org">Apple</span>
-        <span class="cv-when">01/2023 – 05/2023</span>
-        <span class="cv-role">Software Engineer Intern</span>
-      </li>
-      <li>
-        <span class="cv-org">University of Alberta</span>
-        <span class="cv-when">07/2022 – 10/2022</span>
-        <span class="cv-role">Software Research Intern</span>
-      </li>
-    </ul>
-    <h2>Education</h2>
-    <ul class="cv-list">
-      <li>
-        <span class="cv-org">University of Pennsylvania</span>
-        <span class="cv-when">08/2023 – 05/2026</span>
-        <span class="cv-role">Master’s in Computer Graphics and Game Technology</span>
-      </li>
-      <li>
-        <span class="cv-org">Beijing Jiaotong University</span>
-        <span class="cv-when">08/2019 – 06/2023</span>
-        <span class="cv-role">Bachelor’s in Software Engineering</span>
-      </li>
-    </ul>
-    <h2>Hobbies</h2>
-    <h3>Video Games:</h3>
-    <ul class="plain">
-      <li>Owns over 700 games on Steam.</li>
-      <li>Enjoys experiencing and collecting a wide variety of games, including: VR and XR games, FPS, Rhythm games, Survival games, Souls-like games, Open-world Role-Playing Games (RPGs).</li>
-    </ul>
-    <h3>Singing:</h3>
-    <ul class="plain">
-      <li>Served as the tenor section leader in the Beijing Jiaotong University Choir.</li>
-      <li>Participated in the National College Students’ Choral Competition and won a second-place award.</li>
-    </ul>
-    <h3>Volunteering:</h3>
-    <ul class="plain">
-      <li>Served as the Deputy Director of the Volunteer Work Department at Beijing Jiaotong University.</li>
-      <li>Organized activities to select volunteers for the Winter Olympics.</li>
-      <li>Participated in volunteer activities with several public welfare organizations, such as the Apple Volunteers and Wheat Project.</li>
-    </ul>
+    <div class="about-main">
+      <h1>Jichu Mao</h1>
+      <p>Hi! I’m Jichu! I am really glad that you have come to my website!</p>
+      <p>I’m a <strong>Graphics Performance Engineer</strong> at <strong>TikTok</strong>, where I optimize the real-time effect rendering engine used by hundreds of millions of creators every day.</p>
+      <p>I graduated from the University of Pennsylvania (UPenn) in May 2026 with a Master of Science in Engineering in Computer Science &amp; Computer Graphics. I specialize in GPU rendering, real-time graphics and advanced rendering techniques, with hands-on experience in CUDA, OpenGL, Vulkan and Unreal Engine.</p>
+      <p>During my studies in Software Engineering and Computer Graphics, I designed &amp; developed various interesting games and software toolkits.</p>
+      <div class="cv">
+        <h2>Work Experience</h2>
+        <ul class="cv-list">
+        <li>
+          <span class="cv-org">TikTok</span>
+          <span class="cv-when">Jul 2026 – Present</span>
+          <span class="cv-role">Graphics Performance Engineer</span>
+          <p class="cv-desc">Optimizing TikTok’s real-time effect rendering engine (C++), used by hundreds of millions of creators daily: frame-rate and latency optimization across the GPU pipeline, shaders, memory and thread scheduling on Android, plus performance profiling and AI-assisted regression analysis across low-end to flagship devices.</p>
+        </li>
+        <li>
+          <span class="cv-org">TikTok</span>
+          <span class="cv-when">Jun 2025 – Aug 2025</span>
+          <span class="cv-role">Software Engineer Intern</span>
+          <p class="cv-desc">Effect House team. Built a real-time performance analysis system for the Effects engine, instrumenting the C++ rendering core with Tracy, and an LLM-agent pipeline that reads renderer parameters and the scene graph to diagnose effects and generate semantic tags.</p>
+        </li>
+        <li>
+          <span class="cv-org">University of Pennsylvania</span>
+          <span class="cv-when">Aug 2024 – May 2025</span>
+          <span class="cv-role">Teaching Assistant</span>
+          <p class="cv-desc">Held office hours and graded assignments for Interactive Computer Graphics (CIS 4600) and Advanced Rendering (CIS 4610).</p>
+        </li>
+        <li>
+          <span class="cv-org">Infold Games</span>
+          <span class="cv-when">Jun 2024 – Aug 2024</span>
+          <span class="cv-role">Graphics Rendering Intern</span>
+          <p class="cv-desc">Worked on an Unreal Engine rendering pipeline matched to the project’s art style: engine customization for lighting, rendering and resource management, and graphics performance and compatibility work across platforms.</p>
+        </li>
+        <li>
+          <span class="cv-org">Apple</span>
+          <span class="cv-when">Jan 2023 – May 2023</span>
+          <span class="cv-role">Software Engineer Intern</span>
+          <p class="cv-desc">Software development for the Rel Engineering team in Shanghai.</p>
+        </li>
+        <li>
+          <span class="cv-org">University of Alberta</span>
+          <span class="cv-when">Jul 2022 – Oct 2022</span>
+          <span class="cv-role">Software Research Intern</span>
+        </li>
+        </ul>
+        <h2>Education</h2>
+        <ul class="cv-list">
+        <li>
+          <span class="cv-org">University of Pennsylvania</span>
+          <span class="cv-when">Aug 2023 – May 2026</span>
+          <span class="cv-role">Master of Science in Engineering, Computer Science &amp; Computer Graphics</span>
+        </li>
+        <li>
+          <span class="cv-org">Beijing Jiaotong University</span>
+          <span class="cv-when">Sep 2019 – Jun 2023</span>
+          <span class="cv-role">Bachelor’s degree, Computer Software Engineering</span>
+        </li>
+        </ul>
+        <h2>Hobbies</h2>
+        <h3>Video Games:</h3>
+        <ul class="plain">
+          <li>Owns over 700 games on Steam.</li>
+          <li>Enjoys experiencing and collecting a wide variety of games, including: VR and XR games, FPS, Rhythm games, Survival games, Souls-like games, Open-world Role-Playing Games (RPGs).</li>
+        </ul>
+        <h3>Singing:</h3>
+        <ul class="plain">
+          <li>Served as the tenor section leader in the Beijing Jiaotong University Choir.</li>
+          <li>Participated in the National College Students’ Choral Competition and won a second-place award.</li>
+        </ul>
+        <h3>Volunteering:</h3>
+        <ul class="plain">
+          <li>Served as the Deputy Director of the Volunteer Work Department at Beijing Jiaotong University.</li>
+          <li>Organized activities to select volunteers for the Winter Olympics.</li>
+          <li>Participated in volunteer activities with several public welfare organizations, such as the Apple Volunteers and Wheat Project.</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
-    <h2>Contact me</h2>
-    <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+  <div class="contact-band">
+    <div class="wrap">
+      <h2>Contact me</h2>
+      <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="wrap footer-end">
     <ul class="social">
-        <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
-        <li><a href="https://github.com/jichumao">GitHub</a></li>
-        <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
-      </ul>
+      <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
+      <li><a href="https://github.com/jichumao">GitHub</a></li>
+      <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
+    </ul>
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>

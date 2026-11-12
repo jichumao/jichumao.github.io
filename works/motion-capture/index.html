@@ -13,6 +13,7 @@
 <meta property="og:url" content="https://jichu.art/works/motion-capture/">
 <meta property="og:image" content="https://jichu.art/assets/img/motion-capture/cover-thumb.webp">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/css/site.css">
 </head>
@@ -33,24 +34,30 @@
 <main id="main">
 <article class="project wrap">
   <a class="back" href="../../#works">← All works</a>
-  <h1>Motion Capture</h1>
-  <p class="work-cat">Animation</p>
-  <div class="prose">
-    <p>This is a motion capture animation production project, I used the motion capture equipment of the SIGLAB at the University of Pennsylvania and produced motion capture animation using MotionBuilder 2024.</p>
-    <p>In the animation below, I removed the T-Pose between three different actions and smoothed the transitions. Here is the final motion capture animation production effect along with behind-the-scenes footage.</p>
+  <div class="project-grid">
+    <header class="project-info">
+      <h1>Motion Capture</h1>
+      <p class="work-cat">Animation</p>
+      <div class="prose">
+        <p>This is a motion capture animation production project, I used the motion capture equipment of the SIGLAB at the University of Pennsylvania and produced motion capture animation using MotionBuilder 2024.</p>
+        <p>In the animation below, I removed the T-Pose between three different actions and smoothed the transitions. Here is the final motion capture animation production effect along with behind-the-scenes footage.</p>
+      </div>
+    </header>
+    <div class="project-media">
+      <figure class="player">
+        <video controls preload="none" playsinline width="1920" height="1080" poster="../../assets/video/motion-capture-poster.webp" aria-label="Final motion capture animation">
+          <source src="../../assets/video/motion-capture.mp4" type="video/mp4">
+          <a href="../../assets/video/motion-capture.mp4">Download the video</a>
+        </video>
+      </figure>
+      <figure class="player">
+        <video controls preload="none" playsinline width="1920" height="1080" poster="../../assets/video/motion-capture-behind-the-scenes-poster.webp" aria-label="Motion capture behind the scenes">
+          <source src="../../assets/video/motion-capture-behind-the-scenes.mp4" type="video/mp4">
+          <a href="../../assets/video/motion-capture-behind-the-scenes.mp4">Download the video</a>
+        </video>
+      </figure>
+    </div>
   </div>
-  <figure class="player">
-    <video controls preload="none" playsinline width="1920" height="1080" poster="../../assets/video/motion-capture-poster.webp" aria-label="Final motion capture animation">
-      <source src="../../assets/video/motion-capture.mp4" type="video/mp4">
-      <a href="../../assets/video/motion-capture.mp4">Download the video</a>
-    </video>
-  </figure>
-  <figure class="player">
-    <video controls preload="none" playsinline width="1920" height="1080" poster="../../assets/video/motion-capture-behind-the-scenes-poster.webp" aria-label="Motion capture behind the scenes">
-      <source src="../../assets/video/motion-capture-behind-the-scenes.mp4" type="video/mp4">
-      <a href="../../assets/video/motion-capture-behind-the-scenes.mp4">Download the video</a>
-    </video>
-  </figure>
   <nav class="pager" aria-label="More works">
     <a class="prev" href="../maya-3d-scene-modeling-project/"><span>Previous</span>Maya 3D Scene Modeling Project</a>
     <a class="next" href="../houdini-based-fireworks-simulation/"><span>Next</span>Houdini-based Fireworks Simulation</a>
@@ -59,14 +66,18 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
-    <h2>Contact me</h2>
-    <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+  <div class="contact-band">
+    <div class="wrap">
+      <h2>Contact me</h2>
+      <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="wrap footer-end">
     <ul class="social">
-        <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
-        <li><a href="https://github.com/jichumao">GitHub</a></li>
-        <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
-      </ul>
+      <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
+      <li><a href="https://github.com/jichumao">GitHub</a></li>
+      <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
+    </ul>
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
