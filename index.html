@@ -1,5 +1,160 @@
----
-layout: home
-title: Home
----
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jichu · Art – A site about Jichu &amp; Art</title>
+<meta name="description" content="Portfolio of Jichu Mao: computer graphics, rendering, animation and game projects.">
+<link rel="canonical" href="https://jichu.art/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Jichu · Art">
+<meta property="og:title" content="Jichu · Art – A site about Jichu &amp; Art">
+<meta property="og:description" content="Portfolio of Jichu Mao: computer graphics, rendering, animation and game projects.">
+<meta property="og:url" content="https://jichu.art/">
+<meta property="og:image" content="https://jichu.art/assets/img/home/hero-thumb.webp">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
 
+<header class="site-header">
+  <div class="wrap">
+    <p class="site-title"><a href="">Jichu · Art</a></p>
+    <p class="site-tagline">A site about Jichu &amp; Art</p>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#works">Works</a>
+      <a href="about/">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero">
+  <img class="hero-art" src="assets/img/home/hero.webp" srcset="assets/img/home/hero-thumb.webp 1200w, assets/img/home/hero.webp 2400w" sizes="100vw" width="2400" height="702" alt="" fetchpriority="high">
+  <div class="wrap hero-text">
+    <p class="hero-year">2024</p>
+    <h1>Welcome to JICHU&nbsp;·&nbsp;ART</h1>
+    <p class="hero-sub">A Hub for ART · CG · GAMES</p>
+  </div>
+</section>
+
+<section class="works" id="works">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Portfolio</p>
+      <h2>Previous Works</h2>
+      <p>Click ‘READ MORE’ to Watch the Demo</p>
+    </div>
+    <ul class="work-grid">
+      <li class="work">
+        <img class="work-thumb" src="assets/img/physically-based-shaders/cover-thumb.webp" width="800" height="725" alt="" loading="lazy" decoding="async">
+        <h3><a href="works/physically-based-shaders/">Physically-Based Shaders</a></h3>
+        <p class="work-cat">Softwares</p>
+        <p class="work-excerpt">The PBR implementation uses the Cook-Torrance model in a physically based rendering pipeline, along with image-based lighting, as well as custom scenes and environment maps.</p>
+        <span class="work-more" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work">
+        <img class="work-thumb" src="assets/img/tree-creator/cover-thumb.webp" width="800" height="613" alt="" loading="lazy" decoding="async">
+        <h3><a href="works/tree-creator-plugin-for-maya-houdini/">Tree Creator – Plugin for Maya &amp; Houdini</a></h3>
+        <p class="work-cat">Softwares</p>
+        <p class="work-excerpt">This is a Maya &amp; Houdini plugin development project. The function of this plugin is to create different fractal plants in Maya or Houdini based on the L-System grammar input by the user.</p>
+        <span class="work-more" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work">
+        <img class="work-thumb" src="assets/img/monte-carlo-path-tracer/cover-thumb.webp" width="800" height="800" alt="" loading="lazy" decoding="async">
+        <h3><a href="works/monte-carlo-path-tracer/">Monte Carlo Path Tracer</a></h3>
+        <p class="work-cat">Softwares</p>
+        <p class="work-excerpt">Monte Carlo path tracer in C++ using Naive, Direct and Multiple Importance Sampling – Direct Lighting Integrator using LTE with Multiple light sources, Multiple materials (BSDF – BRDFs and BTDFs, Fresnel) with Stratified, grid and random sampling techniques.</p>
+        <span class="work-more" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work">
+        <img class="work-thumb" src="assets/img/mini-minecraft/cover-thumb.webp" width="800" height="582" alt="" loading="lazy" decoding="async">
+        <h3><a href="works/mini-minecraft/">Mini Minecraft</a></h3>
+        <p class="work-cat">Games</p>
+        <p class="work-excerpt">This is a Minecraft-like game, using OpenGL, C++ and Qt6 for development. Many important features are implemented from 0 to 1 by me in this game.</p>
+        <span class="work-more" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work">
+        <img class="work-thumb" src="assets/img/glsl-shaders/cover-thumb.webp" width="800" height="620" alt="" loading="lazy" decoding="async">
+        <h3><a href="works/glsl-shaders/">GLSL Shaders</a></h3>
+        <p class="work-cat">Softwares</p>
+        <p class="work-excerpt">Programmed portions of OpenGL’s graphics pipeline by writing a few different vertex and fragment shaders to apply different coloration effects to the surfaces of 3D models.</p>
+        <span class="work-more" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work">
+        <img class="work-thumb" src="assets/img/animation-toolkit/cover-thumb.webp" width="800" height="481" alt="" loading="lazy" decoding="async">
+        <h3><a href="works/animation-toolkit/">Animation Toolkit</a></h3>
+        <p class="work-cat">Animation / Softwares</p>
+        <p class="work-excerpt">An Interactive 2D animation toolkit that includes: Curve Editor Rotations, FK, IK, Particle Systems, Firework Simulation, Behavioural Animation</p>
+        <span class="work-more" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work">
+        <img class="work-thumb" src="assets/img/maya-3d-scene-modeling/cover-thumb.webp" width="800" height="461" alt="" loading="lazy" decoding="async">
+        <h3><a href="works/maya-3d-scene-modeling-project/">Maya 3D Scene Modeling Project</a></h3>
+        <p class="work-cat">Art Designs</p>
+        <p class="work-excerpt">A room modeling project using Maya 2024. After modeling, mapping and finally lighting, I built a room.</p>
+        <span class="work-more" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work">
+        <img class="work-thumb" src="assets/img/motion-capture/cover-thumb.webp" width="518" height="397" alt="" loading="lazy" decoding="async">
+        <h3><a href="works/motion-capture/">Motion Capture</a></h3>
+        <p class="work-cat">Animation</p>
+        <p class="work-excerpt">A motion capture animation production project, I used the motion capture equipment of the SIGLAB at the University of Pennsylvania and produced motion capture animation using MotionBuilder 2024.</p>
+        <span class="work-more" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work">
+        <img class="work-thumb" src="assets/img/houdini-fireworks/cover-thumb.webp" width="640" height="413" alt="" loading="lazy" decoding="async">
+        <h3><a href="works/houdini-based-fireworks-simulation/">Houdini-based Fireworks Simulation</a></h3>
+        <p class="work-cat">Animation</p>
+        <p class="work-excerpt">This is a fireworks physics simulation project created with Houdini, in which I produced particle simulations for four different types of fireworks effects.</p>
+        <span class="work-more" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work">
+        <img class="work-thumb" src="assets/img/gem-match-game/cover-thumb.webp" width="800" height="532" alt="" loading="lazy" decoding="async">
+        <h3><a href="works/gem-match-game/">Gem Match Game</a></h3>
+        <p class="work-cat">Games</p>
+        <p class="work-excerpt">This is a classic gem puzzle game written in C++, Qt Widget and the Easy2D game engine.</p>
+        <span class="work-more" aria-hidden="true">Read more</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="about-band" id="about">
+  <div class="wrap about-grid">
+    <img class="avatar" src="assets/img/home/avatar.webp" width="480" height="480" alt="Portrait of Jichu Mao" loading="lazy" decoding="async">
+    <div>
+      <p class="eyebrow">About me</p>
+      <h2>Jichu Mao</h2>
+      <ul class="social">
+        <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
+        <li><a href="https://github.com/jichumao">GitHub</a></li>
+        <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
+      </ul>
+        <p>Hi! I’m Jichu! I am really glad that you have come to my website!</p>
+        <p>I’m currently a first-year graduate student at the University of Pennsylvania (UPenn), majoring in Computer Science with a concentration in Computer Graphics. I expect to graduate in May 2026.</p>
+        <p>I am also an Ex-Intern at <a href="https://www.infoldgames.com/en/home">Infold Game</a>, <a href="https://www.apple.com/">Apple Inc.</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a> focused on software development. During my studies in Software Engineering and Computer Graphics, I designed &amp; developed various interesting games and software toolkits.</p>
+        <p>Currently, I am seeking positions related to Graphics Engineering, Technical Art/TD, or Computer Animation, as well as roles in Software Engineering.</p>
+        <p>I have shared my previous works here, and I will be really excited if you like it! &lt;3</p>
+      <a class="button" href="about/">Read more</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <h2>Contact me</h2>
+    <p>Email: <a href="mailto:jichumao@seas.upenn.edu">jichumao@seas.upenn.edu</a></p>
+    <ul class="social">
+        <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
+        <li><a href="https://github.com/jichumao">GitHub</a></li>
+        <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
+      </ul>
+    <p class="copyright">© Jichu Mao</p>
+  </div>
+</footer>
+</body>
+</html>
