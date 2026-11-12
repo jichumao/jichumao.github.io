@@ -13,6 +13,7 @@
 <meta property="og:url" content="https://jichu.art/works/houdini-based-fireworks-simulation/">
 <meta property="og:image" content="https://jichu.art/assets/img/houdini-fireworks/cover-thumb.webp">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/css/site.css">
 </head>
@@ -33,17 +34,23 @@
 <main id="main">
 <article class="project wrap">
   <a class="back" href="../../#works">← All works</a>
-  <h1>Houdini-based Fireworks Simulation</h1>
-  <p class="work-cat">Animation</p>
-  <div class="prose">
-    <p>This is a fireworks physics simulation project created with Houdini, in which I produced particle simulations for four different types of fireworks effects.</p>
+  <div class="project-grid">
+    <header class="project-info">
+      <h1>Houdini-based Fireworks Simulation</h1>
+      <p class="work-cat">Animation</p>
+      <div class="prose">
+        <p>This is a fireworks physics simulation project created with Houdini, in which I produced particle simulations for four different types of fireworks effects.</p>
+      </div>
+    </header>
+    <div class="project-media">
+      <figure class="player">
+        <video controls preload="none" playsinline width="1920" height="1080" poster="../../assets/video/houdini-fireworks-poster.webp" aria-label="Houdini fireworks simulation">
+          <source src="../../assets/video/houdini-fireworks.mp4" type="video/mp4">
+          <a href="../../assets/video/houdini-fireworks.mp4">Download the video</a>
+        </video>
+      </figure>
+    </div>
   </div>
-  <figure class="player">
-    <video controls preload="none" playsinline width="1920" height="1080" poster="../../assets/video/houdini-fireworks-poster.webp" aria-label="Houdini fireworks simulation">
-      <source src="../../assets/video/houdini-fireworks.mp4" type="video/mp4">
-      <a href="../../assets/video/houdini-fireworks.mp4">Download the video</a>
-    </video>
-  </figure>
   <nav class="pager" aria-label="More works">
     <a class="prev" href="../motion-capture/"><span>Previous</span>Motion Capture</a>
     <a class="next" href="../gem-match-game/"><span>Next</span>Gem Match Game</a>
@@ -52,14 +59,18 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
-    <h2>Contact me</h2>
-    <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+  <div class="contact-band">
+    <div class="wrap">
+      <h2>Contact me</h2>
+      <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="wrap footer-end">
     <ul class="social">
-        <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
-        <li><a href="https://github.com/jichumao">GitHub</a></li>
-        <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
-      </ul>
+      <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
+      <li><a href="https://github.com/jichumao">GitHub</a></li>
+      <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
+    </ul>
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>

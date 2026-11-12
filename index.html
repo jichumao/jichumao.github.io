@@ -13,6 +13,7 @@
 <meta property="og:url" content="https://jichu.art/">
 <meta property="og:image" content="https://jichu.art/assets/img/home/hero-thumb.webp">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/site.css">
 </head>
@@ -32,7 +33,10 @@
 
 <main id="main">
 <section class="hero">
-  <img class="hero-art" src="assets/img/home/hero.webp" srcset="assets/img/home/hero-thumb.webp 1200w, assets/img/home/hero.webp 2400w" sizes="100vw" width="2400" height="702" alt="" fetchpriority="high">
+  <div class="hero-media">
+    <img class="hero-art" src="assets/img/home/hero.webp" srcset="assets/img/home/hero-thumb.webp 1200w, assets/img/home/hero.webp 2400w" sizes="100vw" width="2400" height="702" alt="" fetchpriority="high">
+    <canvas class="hero-canvas" aria-hidden="true"></canvas>
+  </div>
   <div class="wrap hero-text">
     <p class="hero-year" id="year">2026</p>
     <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
@@ -50,74 +54,74 @@
     </div>
     <ul class="work-grid">
       <li class="work">
-        <img class="work-thumb" src="assets/img/physically-based-shaders/cover-thumb.webp" width="800" height="725" alt="" loading="lazy" decoding="async">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/physically-based-shaders/cover-thumb.webp" width="800" height="725" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/physically-based-shaders/">Physically-Based Shaders</a></h3>
         <p class="work-cat">Softwares</p>
         <p class="work-excerpt">The PBR implementation uses the Cook-Torrance model in a physically based rendering pipeline, along with image-based lighting, as well as custom scenes and environment maps.</p>
-        <span class="work-more" aria-hidden="true">Read more</span>
+        <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work">
-        <img class="work-thumb" src="assets/img/tree-creator/cover-thumb.webp" width="800" height="613" alt="" loading="lazy" decoding="async">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/tree-creator/cover-thumb.webp" width="800" height="613" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/tree-creator-plugin-for-maya-houdini/">Tree Creator – Plugin for Maya &amp; Houdini</a></h3>
         <p class="work-cat">Softwares</p>
         <p class="work-excerpt">This is a Maya &amp; Houdini plugin development project. The function of this plugin is to create different fractal plants in Maya or Houdini based on the L-System grammar input by the user.</p>
-        <span class="work-more" aria-hidden="true">Read more</span>
+        <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work">
-        <img class="work-thumb" src="assets/img/monte-carlo-path-tracer/cover-thumb.webp" width="800" height="800" alt="" loading="lazy" decoding="async">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/monte-carlo-path-tracer/cover-thumb.webp" width="800" height="800" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/monte-carlo-path-tracer/">Monte Carlo Path Tracer</a></h3>
         <p class="work-cat">Softwares</p>
         <p class="work-excerpt">Monte Carlo path tracer in C++ using Naive, Direct and Multiple Importance Sampling – Direct Lighting Integrator using LTE with Multiple light sources, Multiple materials (BSDF – BRDFs and BTDFs, Fresnel) with Stratified, grid and random sampling techniques.</p>
-        <span class="work-more" aria-hidden="true">Read more</span>
+        <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work">
-        <img class="work-thumb" src="assets/img/mini-minecraft/cover-thumb.webp" width="800" height="582" alt="" loading="lazy" decoding="async">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/mini-minecraft/cover-thumb.webp" width="800" height="582" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/mini-minecraft/">Mini Minecraft</a></h3>
         <p class="work-cat">Games</p>
         <p class="work-excerpt">This is a Minecraft-like game, using OpenGL, C++ and Qt6 for development. Many important features are implemented from 0 to 1 by me in this game.</p>
-        <span class="work-more" aria-hidden="true">Read more</span>
+        <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work">
-        <img class="work-thumb" src="assets/img/glsl-shaders/cover-thumb.webp" width="800" height="620" alt="" loading="lazy" decoding="async">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/glsl-shaders/cover-thumb.webp" width="800" height="620" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/glsl-shaders/">GLSL Shaders</a></h3>
         <p class="work-cat">Softwares</p>
         <p class="work-excerpt">Programmed portions of OpenGL’s graphics pipeline by writing a few different vertex and fragment shaders to apply different coloration effects to the surfaces of 3D models.</p>
-        <span class="work-more" aria-hidden="true">Read more</span>
+        <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work">
-        <img class="work-thumb" src="assets/img/animation-toolkit/cover-thumb.webp" width="800" height="481" alt="" loading="lazy" decoding="async">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/animation-toolkit/cover-thumb.webp" width="800" height="481" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/animation-toolkit/">Animation Toolkit</a></h3>
         <p class="work-cat">Animation / Softwares</p>
         <p class="work-excerpt">An Interactive 2D animation toolkit that includes: Curve Editor Rotations, FK, IK, Particle Systems, Firework Simulation, Behavioural Animation</p>
-        <span class="work-more" aria-hidden="true">Read more</span>
+        <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work">
-        <img class="work-thumb" src="assets/img/maya-3d-scene-modeling/cover-thumb.webp" width="800" height="461" alt="" loading="lazy" decoding="async">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/maya-3d-scene-modeling/cover-thumb.webp" width="800" height="461" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/maya-3d-scene-modeling-project/">Maya 3D Scene Modeling Project</a></h3>
         <p class="work-cat">Art Designs</p>
         <p class="work-excerpt">A room modeling project using Maya 2024. After modeling, mapping and finally lighting, I built a room.</p>
-        <span class="work-more" aria-hidden="true">Read more</span>
+        <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work">
-        <img class="work-thumb" src="assets/img/motion-capture/cover-thumb.webp" width="518" height="397" alt="" loading="lazy" decoding="async">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/motion-capture/cover-thumb.webp" width="518" height="397" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/motion-capture/">Motion Capture</a></h3>
         <p class="work-cat">Animation</p>
         <p class="work-excerpt">A motion capture animation production project, I used the motion capture equipment of the SIGLAB at the University of Pennsylvania and produced motion capture animation using MotionBuilder 2024.</p>
-        <span class="work-more" aria-hidden="true">Read more</span>
+        <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work">
-        <img class="work-thumb" src="assets/img/houdini-fireworks/cover-thumb.webp" width="640" height="413" alt="" loading="lazy" decoding="async">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/houdini-fireworks/cover-thumb.webp" width="640" height="413" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/houdini-based-fireworks-simulation/">Houdini-based Fireworks Simulation</a></h3>
         <p class="work-cat">Animation</p>
         <p class="work-excerpt">This is a fireworks physics simulation project created with Houdini, in which I produced particle simulations for four different types of fireworks effects.</p>
-        <span class="work-more" aria-hidden="true">Read more</span>
+        <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work">
-        <img class="work-thumb" src="assets/img/gem-match-game/cover-thumb.webp" width="800" height="532" alt="" loading="lazy" decoding="async">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/gem-match-game/cover-thumb.webp" width="800" height="532" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/gem-match-game/">Gem Match Game</a></h3>
         <p class="work-cat">Games</p>
         <p class="work-excerpt">This is a classic gem puzzle game written in C++, Qt Widget and the Easy2D game engine.</p>
-        <span class="work-more" aria-hidden="true">Read more</span>
+        <span class="button" aria-hidden="true">Read more</span>
       </li>
     </ul>
   </div>
@@ -125,36 +129,43 @@
 
 <section class="about-band" id="about">
   <div class="wrap about-grid">
-    <img class="avatar" src="assets/img/home/avatar.webp" width="480" height="480" alt="Portrait of Jichu Mao" loading="lazy" decoding="async">
-    <div>
-      <p class="eyebrow">About me</p>
-      <h2>Jichu Mao</h2>
+    <div class="about-side">
+      <img class="avatar" src="assets/img/home/avatar.webp" width="480" height="480" alt="Portrait of Jichu Mao" loading="lazy" decoding="async">
       <ul class="social">
         <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
         <li><a href="https://github.com/jichumao">GitHub</a></li>
         <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
       </ul>
-        <p>Hi! I’m Jichu! I am really glad that you have come to my website!</p>
-        <p>I’m a Graphics Performance Engineer at TikTok. I graduated from the University of Pennsylvania (UPenn) in May 2026, where I majored in Computer Science with a concentration in Computer Graphics.</p>
-        <p>I am also an Ex-Intern at <a href="https://www.infoldgames.com/en/home">Infold Game</a>, <a href="https://www.apple.com/">Apple Inc.</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a> focused on software development. During my studies in Software Engineering and Computer Graphics, I designed &amp; developed various interesting games and software toolkits.</p>
-        <p>I have shared my previous works here, and I will be really excited if you like it! &lt;3</p>
-      <a class="button" href="about/">Read more</a>
+    </div>
+    <div class="about-main">
+      <p class="eyebrow">About me</p>
+      <h2>Jichu Mao</h2>
+      <p>Hi! I’m Jichu! I am really glad that you have come to my website!</p>
+      <p>I’m a <strong>Graphics Performance Engineer</strong> at <strong>TikTok</strong>, optimizing its real-time effect rendering engine. I graduated from the University of Pennsylvania (UPenn) in <strong>May 2026</strong> with a master’s in <strong>Computer Science &amp; Computer Graphics</strong>.</p>
+      <p>Before that, I interned at TikTok, <a href="https://www.infoldgames.com/en/home">Infold Games</a>, <a href="https://www.apple.com/">Apple Inc.</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a>, and was a teaching assistant for UPenn’s computer graphics courses. During my studies in Software Engineering and Computer Graphics, I designed &amp; developed various interesting games and software toolkits.</p>
+      <p>I have shared my previous works here, and I will be really excited if you like it! &lt;3</p>
+      <a class="button-fill" href="about/">Read more</a>
     </div>
   </div>
 </section>
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
-    <h2>Contact me</h2>
-    <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+  <div class="contact-band">
+    <div class="wrap">
+      <h2>Contact me</h2>
+      <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="wrap footer-end">
     <ul class="social">
-        <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
-        <li><a href="https://github.com/jichumao">GitHub</a></li>
-        <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
-      </ul>
+      <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
+      <li><a href="https://github.com/jichumao">GitHub</a></li>
+      <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
+    </ul>
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
+<script src="assets/js/hero.js" defer></script>
 </body>
 </html>
