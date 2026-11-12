@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://jichu.art/</loc></url>
   <url><loc>https://jichu.art/about/</loc></url>
+  <url><loc>https://jichu.art/works/world-space-restir/</loc></url>
+  <url><loc>https://jichu.art/works/cuda-path-tracer/</loc></url>
+  <url><loc>https://jichu.art/works/webgpu-clustered-shading/</loc></url>
+  <url><loc>https://jichu.art/works/vulkan-grass-rendering/</loc></url>
   <url><loc>https://jichu.art/works/physically-based-shaders/</loc></url>
   <url><loc>https://jichu.art/works/tree-creator-plugin-for-maya-houdini/</loc></url>
   <url><loc>https://jichu.art/works/monte-carlo-path-tracer/</loc></url>
