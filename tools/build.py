@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "9"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "10"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 EMAIL = "maojichu@gmail.com"
 SOCIAL = [
