@@ -25,6 +25,7 @@
     index = (i + links.length) % links.length;
     var a = links[index];
     img.src = a.href;
+    img.className = a.classList.contains("chart") ? "chart" : "";   // charts are shown inverted, to match the dark page
     img.alt = a.querySelector("img").alt || "";
     cap.textContent = a.getAttribute("data-caption") || "";
   }

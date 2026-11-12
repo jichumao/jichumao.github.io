@@ -15,7 +15,7 @@
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=5">
+<link rel="stylesheet" href="../../assets/css/site.css?v=6">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -41,18 +41,18 @@
         <div class="project-title">
           <h1>CUDA Path Tracer</h1>
           <p class="project-lead">A GPU path tracer written in CUDA. It loads glTF meshes and materials and simulates light transport for soft shadows, caustics and depth of field, with stream compaction and bounding-box culling to cut the work per frame.</p>
-          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>CUDA</li><li>GPU Programming</li><li>Path Tracing</li><li>glTF</li><li>Performance Optimization</li></ul>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>CUDA</li><li>GPU Programming</li><li>Path Tracing</li><li>glTF</li><li>Performance Optimization</li></ul>
           <ul class="project-links">
             <li><a class="button" href="https://github.com/jichumao/CUDA-Path-Tracer"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
           </ul>
         </div>
-        <figure class="project-cover"><img class="" src="../../assets/img/cuda-path-tracer/cover-thumb.webp" srcset="../../assets/img/cuda-path-tracer/cover-thumb.webp 900w, ../../assets/img/cuda-path-tracer/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Path-traced renders: a toy dog with two rubber ducks, a glass dragon and a mirror ball in front of a night skyline" fetchpriority="high"></figure>
+        <figure class="project-cover"><img class="" src="../../assets/img/cuda-path-tracer/cover-thumb.webp" srcset="../../assets/img/cuda-path-tracer/cover-thumb.webp 900w, ../../assets/img/cuda-path-tracer/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Path-traced renders: a toy dog with two rubber ducks, a glass dragon and a mirror ball in front of a night skyline" fetchpriority="high"><video class="work-preview" data-autoplay muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../../assets/video/preview-cuda-path-tracer.mp4" type="video/mp4"></video></figure>
       </div>
       <dl class="facts">
-        <div><dt>Year</dt><dd>2024</dd></div>
-        <div><dt>Type</dt><dd>Individual project</dd></div>
-        <div><dt>Course</dt><dd>CIS 5650 GPU Programming and Architecture at UPenn</dd></div>
-        <div><dt>Tested on</dt><dd>RTX 4090, i7-13700K, Windows 11</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Year</dt><dd>2024</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.2"/><path d="M5.5 19.5c.6-3.5 3.1-5.5 6.5-5.5s5.9 2 6.5 5.5"/></svg>Type</dt><dd>Individual project</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5h10.5a2 2 0 0 1 2 2v13H7a2 2 0 0 1-2-2z"/><path d="M5 17.5a2 2 0 0 1 2-2h10.5"/></svg>Course</dt><dd>CIS 5650 GPU Programming and Architecture at UPenn</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M10 3.5V7M14 3.5V7M10 17v3.5M14 17v3.5M3.5 10H7M3.5 14H7M17 10h3.5M17 14h3.5"/></svg>Tested on</dt><dd>RTX 4090, i7-13700K, Windows 11</dd></div>
       </dl>
       <ul class="stats" aria-label="Measured results">
         <li><strong>25.7 → 18.2 ms</strong><span>per frame with stream compaction, open scene</span></li>
@@ -67,20 +67,20 @@
         <h2>Overview</h2>
         <div class="prose">
         <p>The highlight renders use 5,000 samples per pixel or more, with up to 8 bounces per ray.</p>
-        <p>Visual features:</p>
-        <ul>
-          <li>Diffuse, glossy, perfectly specular and refractive BSDFs</li>
-          <li>Stochastic sampled anti-aliasing</li>
-          <li>Physically-based depth of field with a thin-lens camera</li>
-          <li>glTF mesh loading with texture mapping</li>
-          <li>HDR environment maps</li>
-          <li>ACES and Reinhard tone mapping, gamma correction</li>
+        <h3>Visual features</h3>
+        <ul class="features">
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5c3 3.6 5.5 6.7 5.5 10a5.5 5.5 0 0 1-11 0c0-3.3 2.5-6.4 5.5-10z"/></svg><div><strong>BSDFs</strong><span>Diffuse, glossy, perfectly specular and refractive</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v5M12 15.5v5M3.5 12h5M15.5 12h5M6.3 6.3l3 3M14.7 14.7l3 3M17.7 6.3l-3 3M9.3 14.7l-3 3"/></svg><div><strong>Anti-aliasing</strong><span>Stochastic sampling</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.2"/></svg><div><strong>Depth of field</strong><span>Physically based, with a thin-lens camera</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.5 7.5 4.2v8.6L12 20.5l-7.5-4.2V7.7z"/><path d="M4.5 7.7 12 12l7.5-4.3M12 12v8.5"/></svg><div><strong>glTF meshes</strong><span>Loaded with texture mapping</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="1.5"/><circle cx="8.5" cy="10" r="1.5"/><path d="m4 17 5-4.5 3.5 3 3-2.5 4.5 4"/></svg><div><strong>Environment maps</strong><span>HDR lighting</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h9.5M18 7h1.5M4.5 12h3.5M12 12h7.5M4.5 17h10.5"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="17" cy="17" r="2"/></svg><div><strong>Tone mapping</strong><span>ACES and Reinhard, plus gamma correction</span></div></li>
         </ul>
-        <p>Performance work:</p>
-        <ul>
-          <li>Stream compaction removes finished rays; in open scenes render time drops from 25.7 ms to 18.2 ms</li>
-          <li>Bounding-box culling for glTF meshes, 20–40% faster on low- to mid-poly models</li>
-          <li>Material sorting was measured too, and turned out slower on small scenes</li>
+        <h3>Performance work</h3>
+        <ul class="features">
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16l-6 7.5v5l-4 2v-7z"/></svg><div><strong>Stream compaction</strong><span>Removes finished rays. In open scenes, frame time drops from 25.7 ms to 18.2 ms.</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.5 7.5 4.2v8.6L12 20.5l-7.5-4.2V7.7z"/><path d="M4.5 7.7 12 12l7.5-4.3M12 12v8.5"/></svg><div><strong>Bounding-box culling</strong><span>20–40% faster on low- to mid-poly glTF models</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3.5 5.5 13.5H12l-1 7 7.5-10H12z"/></svg><div><strong>Material sorting</strong><span>Measured too, and turned out slower on small scenes</span></div></li>
         </ul>
         </div>
       </div>
@@ -258,19 +258,19 @@
       <ul class="gallery wide three">
         <li>
           <figure>
-            <a class="shot" href="../../assets/img/cuda-path-tracer/chart-compaction-depth.webp" data-caption="Stream compaction: rays remaining at each trace depth, open scene"><img src="../../assets/img/cuda-path-tracer/chart-compaction-depth-thumb.webp" width="762" height="434" alt="Stream compaction: rays remaining at each trace depth, open scene" loading="lazy" decoding="async"></a>
+            <a class="shot chart" href="../../assets/img/cuda-path-tracer/chart-compaction-depth.webp" data-caption="Stream compaction: rays remaining at each trace depth, open scene"><img src="../../assets/img/cuda-path-tracer/chart-compaction-depth-thumb.webp" width="762" height="434" alt="Stream compaction: rays remaining at each trace depth, open scene" loading="lazy" decoding="async"></a>
             <figcaption>Stream compaction: rays remaining at each trace depth, open scene</figcaption>
           </figure>
         </li>
         <li>
           <figure>
-            <a class="shot" href="../../assets/img/cuda-path-tracer/chart-compaction-scene.webp" data-caption="Stream compaction: render time, open and closed scene"><img src="../../assets/img/cuda-path-tracer/chart-compaction-scene-thumb.webp" width="674" height="442" alt="Stream compaction: render time, open and closed scene" loading="lazy" decoding="async"></a>
+            <a class="shot chart" href="../../assets/img/cuda-path-tracer/chart-compaction-scene.webp" data-caption="Stream compaction: render time, open and closed scene"><img src="../../assets/img/cuda-path-tracer/chart-compaction-scene-thumb.webp" width="674" height="442" alt="Stream compaction: render time, open and closed scene" loading="lazy" decoding="async"></a>
             <figcaption>Stream compaction: render time, open and closed scene</figcaption>
           </figure>
         </li>
         <li>
           <figure>
-            <a class="shot" href="../../assets/img/cuda-path-tracer/chart-bbox-culling.webp" data-caption="Bounding-box culling: frame rate by triangle count"><img src="../../assets/img/cuda-path-tracer/chart-bbox-culling-thumb.webp" width="762" height="434" alt="Bounding-box culling: frame rate by triangle count" loading="lazy" decoding="async"></a>
+            <a class="shot chart" href="../../assets/img/cuda-path-tracer/chart-bbox-culling.webp" data-caption="Bounding-box culling: frame rate by triangle count"><img src="../../assets/img/cuda-path-tracer/chart-bbox-culling-thumb.webp" width="762" height="434" alt="Bounding-box culling: frame rate by triangle count" loading="lazy" decoding="async"></a>
             <figcaption>Bounding-box culling: frame rate by triangle count</figcaption>
           </figure>
         </li>
@@ -301,6 +301,7 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/lightbox.js?v=5" defer></script>
+<script src="../../assets/js/clips.js?v=6" defer></script>
+<script src="../../assets/js/lightbox.js?v=6" defer></script>
 </body>
 </html>

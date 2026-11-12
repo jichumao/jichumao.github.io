@@ -15,7 +15,7 @@
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=5">
+<link rel="stylesheet" href="../../assets/css/site.css?v=6">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -41,16 +41,17 @@
         <div class="project-title">
           <h1>GLSL Shaders</h1>
           <p class="project-lead">Portions of OpenGL’s graphics pipeline, programmed by hand: a set of vertex and fragment shaders that apply different coloration effects to the surfaces of 3D models.</p>
-          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>GLSL</li><li>OpenGL</li><li>C++</li><li>Shader Programming</li><li>Post-Processing</li></ul>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>GLSL</li><li>OpenGL</li><li>C++</li><li>Shader Programming</li><li>Post-Processing</li></ul>
           <ul class="project-links">
             <li><a class="button" href="https://github.com/jichumao/GLSL-Shaders"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
           </ul>
         </div>
-        <figure class="project-cover"><img class="" src="../../assets/img/glsl-shaders/cover-thumb.webp" srcset="../../assets/img/glsl-shaders/cover-thumb.webp 900w, ../../assets/img/glsl-shaders/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="The same 3D model rendered with a chrome matcap shader, a Sobel edge filter and a surface-normal shader" fetchpriority="high"></figure>
+        <figure class="project-cover"><img class="" src="../../assets/img/glsl-shaders/cover-thumb.webp" srcset="../../assets/img/glsl-shaders/cover-thumb.webp 900w, ../../assets/img/glsl-shaders/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="The same 3D model rendered with a chrome matcap shader, a Sobel edge filter and a surface-normal shader" fetchpriority="high"><video class="work-preview" data-autoplay muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../../assets/video/preview-glsl-shaders.mp4" type="video/mp4"></video></figure>
       </div>
       <dl class="facts">
-        <div><dt>Year</dt><dd>2023</dd></div>
-        <div><dt>Built with</dt><dd>GLSL, OpenGL, C++</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Year</dt><dd>2023</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.2"/><path d="M5.5 19.5c.6-3.5 3.1-5.5 6.5-5.5s5.9 2 6.5 5.5"/></svg>Type</dt><dd>Individual project</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 8 4-8 4-8-4z"/><path d="m4 12 8 4 8-4M4 16l8 4 8-4"/></svg>Built with</dt><dd>GLSL, OpenGL, C++, Qt</dd></div>
       </dl>
     </div>
   </header>
@@ -59,10 +60,10 @@
       <div class="project-info">
         <h2>Overview</h2>
         <div class="prose">
-        <ul>
-          <li>Surface shaders: Lambert, Blinn-Phong, matcaps, surface normals and a colour gradient</li>
-          <li>Vertex deformation</li>
-          <li>Post-process shaders: greyscale, Gaussian blur, Sobel edge detection, bloom and Worley noise</li>
+        <ul class="features">
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5c3 3.6 5.5 6.7 5.5 10a5.5 5.5 0 0 1-11 0c0-3.3 2.5-6.4 5.5-10z"/></svg><div><strong>Surface shaders</strong><span>Lambert, Blinn-Phong, matcaps, surface normals and a colour gradient</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9h10a2.5 2.5 0 1 0-2.5-2.5M3.5 13h14a2.5 2.5 0 1 1-2.5 2.5M3.5 17h6"/></svg><div><strong>Vertex deformation</strong><span>Vertices displaced along the normal over time</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v5M12 15.5v5M3.5 12h5M15.5 12h5M6.3 6.3l3 3M14.7 14.7l3 3M17.7 6.3l-3 3M9.3 14.7l-3 3"/></svg><div><strong>Post-processing</strong><span>Greyscale, Gaussian blur, Sobel edge detection, bloom and Worley noise</span></div></li>
         </ul>
         </div>
       </div>
@@ -169,7 +170,7 @@
     </div>
     <nav class="pager" aria-label="More works">
       <a class="prev" href="../monte-carlo-path-tracer/"><img src="../../assets/img/monte-carlo-path-tracer/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"><span class="pager-text"><span class="pager-label">Previous</span>Monte Carlo Path Tracer</span></a>
-      <a class="next" href="../tree-creator-plugin-for-maya-houdini/"><span class="pager-text"><span class="pager-label">Next</span>Tree Creator – Plugin for Maya &amp; Houdini</span><img src="../../assets/img/tree-creator/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"></a>
+      <a class="next" href="../procedural-fireball/"><span class="pager-text"><span class="pager-label">Next</span>Procedural Fireball</span><img src="../../assets/img/procedural-fireball/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"></a>
     </nav>
   </div>
 </article>
@@ -191,6 +192,7 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/lightbox.js?v=5" defer></script>
+<script src="../../assets/js/clips.js?v=6" defer></script>
+<script src="../../assets/js/lightbox.js?v=6" defer></script>
 </body>
 </html>

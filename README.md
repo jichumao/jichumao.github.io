@@ -13,13 +13,15 @@ index.php/<old-slug>/         redirects from the old WordPress URLs
 assets/css/site.css           all styles
 assets/js/hero.js             home hero: WebGL shader that makes the artwork drift (falls back to the plain image)
 assets/js/works.js            category filter on the works grid
-assets/js/clips.js            plays the short looping clips while they are on screen
+assets/js/previews.js         plays a card's preview while it is hovered (or, on touch screens, in the middle of the screen)
+assets/js/clips.js            plays the short looping clips, and the preview on a project page's cover, while they are on screen
 assets/js/lightbox.js         full-size image viewer for galleries
 assets/img/<project>/         images (WebP): name.webp is full size, name-thumb.webp is the thumbnail
 assets/video/                 videos and clips (H.264 MP4, faststart) and their poster images
-assets/fonts/                 Playfair Display and Open Sans (SIL Open Font License)
+assets/fonts/                 Playfair Display (titles, figures), Open Sans (text), JetBrains Mono (tech stack, table numbers); all SIL Open Font License
 tools/build.py                generator for every HTML page; all the text lives in it
 tools/covers.py               builds the project covers
+tools/previews.py             builds the short preview loops that play on the cards
 tools/cover-src/              video frames and screenshots that the covers use
 tools/manifest.json           image and clip dimensions the generator reads
 ```
@@ -44,7 +46,9 @@ Fields of a project:
 | `facts` | label and value pairs under the page header |
 | `stats` | measured results as figure and description; leave out when there are none |
 | `links` | buttons for source code, demo, paper |
-| `blocks` | text blocks (`p`, `html`, `ul`) fill the left column, media blocks (`h2`, `label`, `video`, `embed`, `table`, `gallery`, `gallery-wide`) the right |
+| `blocks` | text blocks (`p`, `html`, `ul`, `h3`, `features`) fill the left column, media blocks (`h2`, `label`, `steps`, `video`, `embed`, `table`, `gallery`, `gallery-wide`) the right |
+
+`features` is a list of `(icon, name, detail)` rows; the icon names are the keys of `ICONS`. `steps` is a numbered sequence of `(name, detail)`, for things that really happen in order. Images whose name starts with `chart-` are shown inverted so that light spreadsheet charts match the dark page.
 
 After editing, rebuild from the repository root (Python 3, no packages needed):
 
@@ -54,7 +58,7 @@ python3 tools/build.py . tools/manifest.json
 
 A quick text fix can also be made straight in the HTML. Make the same change in `tools/build.py`, otherwise the next rebuild overwrites it.
 
-The stylesheet and scripts are linked as `site.css?v=5`, `hero.js?v=5`, and so on. After changing one of them, raise `ASSET_V` in `tools/build.py` and rebuild, so browsers fetch the new file instead of a cached one.
+The stylesheet and scripts are linked as `site.css?v=6`, `hero.js?v=6`, and so on. After changing one of them, raise `ASSET_V` in `tools/build.py` and rebuild, so browsers fetch the new file instead of a cached one.
 
 All links are relative, so the site works both at a domain root and under a sub-path.
 
@@ -70,11 +74,20 @@ python3 tools/build.py . tools/manifest.json
 
 The script needs Pillow and NumPy (`pip install pillow numpy`). For each project it writes `cover.webp`, `cover-thumb.webp` (cards), `cover-mini.webp` (Previous / Next links) and `glow.webp` (the blurred colour behind the page header).
 
+### Previews
+
+Each card also has `assets/video/preview-<project>.mp4`: a silent 600 x 600 loop of a few seconds that covers the main panel while the card is hovered. `tools/previews.py` cuts it from the project's video, or cross-fades a few of its renders when there is no video. It needs ffmpeg and Pillow.
+
+```
+python3 tools/previews.py .                    # all previews
+python3 tools/previews.py . cuda-path-tracer   # one project
+```
+
 ## Adding a project
 
 1. Put images in `assets/img/<project>/`: a full-size WebP (long side up to 2000 px) and a `-thumb` version about 800 px wide.
 2. Add each image to `tools/manifest.json` with its width and height (`w`, `h` for the full size, `tw`, `th` for the thumbnail). Copy the shape of an existing entry.
-3. Add the project's three cover panels to `COVERS` in `tools/covers.py` and run it.
+3. Add the project's three cover panels to `COVERS` in `tools/covers.py` and its preview to `PREVIEWS` in `tools/previews.py`, then run both.
 4. Add an entry to `PROJECTS` in `tools/build.py` and rebuild. The card, the project page, the Previous / Next links and `sitemap.xml` are all written for you.
 
 ## Media

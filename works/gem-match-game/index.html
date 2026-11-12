@@ -15,7 +15,7 @@
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=5">
+<link rel="stylesheet" href="../../assets/css/site.css?v=6">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -46,12 +46,13 @@
             <li><a class="button" href="https://github.com/jichumao/Gem-Match"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
           </ul>
         </div>
-        <figure class="project-cover"><img class="" src="../../assets/img/gem-match-game/cover-thumb.webp" srcset="../../assets/img/gem-match-game/cover-thumb.webp 900w, ../../assets/img/gem-match-game/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="A grid of colourful animal-shaped gems with the game’s score panel" fetchpriority="high"></figure>
+        <figure class="project-cover"><img class="" src="../../assets/img/gem-match-game/cover-thumb.webp" srcset="../../assets/img/gem-match-game/cover-thumb.webp 900w, ../../assets/img/gem-match-game/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="A grid of colourful animal-shaped gems with the game’s score panel" fetchpriority="high"><video class="work-preview" data-autoplay muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../../assets/video/preview-gem-match-game.mp4" type="video/mp4"></video></figure>
       </div>
       <dl class="facts">
-        <div><dt>Year</dt><dd>2022</dd></div>
-        <div><dt>Type</dt><dd>Team project</dd></div>
-        <div><dt>Built with</dt><dd>C++, Qt Widgets, Easy2D</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Year</dt><dd>2021</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.5-3.2 2.7-5 5.5-5s5 1.8 5.5 5"/><path d="M15.5 5.8a3 3 0 0 1 0 5.4M17 14.3c1.9.6 3.1 2.2 3.5 4.7"/></svg>Type</dt><dd>Team project</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5h10.5a2 2 0 0 1 2 2v13H7a2 2 0 0 1-2-2z"/><path d="M5 17.5a2 2 0 0 1 2-2h10.5"/></svg>Course</dt><dd>Data structures at Beijing Jiaotong University, final project</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 8 4-8 4-8-4z"/><path d="m4 12 8 4 8-4M4 16l8 4 8-4"/></svg>Built with</dt><dd>C++, Qt Widgets, Easy2D</dd></div>
       </dl>
     </div>
   </header>
@@ -61,7 +62,7 @@
         <h2>Overview</h2>
         <div class="prose">
         <p>In this game, I was responsible for creating the game animations, developing the game client logic, and contributing to the game’s art design.</p>
-        <p>For the gem elimination animations, we implemented an animation delay-lock system to ensure that animations play correctly during consecutive eliminations.</p>
+        <p>For the gem elimination animations, we implemented an animation delay-lock system to ensure that animations play correctly during consecutive eliminations. Chains are found with graph traversal over connected gems.</p>
         </div>
       </div>
       <div class="project-media">
@@ -97,5 +98,6 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
+<script src="../../assets/js/clips.js?v=6" defer></script>
 </body>
 </html>

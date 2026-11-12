@@ -15,7 +15,7 @@
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=5">
+<link rel="stylesheet" href="../../assets/css/site.css?v=6">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -41,19 +41,19 @@
         <div class="project-title">
           <h1>World-Space ReSTIR in Vulkan</h1>
           <p class="project-lead">A world-space global illumination method in a Vulkan ray-tracing pipeline. Path samples are cached in a spatial hash grid and reused across frames and neighbouring cells.</p>
-          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Ray Tracing</li><li>Global Illumination</li><li>ReSTIR</li></ul>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Ray Tracing</li><li>Global Illumination</li><li>ReSTIR</li></ul>
           <ul class="project-links">
             <li><a class="button" href="https://github.com/zhiyi1801/CIS-565-2024Fall-Final"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
             <li><a class="button" href="https://wangningbei.github.io/2023/ReSTIR.html"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M10 12.5h5M10 16h5"/></svg>Paper</a></li>
           </ul>
         </div>
-        <figure class="project-cover"><img class="" src="../../assets/img/world-space-restir/cover-thumb.webp" srcset="../../assets/img/world-space-restir/cover-thumb.webp 900w, ../../assets/img/world-space-restir/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Subway scene split along the diagonal between the rendered image and its hash-grid cells, next to a robot test scene and Sponza" fetchpriority="high"></figure>
+        <figure class="project-cover"><img class="" src="../../assets/img/world-space-restir/cover-thumb.webp" srcset="../../assets/img/world-space-restir/cover-thumb.webp 900w, ../../assets/img/world-space-restir/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Subway scene split along the diagonal between the rendered image and its hash-grid cells, next to a robot test scene and Sponza" fetchpriority="high"><video class="work-preview" data-autoplay muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../../assets/video/preview-world-space-restir.mp4" type="video/mp4"></video></figure>
       </div>
       <dl class="facts">
-        <div><dt>Year</dt><dd>2024</dd></div>
-        <div><dt>Team</dt><dd>Two people, with Zhiyi Zhou</dd></div>
-        <div><dt>Course</dt><dd>CIS 5650 GPU Programming and Architecture at UPenn, final project</dd></div>
-        <div><dt>Built on</dt><dd>Nvidia’s Vulkan ray-tracing renderer</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Year</dt><dd>2024</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.5-3.2 2.7-5 5.5-5s5 1.8 5.5 5"/><path d="M15.5 5.8a3 3 0 0 1 0 5.4M17 14.3c1.9.6 3.1 2.2 3.5 4.7"/></svg>Team</dt><dd>Two people, with Zhiyi Zhou</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5h10.5a2 2 0 0 1 2 2v13H7a2 2 0 0 1-2-2z"/><path d="M5 17.5a2 2 0 0 1 2-2h10.5"/></svg>Course</dt><dd>CIS 5650 GPU Programming and Architecture at UPenn, final project</dd></div>
+        <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 8 4-8 4-8-4z"/><path d="m4 12 8 4 8-4M4 16l8 4 8-4"/></svg>Built on</dt><dd>Nvidia’s Vulkan ray-tracing renderer</dd></div>
       </dl>
       <ul class="stats" aria-label="Measured results">
         <li><strong>≈40%</strong><span>higher accuracy than screen-space ReSTIR in large scenes</span></li>
@@ -68,18 +68,24 @@
         <h2>Overview</h2>
         <div class="prose">
         <p>An implementation of <a href="https://wangningbei.github.io/2023/ReSTIR.html">World-Space Spatiotemporal Path Resampling for Path Tracing</a> with Vulkan ray tracing, made together with Zhiyi Zhou.</p>
-        <p>Each frame runs in five passes:</p>
-        <ul>
-          <li>G-buffer and initial path sampling</li>
-          <li>Hash grid construction: path samples go into a world-space hash grid keyed by position and normal, with cells that grow with distance from the camera</li>
-          <li>Spatiotemporal resampling: samples are reused from the previous frame and from neighbouring hash-grid cells</li>
-          <li>Final shading of direct and indirect illumination</li>
-          <li>Post-processing, including Intel Open Image Denoise</li>
-        </ul>
         <p>The renderer can switch between three paths: the ray-tracing pipeline, ray queries in a compute shader, and world-space ReSTIR.</p>
+        <h3>My part</h3>
+        <ul class="features">
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16"/></svg><div><strong>World-space hash grid</strong><span>A compound key of position and normal groups samples that are close in space and in orientation. Cells grow with distance from the camera.</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3L19.5 9"/><path d="M19.5 4.5V9H15"/><path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3L4.5 15"/><path d="M4.5 19.5V15H9"/></svg><div><strong>Temporal and spatial reuse</strong><span>Motion vectors from the camera transform carry last frame’s samples forward. Neighbours come from the hash grid and are checked by angle and depth before they join the reservoir.</span></div></li>
+          <li><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v5M12 15.5v5M3.5 12h5M15.5 12h5M6.3 6.3l3 3M14.7 14.7l3 3M17.7 6.3l-3 3M9.3 14.7l-3 3"/></svg><div><strong>Denoising</strong><span>Intel Open Image Denoise on albedo, normal and noisy colour. The round trip through the CPU costs about 250 ms per frame, which the project lists as its main bottleneck.</span></div></li>
+        </ul>
         </div>
       </div>
       <div class="project-media">
+      <h2>One frame, five passes</h2>
+      <ol class="steps">
+        <li><strong>G-buffer</strong><span>and initial path sampling</span></li>
+        <li><strong>Hash grid</strong><span>built in world space</span></li>
+        <li><strong>Resampling</strong><span>temporal, then spatial</span></li>
+        <li><strong>Shading</strong><span>direct and indirect light</span></li>
+        <li><strong>Post-process</strong><span>Open Image Denoise</span></li>
+      </ol>
       <h2>Hash grid</h2>
       <ul class="gallery two">
         <li>
@@ -213,13 +219,13 @@
       <ul class="gallery wide two">
         <li>
           <figure>
-            <a class="shot" href="../../assets/img/world-space-restir/chart-initial-sampling.webp" data-caption="Initial sampling time by scene"><img src="../../assets/img/world-space-restir/chart-initial-sampling-thumb.webp" width="800" height="346" alt="Initial sampling time by scene" loading="lazy" decoding="async"></a>
+            <a class="shot chart" href="../../assets/img/world-space-restir/chart-initial-sampling.webp" data-caption="Initial sampling time by scene"><img src="../../assets/img/world-space-restir/chart-initial-sampling-thumb.webp" width="800" height="346" alt="Initial sampling time by scene" loading="lazy" decoding="async"></a>
             <figcaption>Initial sampling time by scene</figcaption>
           </figure>
         </li>
         <li>
           <figure>
-            <a class="shot" href="../../assets/img/world-space-restir/chart-passes.webp" data-caption="Time per pass by scene"><img src="../../assets/img/world-space-restir/chart-passes-thumb.webp" width="800" height="343" alt="Time per pass by scene" loading="lazy" decoding="async"></a>
+            <a class="shot chart" href="../../assets/img/world-space-restir/chart-passes.webp" data-caption="Time per pass by scene"><img src="../../assets/img/world-space-restir/chart-passes-thumb.webp" width="800" height="343" alt="Time per pass by scene" loading="lazy" decoding="async"></a>
             <figcaption>Time per pass by scene</figcaption>
           </figure>
         </li>
@@ -250,7 +256,7 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/clips.js?v=5" defer></script>
-<script src="../../assets/js/lightbox.js?v=5" defer></script>
+<script src="../../assets/js/clips.js?v=6" defer></script>
+<script src="../../assets/js/lightbox.js?v=6" defer></script>
 </body>
 </html>
