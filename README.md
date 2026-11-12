@@ -24,6 +24,14 @@ tools/covers.py               builds the project covers
 tools/previews.py             builds the short preview loops that play on the cards
 tools/cover-src/              video frames and screenshots that the covers use
 tools/manifest.json           image and clip dimensions the generator reads
+
+photography/index.html        photography: opening picture, one tile per series, about
+photography/<series>/         one page per series
+photography/assets/           photo.css (all styles) and viewer.js (full-screen viewer), both written by hand
+photography/img/              NNN-2400.webp, NNN-1400.webp, NNN-700.webp for each photograph (long side in pixels)
+tools/photography.py          generator for the photography pages: series, order, rows, captions
+tools/photos.py               prepares new photographs (resize, sRGB, strip metadata)
+tools/photos.json             pixel sizes, placeholder colour and camera settings of each photograph
 ```
 
 ## Editing
@@ -89,6 +97,26 @@ python3 tools/previews.py . cuda-path-tracer   # one project
 2. Add each image to `tools/manifest.json` with its width and height (`w`, `h` for the full size, `tw`, `th` for the thumbnail). Copy the shape of an existing entry.
 3. Add the project's three cover panels to `COVERS` in `tools/covers.py` and its preview to `PREVIEWS` in `tools/previews.py`, then run both.
 4. Add an entry to `PROJECTS` in `tools/build.py` and rebuild. The card, the project page, the Previous / Next links and `sitemap.xml` are all written for you.
+
+## Photography
+
+`jichu.art/photography/` is a separate section with its own look (black ground, no page chrome around the pictures). It shares only the fonts and the favicon with the rest of the site, and `tools/build.py` builds it along with everything else.
+
+**How the pages are laid out.** No photograph is ever cropped on a series page. Each series is a list of rows; a row is as wide as the screen unless that would make it taller than the screen, in which case it is as tall as the screen and centred. So a row of one landscape frame fills the height, and a row of two or three frames fills the width. On a phone held upright the same sequence runs one photograph per line. The rule is three lines of CSS (`.row` in `photo.css`); the generator only supplies each photograph's aspect ratio.
+
+**Everything editable is in `tools/photography.py`:**
+
+- `SERIES`: one entry per series, in the order they appear. `rows` is the sequence, for example `[[58], [57, 54], [61]]` is one frame, then a pair, then one frame. `cover` is the photograph on the index tile. `focus` (optional) says which part of the cover to keep where a tile has to crop it.
+- `HOME_ROWS`: how the series tiles are paired on the index page. The first series has no tile; the opening picture (`HERO`) is its link.
+- `ALT`: one plain sentence per photograph. The build stops if one is missing.
+- `ABOUT`: the text at the foot of the index page.
+
+**Adding photographs.**
+
+1. Pick an unused number for each and run `python3 tools/photos.py 401 path/to/a.jpg 402 path/to/b.jpg`. It writes the three sizes into `photography/img/` and records them in `tools/photos.json`. Nothing from the file's metadata is copied (no GPS, serial number or date); only focal length, aperture, shutter speed and ISO are kept for the caption.
+2. Put the numbers into a series' `rows` (or add a new series and list it in `HOME_ROWS`), write their `ALT` lines, and rebuild.
+
+Rows read best when the aspect ratios in a row add up to between 1.5 and 3.5: one landscape; a landscape and a portrait; two squares; three portraits. A portrait on its own leaves most of a wide screen empty.
 
 ## Media
 
