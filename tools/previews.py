@@ -23,10 +23,11 @@ S = lambda proj, name: os.path.join(IMG, proj, name + ".webp")
 V = lambda name: os.path.join(VID, name + ".mp4")
 C = lambda name: os.path.join(SRC, name)
 
-def from_video(out, src, crop, start, dur, crf=None):
-    """`crf` overrides the quality for footage that compresses badly (dense particles)."""
+def from_video(out, src, crop, start, dur, crf=None, full=False):
+    """`crf` overrides the quality for footage that compresses badly (dense particles).
+    `full`: a 3:2 crop for a full-frame cover (900x600) instead of a square one."""
     x, y, w, h = crop
-    vf = f"crop={w}:{h}:{x}:{y},scale={SIZE}:{SIZE}:flags=lanczos,fps={FPS}"
+    vf = f"crop={w}:{h}:{x}:{y},scale={900 if full else SIZE}:{600 if full else SIZE}:flags=lanczos,fps={FPS}"
     enc = [str(crf) if a == "30" and crf else a for a in ENC]
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(start), "-t", str(dur), "-i", src, "-vf", vf, *enc, out], check=True)
 
@@ -72,7 +73,7 @@ PREVIEWS = {
     "webgpu-clustered-shading": ("video", V("webgpu-moving-lights"), (67, 0, 488, 488), 12.5, 5.5),
     "vulkan-grass-rendering": ("video", V("grass-showcase"), (176, 263, 444, 444), 0, 5.4),
     "cuda-flocking": ("video", V("flocking-swarm"), (40, 40, 560, 560), 0.5, 3.0, 38),
-    "stream-compaction": ("stills", [(C("stream-compaction-chart-size.png"), None), (C("stream-compaction-chart-block.png"), None)]),
+    "stream-compaction": ("stills-full", [(C("stream-compaction-stage-1.png"), None), (C("stream-compaction-stage-2.png"), None)]),   # the diagram drawing itself
     "unity-stylization": ("video", V("stylization-2"), (215, 0, 470, 470), 0, 6.0),
     "houdini-procedural": ("video", V("jellyfish"), (0, 0, 800, 800), 0, 2.3),
     "physically-based-shaders": ("stills", [(S("physically-based-shaders", n), VP) for n in
@@ -88,7 +89,8 @@ PREVIEWS = {
     "gem-match-game": ("video", V("gem-match-game"), (788, 98, 582, 582), 12, 6.0),
     "maya-3d-scene-modeling": ("stills", [(S("maya-3d-scene-modeling", "render-1"), (0, 0, 1080, 1080)), (S("maya-3d-scene-modeling", "render-3"), (380, 0, 1018, 638)),
                                           (S("maya-3d-scene-modeling", "render-4"), None), (S("maya-3d-scene-modeling", "render-5"), None)]),
-    "motion-capture": ("video", V("motion-capture"), (300, 83, 912, 912), 2, 6.0),
+    "virtual-subway": ("stills-full", [(S("virtual-subway", n), None) for n in ("side", "doors", "front", "bench", "end-door", "window")]),
+    "motion-capture": ("video-full", V("motion-capture"), (276, 84, 1368, 912), 2, 6.0),
     "houdini-fireworks": ("video", V("houdini-fireworks"), (500, 220, 860, 860), 0.6, 4.4),
 }
 
@@ -96,8 +98,8 @@ for proj, spec in PREVIEWS.items():
     if ONLY and proj not in ONLY:
         continue
     out = os.path.join(VID, f"preview-{proj}.mp4")
-    if spec[0] == "video":
-        from_video(out, *spec[1:])
+    if spec[0] in ("video", "video-full"):
+        from_video(out, *spec[1:], full=(spec[0] == "video-full"))
     else:
         from_stills(out, proj, spec[1], full=(spec[0] == "stills-full"))
     print(proj, round(os.path.getsize(out) / 1024), "KB")

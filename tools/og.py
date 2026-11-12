@@ -27,6 +27,15 @@ def card(src, dst, fx=0.5, fy=0.5):
     im.crop((x, y, x + W, y + H)).save(dst, "JPEG", quality=84, optimize=True, progressive=True)
 
 
+def home_card(src, dst):
+    """The home page's picture: the fireball from its opening, on black, with room around it."""
+    ball = Image.open(src).convert("RGB")
+    ball = ball.resize((H, H), Image.LANCZOS)
+    im = Image.new("RGB", (W, H), (0, 0, 0))
+    im.paste(ball, ((W - H) // 2, 0))
+    im.save(dst, "JPEG", quality=86, optimize=True, progressive=True)
+
+
 def photo(n):
     files = G.ph(n)["files"]
     size = next((k for k, _ in files if k == 1400), files[-1][0])
@@ -46,7 +55,7 @@ for proj in sorted(os.listdir(img)):
     cover = os.path.join(img, proj, "cover.webp")
     if os.path.exists(cover):
         card(cover, os.path.join(img, proj, "og.jpg")); n += 1
-card(os.path.join(img, "home", "hero.webp"), os.path.join(img, "home", "og.jpg"), 0.72, 0.47); n += 1
+home_card(os.path.join(img, "home", "fireball.webp"), os.path.join(img, "home", "og.jpg")); n += 1
 og = os.path.join(ROOT, "photography", "og")
 card(photo(G.SLIDES[0][0]), os.path.join(og, "index.jpg")); card(photo(G.SLIDES[0][0]), os.path.join(og, "all.jpg")); n += 2
 for s in G.SERIES:

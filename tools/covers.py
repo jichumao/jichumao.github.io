@@ -127,11 +127,8 @@ COVERS = {
         (S("monte-carlo-path-tracer", "veach-mis"), (4, 4, 972, 972)),
         (S("monte-carlo-path-tracer", "microfacet-brdfs"), (4, 4, 972, 972)),
     ],
-    "stream-compaction": [
-        (C("stream-compaction-bars.png"), None),
-        (C("stream-compaction-chart-size.png"), None),
-        (C("stream-compaction-chart-block.png"), None),
-    ],
+    # a drawing of the algorithm itself: kept elements joined to their compacted positions (cover-src/stream-compaction/diagram.py)
+    "stream-compaction": ("full", C("stream-compaction-diagram.png"), None),
     "unity-stylization": [
         (C("stylization-scene.png"), (215, 0, 685, 470)),
         (S("unity-stylization", "mode-2"), None),
@@ -164,11 +161,10 @@ COVERS = {
         (S("maya-3d-scene-modeling", "render-3"), (380, 0, 1018, 638)),
         (S("maya-3d-scene-modeling", "render-1"), (0, 0, 1080, 1080)),
     ],
-    "motion-capture": [
-        (C("mocap-kick.jpg"), (285, 285, 925, 925)),
-        (C("mocap-session.jpg"), (654, 150, 1274, 770)),
-        (C("mocap-point.jpg"), (560, 285, 1200, 925)),
-    ],
+    # one photograph across the whole frame, like the series it comes from
+    "virtual-subway": ("full", S("virtual-subway", "interior"), None),
+    # five poses cut out of the finished animation's own frames (cover-src/mocap-poses/poses.py)
+    "motion-capture": ("full", C("mocap-poses.png"), None),
     "houdini-fireworks": [
         (C("fireworks-normal.jpg"), (500, 220, 1360, 1080)),
         (C("fireworks-repulsive.jpg"), (520, 330, 1270, 1080)),

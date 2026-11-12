@@ -2,7 +2,7 @@
 // screen, so one row of the grid is in motion at a time. Hovering or focusing a card plays it
 // too. Nothing is downloaded until a preview is first needed. Off with reduced motion or data saver.
 (function () {
-  var cards = Array.prototype.slice.call(document.querySelectorAll(".work"));
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".work.feat"));
   if (!cards.length || !window.matchMedia) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   if (navigator.connection && navigator.connection.saveData) return;

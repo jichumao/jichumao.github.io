@@ -6,16 +6,20 @@
   if (!links.length) return;
 
   var title = document.body.getAttribute("data-series") || "";
+  // The page's language decides the labels (the Chinese edition is at photography/zh/).
+  var L = /^zh/.test(document.documentElement.lang)
+    ? { viewer: "照片查看器", close: "关闭", prev: "上一张", next: "下一张" }
+    : { viewer: "Photo viewer", close: "Close viewer", prev: "Previous photograph", next: "Next photograph" };
   var svg = function (d) { return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + d + '"/></svg>'; };
   var el = document.createElement("div");
   el.className = "viewer"; el.hidden = true;
-  el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-label", "Photo viewer");
+  el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-label", L.viewer);
   el.innerHTML =
     '<div class="v-stage">' +
-    '<button class="v-btn v-close" type="button" aria-label="Close viewer">' + svg("M6 6l12 12M18 6L6 18") + "</button>" +
-    '<button class="v-btn v-prev" type="button" aria-label="Previous photograph">' + svg("M15 5l-7 7 7 7") + "</button>" +
+    '<button class="v-btn v-close" type="button" aria-label="' + L.close + '">' + svg("M6 6l12 12M18 6L6 18") + "</button>" +
+    '<button class="v-btn v-prev" type="button" aria-label="' + L.prev + '">' + svg("M15 5l-7 7 7 7") + "</button>" +
     '<img class="v-img" alt="">' +
-    '<button class="v-btn v-next" type="button" aria-label="Next photograph">' + svg("M9 5l7 7-7 7") + "</button>" +
+    '<button class="v-btn v-next" type="button" aria-label="' + L.next + '">' + svg("M9 5l7 7-7 7") + "</button>" +
     '</div><p class="v-cap" aria-live="polite"><span><b class="v-title"></b> <span class="v-count"></span><span class="v-place"></span></span><span class="v-set"></span></p>';
   document.body.appendChild(el);
 

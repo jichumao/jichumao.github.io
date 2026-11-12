@@ -474,13 +474,6 @@
   "tw": 240,
   "w": 480
  },
- "home/hero": {
-  "alpha": false,
-  "h": 702,
-  "th": 351,
-  "tw": 1200,
-  "w": 2400
- },
  "houdini-fireworks/cover": {
   "alpha": false,
   "h": 1000,
@@ -762,7 +755,7 @@
  "motion-capture/cover": {
   "alpha": false,
   "h": 1000,
-  "layout": "panels",
+  "layout": "full",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -905,7 +898,7 @@
  "stream-compaction/cover": {
   "alpha": false,
   "h": 1000,
-  "layout": "panels",
+  "layout": "full",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -974,6 +967,84 @@
   "th": 451,
   "tw": 800,
   "w": 862
+ },
+ "virtual-subway/aisle": {
+  "alpha": false,
+  "h": 1349,
+  "th": 450,
+  "tw": 800,
+  "w": 2400
+ },
+ "virtual-subway/bench": {
+  "alpha": false,
+  "h": 1360,
+  "th": 453,
+  "tw": 800,
+  "w": 2400
+ },
+ "virtual-subway/cover": {
+  "alpha": false,
+  "h": 1000,
+  "layout": "full",
+  "th": 600,
+  "tw": 900,
+  "w": 1500
+ },
+ "virtual-subway/door-window": {
+  "alpha": false,
+  "h": 1342,
+  "th": 447,
+  "tw": 800,
+  "w": 2400
+ },
+ "virtual-subway/doors": {
+  "alpha": false,
+  "h": 1301,
+  "th": 434,
+  "tw": 800,
+  "w": 2400
+ },
+ "virtual-subway/end-door": {
+  "alpha": false,
+  "h": 1361,
+  "th": 454,
+  "tw": 800,
+  "w": 2400
+ },
+ "virtual-subway/front": {
+  "alpha": false,
+  "h": 1308,
+  "th": 436,
+  "tw": 800,
+  "w": 2400
+ },
+ "virtual-subway/interior": {
+  "alpha": false,
+  "h": 1369,
+  "th": 456,
+  "tw": 800,
+  "w": 2400
+ },
+ "virtual-subway/reflection": {
+  "alpha": false,
+  "h": 1352,
+  "th": 451,
+  "tw": 800,
+  "w": 2400
+ },
+ "virtual-subway/side": {
+  "alpha": false,
+  "h": 1306,
+  "th": 435,
+  "tw": 800,
+  "w": 2400
+ },
+ "virtual-subway/window": {
+  "alpha": false,
+  "h": 1327,
+  "th": 442,
+  "tw": 800,
+  "w": 2400
  },
  "vulkan-grass-rendering/chart-blade-count": {
   "alpha": false,

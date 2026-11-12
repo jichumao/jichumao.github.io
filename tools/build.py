@@ -9,7 +9,14 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "11"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "12"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+
+# Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
+# To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
+# put that code between the quotes and rebuild. Every page of the site, photography included, then reports its views.
+GOATCOUNTER = ""
+ANALYTICS = (f'\n<script data-goatcounter="https://{GOATCOUNTER}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'
+             if GOATCOUNTER else "")
 
 EMAIL = "maojichu@gmail.com"
 SOCIAL = [
@@ -27,6 +34,7 @@ ICONS = {
     "external": '<path d="M14 5h5v5"/><path d="m19 5-8.5 8.5"/><path d="M11 7H5.5v11.5H17V13"/>',
     "paper": '<path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M10 12.5h5M10 16h5"/>',
     # facts row
+    "camera": '<path d="M4 8h3l1.5-2.5h7L17 8h3v11H4z"/><circle cx="12" cy="13.2" r="3.4"/>',
     "calendar": '<rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/>',
     "user": '<circle cx="12" cy="8.5" r="3.2"/><path d="M5.5 19.5c.6-3.5 3.1-5.5 6.5-5.5s5.9 2 6.5 5.5"/>',
     "users": '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.5-3.2 2.7-5 5.5-5s5 1.8 5.5 5"/><path d="M15.5 5.8a3 3 0 0 1 0 5.4M17 14.3c1.9.6 3.1 2.2 3.5 4.7"/>',
@@ -55,7 +63,7 @@ ICONS = {
     "particles": '<circle cx="7" cy="8" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="18" cy="13" r="1.4"/><circle cx="10.5" cy="13.5" r="1.4"/><circle cx="6" cy="18" r="1.4"/><circle cx="14.5" cy="18.5" r="1.4"/>',
 }
 FACT_ICONS = {"Year": "calendar", "Team": "users", "Type": "user", "Course": "book", "Built on": "layers", "Built with": "layers",
-              "Tested on": "chip", "Reference": "paper", "Recorded at": "pin", "Maya plugin": "layers", "Houdini plugin": "layers"}
+              "Tested on": "chip", "Reference": "paper", "Recorded at": "pin", "Shot with": "camera", "Maya plugin": "layers", "Houdini plugin": "layers"}
 
 def icon(name):
     return (f'<svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" '
@@ -283,7 +291,7 @@ PROJECTS = [
     "tags": ["C++", "CUDA", "GPU Programming", "Parallel Algorithms", "Performance Profiling", "Nsight Compute"],
     "excerpt": "Scan and stream compaction on the GPU in CUDA, profiled with Nsight Compute. The work-efficient scan handles 134 million elements in 26 ms; the CPU needs 190.",
     "lead": "Prefix-sum scan and stream compaction in CUDA: a CPU baseline, a naive GPU scan, a work-efficient GPU scan and Thrust, timed against each other and profiled with Nsight Compute.",
-    "cover_alt": "Bar chart of scan times on 134 million elements, with line charts of run time by array size and by block size",
+    "cover_alt": "Diagram of stream compaction: a row of 32 cells, 16 of them filled, and below it the same 16 packed to the front, each joined to its new position by a curve",
     "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5650 GPU Programming and Architecture at UPenn"),
               ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
     "stats": [("190.1 → 26.2 ms", "exclusive scan of 134 million elements, CPU against the work-efficient GPU scan"),
@@ -366,6 +374,32 @@ PROJECTS = [
       ("gallery-wide", [shot("screenshot-1", "", "Mini Minecraft title screen over procedural terrain"), shot("screenshot-2", "", "Mini Minecraft in-game screenshot")]),
       ("h2", "Biomes"),
       ("gallery", [shot("biome-grassland", "Grassland"), shot("biome-desert", "Desert"), shot("biome-snow", "Snowfield"), shot("biome-mountain", "Mountain")]),
+    ],
+  },
+  {
+    "slug": "virtual-subway", "old": "", "img": "virtual-subway",
+    "title": "Virtual Subway", "cats": ["art"], "year": "2025", "kind": "Individual project",
+    "tags": ["Unreal Engine", "Photography", "Black and White"],
+    "excerpt": "A subway car built in Unreal Engine, then photographed off a 4K monitor with a Canon 5D Mark IV and a polarising filter.",
+    "lead": "A subway car that exists only in Unreal Engine, photographed with a real camera: a Canon 5D Mark IV pointed at a 4K monitor.",
+    "cover_alt": "Black-and-white photograph of an empty subway car interior, benches along both sides",
+    "links": [("See it as a photo series", SITE + "/photography/subway/", "external")],
+    "facts": [("Year", "2025"), ("Type", "Individual project"), ("Course", "Photography class, final project"),
+              ("Built with", "Unreal Engine"), ("Shot with", "Canon 5D Mark IV, 50 mm lens, polarising filter")],
+    "blocks": [
+      ("p", "This was my final project for a photography class. The subject is not a real place: I built the subway scene in Unreal Engine on my own computer, then photographed it the way I would photograph a real one."),
+      ("p", "Each frame is a photograph of my 4K monitor, taken with a Canon 5D Mark IV and a 50 mm lens with a polarising filter on it. Afterwards I edited the photographs to take the digital edge off the image."),
+      ("p", "The result is ten black-and-white photographs: the outside of the car, its doors and windows, and the empty interior."),
+      ("gallery-wide", [shot("interior", "", "The empty interior of the car, benches along both sides")]),
+      ("gallery", [shot("side", "", "The side of the car: the number 8805 and a flag decal beside a window"),
+                   shot("doors", "", "The car's double doors, with stickers reading 'Do not hold doors'"),
+                   shot("front", "", "The end of the car, with its headlights and end door"),
+                   shot("door-window", "", "A door window beside a 'No exit' sign and graffiti")]),
+      ("gallery-wide", [shot("aisle", "", "The aisle seen from floor level")]),
+      ("gallery", [shot("end-door", "", "The door at the end of the car, graffiti on the wall beside it"),
+                   shot("bench", "", "A bench and a framed poster seen across the aisle"),
+                   shot("reflection", "", "Ceiling lights and advertisements blurred and mirrored in a window"),
+                   shot("window", "", "Looking into the car through a window; the sign above the seats reads 'Emergency'")]),
     ],
   },
   {
@@ -572,7 +606,7 @@ PROJECTS = [
     "tags": ["Motion Capture", "MotionBuilder", "Character Animation"],
     "excerpt": "Motion capture recorded at UPenn’s SIG Lab and finished in MotionBuilder: three actions cleaned up and blended into one animation.",
     "lead": "A motion capture animation, from the capture session to the finished clip: recorded with the equipment of the SIG Lab at the University of Pennsylvania and produced in MotionBuilder 2024.",
-    "cover_alt": "A robot character mid-kick in MotionBuilder, next to the capture session it was recorded from",
+    "cover_alt": "Five poses of a robot character from the finished animation, side by side: a stride, a high kick, a hand shading the eyes, a pointing arm and a walk away",
     "facts": [("Year", "2023"), ("Type", "Individual project"), ("Recorded at", "SIG Lab, University of Pennsylvania"), ("Built with", "MotionBuilder 2024")],
     "blocks": [
       ("p", "The capture data was cleaned up and retargeted in MotionBuilder. I removed the T-pose between three different actions and smoothed the transitions."),
@@ -598,20 +632,20 @@ PROJECTS = [
 ]
 
 HOME_ABOUT = [
-    "Hi! I’m Jichu! I am really glad that you have come to my website!",
-    "I’m a <strong>Graphics Performance Engineer</strong> at <strong>TikTok</strong>, optimizing its real-time effect rendering engine. I graduated from the University of Pennsylvania (UPenn) in <strong>May 2026</strong> with a master’s in <strong>Computer Science &amp; Computer Graphics</strong>.",
-    'Before that, I interned at TikTok, <a href="https://www.infoldgames.com/en/home">Infold Games</a>, <a href="https://www.apple.com/">Apple Inc.</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a>, and was a teaching assistant for UPenn’s computer graphics courses. During my studies in Software Engineering and Computer Graphics, I designed &amp; developed various interesting games and software toolkits.',
-    "I have shared my previous works here, and I will be really excited if you like it! &lt;3",
-    'Away from the GPU I take photographs: landscapes, cities after dark and the odd portrait. <a href="photography/">See the photographs</a>.',
+    "I’m a <strong>Graphics Performance Engineer</strong> at <strong>TikTok</strong>, working on the real-time effect rendering engine. I hold a master’s in Computer Science &amp; Computer Graphics from the University of Pennsylvania (May 2026).",
+    'Before that I interned at TikTok, <a href="https://www.infoldgames.com/en/home">Infold Games</a>, <a href="https://www.apple.com/">Apple</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a>, and was a teaching assistant for Penn’s computer graphics courses. Away from the GPU I take <a href="photography/">photographs</a>.',
 ]
 
 ABOUT_INTRO = [
-    "Hi! I’m Jichu! I am really glad that you have come to my website!",
     "I’m a <strong>Graphics Performance Engineer</strong> at <strong>TikTok</strong>, where I optimize the real-time effect rendering engine used by hundreds of millions of creators every day.",
-    "I graduated from the University of Pennsylvania (UPenn) in May 2026 with a Master of Science in Engineering in Computer Science &amp; Computer Graphics. I specialize in GPU rendering, real-time graphics and advanced rendering techniques, with hands-on experience in CUDA, OpenGL, Vulkan and Unreal Engine.",
-    "During my studies in Software Engineering and Computer Graphics, I designed &amp; developed various interesting games and software toolkits.",
-    'Away from the GPU I take photographs: landscapes, cities after dark and the odd portrait. <a href="../photography/">See the photographs</a>.',
+    "I graduated from the University of Pennsylvania in May 2026 with a Master of Science in Engineering in Computer Science &amp; Computer Graphics. I specialize in GPU rendering, real-time graphics and advanced rendering techniques, with hands-on experience in CUDA, OpenGL, Vulkan and Unreal Engine.",
+    'The projects on this site come from those years: renderers, shaders, tools and games. Away from the GPU I take photographs: landscapes, cities after dark and the odd portrait. <a href="../photography/">See the photographs</a>.',
 ]
+
+# The projects shown large at the top of the home page, in this order. The first gets the widest card.
+FEATURED = ["world-space-restir", "cuda-path-tracer", "webgpu-clustered-shading", "vulkan-grass-rendering", "cuda-flocking"]
+RESUME = "assets/Jichu-Mao-Resume.pdf"
+
 WORK = [
     ("TikTok", "Jul 2026 – Present", "Graphics Performance Engineer",
      "Optimizing TikTok’s real-time effect rendering engine (C++), used by hundreds of millions of creators daily: frame-rate and latency optimization across the GPU pipeline, shaders, memory and thread scheduling on Android, plus performance profiling and AI-assisted regression analysis across low-end to flagship devices."),
@@ -658,8 +692,8 @@ def social(indent="      "):
     items = "".join(f'\n{indent}  <li><a href="{E(u)}">{icon(i)}{E(n)}</a></li>' for n, u, i in SOCIAL)
     return f'<ul class="social">{items}\n{indent}</ul>'
 
-def tags_html(p, indent="        "):
-    items = "".join(f'<li class="cat">{E(CAT_LABEL[c])}</li>' for c in p["cats"]) + "".join(f"<li>{E(t)}</li>" for t in p["tags"])
+def tags_html(p, indent="        ", limit=None):
+    items = "".join(f'<li class="cat">{E(CAT_LABEL[c])}</li>' for c in p["cats"]) + "".join(f"<li>{E(t)}</li>" for t in p["tags"][:limit])
     return f'{indent}<ul class="tags" aria-label="Category and tech stack">{items}</ul>'
 
 PERSON = json.dumps({
@@ -672,7 +706,7 @@ PERSON = json.dumps({
 
 def page(*, root, path, title, desc, body, og_image, current="", scripts=(), person=False):
     canonical = f"{SITE}/{path}"
-    nav = [("Works", f"{root}#works", "works"), ("About", f"{root}about/", "about"), ("Photography", f"{root}photography/", "photography")]
+    nav = [("Works", f"{root}#works", "works"), ("Photography", f"{root}photography/", "photography"), ("About", f"{root}about/", "about")]
     cur = ' aria-current="page"'
     nav_html = "".join(f'\n      <a href="{u}"{cur if key == current else ""}>{n}</a>' for n, u, key in nav)
     js = "".join(f'\n<script src="{root}assets/js/{s}?v={ASSET_V}" defer></script>' for s in scripts)
@@ -698,15 +732,14 @@ def page(*, root, path, title, desc, body, og_image, current="", scripts=(), per
 <link rel="icon" href="{root}assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="{root}assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{root}assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{root}assets/css/site.css?v={ASSET_V}">
+<link rel="stylesheet" href="{root}assets/css/site.css?v={ASSET_V}">{ANALYTICS}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="site-header">
-  <div class="wrap">
-    <p class="site-title"><a href="{root}">Jichu · Art</a></p>
-    <p class="site-tagline">A site about Jichu &amp; Art</p>
+  <div class="wrap site-bar">
+    <a class="site-name" href="{root or "./"}">Jichu Mao</a>
     <nav class="site-nav" aria-label="Main">{nav_html}
     </nav>
   </div>
@@ -869,46 +902,71 @@ def links_html(proj):
 
 def build_home():
     root = ""
-    cards = []
-    for p in PROJECTS:
-        cards.append(f"""      <li class="work" data-cats="{" ".join(p["cats"])}">
-        <div class="work-frame{frame_cls(p)}">{cover_tag(p, root, cls="work-thumb", sizes="(max-width: 900px) calc(100vw - 40px), 668px")}<video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-{p["img"]}.mp4"></video><span class="work-live" aria-hidden="true">{icon("play")}Preview</span></div>
-{meta_html(p)}
-        <h3><a href="works/{p["slug"]}/">{E(p["title"])}</a></h3>
-{tags_html(p)}
-        <p class="work-excerpt">{E(p["excerpt"])}</p>
-        <span class="button" aria-hidden="true">Read more</span>
+    by = {p["slug"]: p for p in PROJECTS}
+    frame = lambda p, tag: (f'<div class="work-frame{frame_cls(p)}">{tag}<video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" '
+                            f'data-src="assets/video/preview-{p["img"]}.mp4"></video><span class="work-live" aria-hidden="true">{icon("play")}Preview</span></div>')
+    feats = []
+    for i, slug in enumerate(FEATURED):
+        p = by[slug]
+        lead = i == 0
+        sizes = "(max-width: 900px) calc(100vw - 40px), 780px" if lead else "(max-width: 900px) calc(100vw - 40px), 668px"
+        stats = ""
+        if lead and p.get("stats"):
+            stats = '\n          <ul class="feat-stats">' + "".join(f"<li><strong>{E(n)}</strong><span>{E(t)}</span></li>" for n, t in p["stats"][:3]) + "</ul>"
+        feats.append(f"""      <li class="work feat{" lead" if lead else ""}">
+        {frame(p, cover_tag(p, root, cls="work-thumb", sizes=sizes, lazy=not lead))}
+        <div class="feat-text">
+{meta_html(p, "          ")}
+          <h3><a href="works/{p["slug"]}/">{E(p["title"])}</a></h3>
+          <p class="work-excerpt">{E(p["excerpt"])}</p>{stats}
+{tags_html(p, "          ", limit=3)}
+        </div>
       </li>""")
-    counts = {c: sum(c in p["cats"] for p in PROJECTS) for c, _ in CATEGORIES}
-    filters = f'<button type="button" data-cat="all" aria-pressed="true">All <span>{len(PROJECTS)}</span></button>' + "".join(
-        f'<button type="button" data-cat="{c}" aria-pressed="false">{E(label)} <span>{counts[c]}</span></button>' for c, label in CATEGORIES)
+    rest = [p for p in PROJECTS if p["slug"] not in FEATURED]
+    minis = []
+    for p in rest:
+        m = MAN[f'{p["img"]}/cover']
+        base = f'assets/img/{p["img"]}/cover'
+        tag = (f'<img class="work-thumb" src="{base}-mini.webp" srcset="{base}-mini.webp 360w, {base}-thumb.webp {m["tw"]}w" '
+               f'sizes="(max-width: 600px) 116px, (max-width: 1000px) 46vw, 420px" width="{m["w"]}" height="{m["h"]}" alt="" loading="lazy" decoding="async">')
+        minis.append(f"""      <li class="work mini" data-cats="{" ".join(p["cats"])}">
+        <div class="work-frame">{tag}</div>
+        <h3><a href="works/{p["slug"]}/">{E(p["title"])}</a></h3>
+        <p class="work-meta"><span>{E(CAT_LABEL[p["cats"][0]])}</span><span>{E(p["year"])}</span></p>
+      </li>""")
+    counts = {c: sum(c in p["cats"] for p in rest) for c, _ in CATEGORIES}
+    filters = f'<button type="button" data-cat="all" aria-pressed="true">All <span>{len(rest)}</span></button>' + "".join(
+        f'<button type="button" data-cat="{c}" aria-pressed="false">{E(label)} <span>{counts[c]}</span></button>' for c, label in CATEGORIES if counts[c])
     about = "\n".join(f"      <p>{t}</p>" for t in HOME_ABOUT)
-    hero = MAN["home/hero"]
     body = f"""<section class="hero">
-  <div class="hero-media">
-    <img class="hero-art" src="assets/img/home/hero.webp" srcset="assets/img/home/hero-thumb.webp 1200w, assets/img/home/hero.webp 2400w" sizes="100vw" width="{hero["w"]}" height="{hero["h"]}" alt="" fetchpriority="high">
-    <canvas class="hero-canvas" aria-hidden="true"></canvas>
-  </div>
-  <div class="wrap hero-text">
-    <p class="hero-year" id="year">2026</p>
-    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
-    <h1>Jichu Mao</h1>
-    <p class="hero-role">Graphics Performance Engineer at TikTok</p>
-    <p class="hero-lead">I work on real-time rendering and GPU performance. This site is my hub for art, CG and games: the renderers, shaders, tools and games I’ve built along the way.</p>
-    <p class="hero-actions"><a class="button-fill" href="#works">See the work</a><a class="button" href="about/">About me</a></p>
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <h1>Graphics performance engineer at TikTok</h1>
+      <p class="hero-lead">I work on real-time rendering and GPU performance. These are the renderers, shaders, tools and games I’ve built along the way.</p>
+      <p class="hero-actions"><a class="button-fill" href="#works">See the work</a><a class="button" href="about/">About me</a></p>
+    </div>
+    <figure class="hero-stage">
+      <div class="hero-media">
+        <img class="hero-art" src="assets/img/home/fireball.webp" srcset="assets/img/home/fireball-thumb.webp 600w, assets/img/home/fireball.webp 1200w" sizes="(max-width: 900px) 72vw, 600px" width="1200" height="1200" alt="A ball of orange, yellow and red flame-like spikes" fetchpriority="high">
+        <canvas class="hero-canvas" data-shaders="assets/shaders/" data-distance="2.9" aria-hidden="true"></canvas>
+      </div>
+      <figcaption><a href="works/procedural-fireball/">Procedural Fireball</a>, running live in your browser: about 240 lines of GLSL</figcaption>
+    </figure>
   </div>
 </section>
 
 <section class="works" id="works">
   <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Portfolio</p>
-      <h2>Selected Works</h2>
-      <p>Renderers, shaders, tools, games and animation. Open a project for demos, renders and source code.</p>
-      <div class="work-filter" role="group" aria-label="Filter works by category" hidden>{filters}</div>
+    <h2 class="section-title">Selected work</h2>
+    <ul class="feat-grid">
+{chr(10).join(feats)}
+    </ul>
+    <div class="more-head">
+      <h2 class="section-title">More work</h2>
+      <div class="work-filter" role="group" aria-label="Filter the projects below by category" hidden>{filters}</div>
     </div>
-    <ul class="work-grid">
-{chr(10).join(cards)}
+    <ul class="mini-grid">
+{chr(10).join(minis)}
     </ul>
   </div>
 </section>
@@ -920,10 +978,9 @@ def build_home():
       {social()}
     </div>
     <div class="about-main">
-      <p class="eyebrow">About me</p>
-      <h2>Jichu Mao</h2>
+      <h2>About</h2>
 {about}
-      <a class="button-fill" href="about/">Read more</a>
+      <p class="about-actions"><a class="button-fill" href="about/">More about me</a><a class="button" href="{RESUME}">Résumé (PDF)</a></p>
     </div>
   </div>
 </section>"""
@@ -1001,6 +1058,7 @@ def build_about():
     <div class="about-main">
       <h1>Jichu Mao</h1>
 {intro}
+      <p class="about-actions"><a class="button" href="{root}{RESUME}">Résumé (PDF)</a></p>
       <div class="cv">
         <h2>Work Experience</h2>
         <ul class="cv-list">
@@ -1037,6 +1095,104 @@ def redirect(rel_dir, target_rel, target_abs_path):
 </head>
 <body>
 <p>This page has moved. <a href="{target_rel}">Continue</a>.</p>
+</body>
+</html>
+""")
+
+def build_resume():
+    """A one-page résumé written from the same data as the About page. tools/resume.py prints it to the PDF at RESUME."""
+    root = "../"
+    by = {p["slug"]: p for p in PROJECTS}
+    jobs = "\n".join(f"""    <div class="item">
+      <p class="line"><span><strong>{E(org)}</strong>, {E(role)}</span><span class="when">{E(dates)}</span></p>
+      <p>{E(desc)}</p>
+    </div>""" for org, dates, role, desc in WORK)
+    projects = "\n".join(f"""    <div class="item">
+      <p class="line"><span><strong><a href="{SITE}/works/{slug}/">{E(by[slug]["title"])}</a></strong>, {E(by[slug]["kind"].lower())}</span><span class="when">{E(by[slug]["year"])}</span></p>
+      <p>{E(by[slug]["excerpt"])}</p>
+    </div>""" for slug in FEATURED)
+    edu = "\n".join(f'      <div class="item"><p class="line"><strong>{E(org)}</strong><span class="when">{E(dates)}</span></p><p>{E(what)}</p></div>' for org, dates, what in EDU)
+    skills = "\n".join(f"      <p><strong>{E(k)}:</strong> {E(v)}</p>" for k, v in SKILLS)
+    links = " · ".join(f'<a href="{E(u)}">{E(u.split("//")[1].removeprefix("www.").rstrip("/"))}</a>' for _, u, _ in SOCIAL[:2])
+    write("resume/index.html", f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jichu Mao – Résumé</title>
+<meta name="description" content="Résumé of Jichu Mao, Graphics Performance Engineer at TikTok: experience, selected projects, education and skills.">
+<link rel="canonical" href="{SITE}/resume/">
+<link rel="icon" href="{root}assets/favicon.svg" type="image/svg+xml">{ANALYTICS}
+<style>
+@font-face {{ font-family: "Playfair Display"; src: url("{root}assets/fonts/playfair-display-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }}
+@font-face {{ font-family: "Open Sans"; src: url("{root}assets/fonts/open-sans-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }}
+@font-face {{ font-family: "Open Sans"; src: url("{root}assets/fonts/open-sans-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; }}
+@page {{ size: Letter; margin: .42in .6in; }}
+* {{ box-sizing: border-box; }}
+html {{ -webkit-text-size-adjust: 100%; }}
+body {{ margin: 0; background: #1b1b1b; color: #111; font: 400 9pt/1.42 "Open Sans", Arial, sans-serif; }}
+a {{ color: inherit; text-decoration: none; }}
+.bar {{ max-width: 8.5in; margin: 0 auto; padding: 18px 4px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }}
+.bar a {{ color: #fff; }}
+.bar .get {{ padding: 9px 18px; background: #db4f3d; font-weight: 600; }}
+.sheet {{ max-width: 8.5in; margin: 0 auto 40px; padding: .42in .6in; background: #fff; }}
+h1 {{ margin: 0; font: 700 24pt/1.05 "Playfair Display", Georgia, serif; }}
+.head {{ display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding-bottom: 9pt; border-bottom: 1.2pt solid #111; }}
+.role {{ margin: 4pt 0 0; font-size: 10.5pt; }}
+.contact {{ margin: 0; text-align: right; line-height: 1.55; }}
+.contact a, .sheet section a {{ text-decoration: underline; text-decoration-color: #db4f3d; text-decoration-thickness: .7pt; text-underline-offset: 2.2pt; }}
+h2 {{ margin: 11pt 0 4.5pt; font: 700 12.5pt/1.2 "Playfair Display", Georgia, serif; }}
+p {{ margin: 0; }}
+strong {{ font-weight: 600; }}
+.item {{ margin-bottom: 5.6pt; break-inside: avoid; }}
+.line {{ display: flex; justify-content: space-between; gap: 14px; }}
+.when {{ flex: none; color: #555; }}
+.item p + p {{ color: #2b2b2b; }}
+.pair {{ break-inside: avoid; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 .4in; }}
+.skills p + p {{ margin-top: 2.5pt; }}
+@media (max-width: 640px) {{
+  body {{ font-size: 14px; }}
+  .sheet {{ padding: 24px 20px; }}
+  .head, .line {{ flex-direction: column; align-items: flex-start; gap: 2px; }}
+  .pair {{ grid-template-columns: minmax(0, 1fr); }}
+  .contact {{ text-align: left; margin-top: 10px; }}
+}}
+@media print {{
+  body {{ background: #fff; }}
+  .bar {{ display: none; }}
+  .sheet {{ max-width: none; margin: 0; padding: 0; }}
+}}
+</style>
+</head>
+<body>
+<p class="bar"><a href="{root}">← jichu.art</a><a class="get" href="{root}{RESUME}" download>Download PDF</a></p>
+<main class="sheet">
+  <header class="head">
+    <div>
+      <h1>Jichu Mao</h1>
+      <p class="role">Graphics Performance Engineer</p>
+    </div>
+    <p class="contact"><a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="{SITE}/">jichu.art</a><br>{links}</p>
+  </header>
+  <section>
+    <h2>Experience</h2>
+{jobs}
+  </section>
+  <section>
+    <h2>Selected projects</h2>
+{projects}
+  </section>
+  <div class="pair">
+    <section>
+      <h2>Education</h2>
+{edu}
+    </section>
+    <section class="skills">
+      <h2>Skills</h2>
+{skills}
+    </section>
+  </div>
+</main>
 </body>
 </html>
 """)
@@ -1080,7 +1236,7 @@ def build_misc():
     write(".nojekyll", "")
     write("CNAME", "jichu.art\n")
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
-    urls = [""] + ["about/"] + [f'works/{p["slug"]}/' for p in PROJECTS] + PHOTO_PAGES
+    urls = [""] + ["about/", "resume/"] + [f'works/{p["slug"]}/' for p in PROJECTS] + PHOTO_PAGES
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
           + "".join(f"  <url><loc>{SITE}/{u}</loc></url>\n" for u in urls) + "</urlset>\n")
 
@@ -1088,7 +1244,7 @@ def build_misc():
 # one command rebuilds the whole site and its pages land in the sitemap.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import photography
-PHOTO_PAGES = photography.build(OUT, ASSET_V)
+PHOTO_PAGES = photography.build(OUT, ASSET_V, analytics=ANALYTICS)
 
-build_home(); build_projects(); build_about(); build_redirects(); build_misc()
+build_home(); build_projects(); build_about(); build_resume(); build_redirects(); build_misc()
 print("built", len(PROJECTS), "project pages and", len(PHOTO_PAGES), "photography pages")
