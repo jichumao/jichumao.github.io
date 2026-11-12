@@ -13,7 +13,7 @@ index.php/<old-slug>/         redirects from the old WordPress URLs
 assets/css/site.css           all styles
 assets/js/hero.js             home hero: WebGL shader that makes the artwork drift (falls back to the plain image)
 assets/js/works.js            category filter on the works grid
-assets/js/previews.js         plays a card's preview while it is hovered (or, on touch screens, in the middle of the screen)
+assets/js/previews.js         plays a card's preview while the card is in the middle of the screen, or hovered
 assets/js/clips.js            plays the short looping clips, and the preview on a project page's cover, while they are on screen
 assets/js/lightbox.js         full-size image viewer for galleries
 assets/img/<project>/         images (WebP): name.webp is full size, name-thumb.webp is the thumbnail
@@ -58,13 +58,13 @@ python3 tools/build.py . tools/manifest.json
 
 A quick text fix can also be made straight in the HTML. Make the same change in `tools/build.py`, otherwise the next rebuild overwrites it.
 
-The stylesheet and scripts are linked as `site.css?v=7`, `hero.js?v=7`, and so on. After changing one of them, raise `ASSET_V` in `tools/build.py` and rebuild, so browsers fetch the new file instead of a cached one.
+The stylesheet and scripts are linked as `site.css?v=8`, `hero.js?v=8`, and so on. After changing one of them, raise `ASSET_V` in `tools/build.py` and rebuild, so browsers fetch the new file instead of a cached one.
 
 All links are relative, so the site works both at a domain root and under a sub-path.
 
 ## Covers
 
-Every project uses the same cover layout, 1500 x 1000 px: a square main panel on the left and two square tiles on the right, with no text in the image. `tools/covers.py` lists, per project, the three source images and the crop for each. Page images are read from `assets/img/<project>/`; video frames and other screenshots from `tools/cover-src/`.
+Every cover is 1500 x 1000 px. Most use a square main panel on the left and two square tiles on the right. A project with one strong wide image can use it across the whole frame instead: write its entry as `("full", image, crop)`. Mini Minecraft does, with the team's own title art. `tools/covers.py` lists, per project, the three source images and the crop for each. Page images are read from `assets/img/<project>/`; video frames and other screenshots from `tools/cover-src/`.
 
 ```
 python3 tools/covers.py . tools/manifest.json                 # all covers
@@ -76,7 +76,7 @@ The script needs Pillow and NumPy (`pip install pillow numpy`). For each project
 
 ### Previews
 
-Each card also has `assets/video/preview-<project>.mp4`: a silent 600 x 600 loop of a few seconds that covers the main panel while the card is hovered. `tools/previews.py` cuts it from the project's video, or cross-fades a few of its renders when there is no video. It needs ffmpeg and Pillow.
+Each card also has `assets/video/preview-<project>.mp4`: a silent 600 x 600 loop of a few seconds that covers the main panel (900 x 600 over the whole frame for a full-frame cover). It plays while the card is in the middle of the screen or hovered. `tools/previews.py` cuts it from the project's video, or cross-fades a few of its renders when there is no video. It needs ffmpeg and Pillow.
 
 ```
 python3 tools/previews.py .                    # all previews

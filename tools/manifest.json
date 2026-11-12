@@ -9,6 +9,7 @@
  "animation-toolkit/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -122,6 +123,7 @@
  "cuda-flocking/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -192,6 +194,7 @@
  "cuda-path-tracer/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -325,6 +328,7 @@
  "gem-match-game/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -353,6 +357,7 @@
  "glsl-shaders/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -479,6 +484,7 @@
  "houdini-fireworks/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -514,6 +520,7 @@
  "houdini-procedural/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -556,6 +563,7 @@
  "maya-3d-scene-modeling/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -626,6 +634,7 @@
  "mini-minecraft/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "full",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -647,6 +656,7 @@
  "monte-carlo-path-tracer/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -752,6 +762,7 @@
  "motion-capture/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -759,6 +770,7 @@
  "physically-based-shaders/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -871,6 +883,7 @@
  "procedural-fireball/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -892,6 +905,7 @@
  "stream-compaction/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -906,6 +920,7 @@
  "tree-creator/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -913,6 +928,7 @@
  "unity-stylization/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -976,6 +992,7 @@
  "vulkan-grass-rendering/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -990,6 +1007,7 @@
  "webgpu-clustered-shading/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -1046,6 +1064,7 @@
  "world-space-restir/cover": {
   "alpha": false,
   "h": 1000,
+  "layout": "panels",
   "th": 600,
   "tw": 900,
   "w": 1500
