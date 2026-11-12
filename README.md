@@ -23,6 +23,7 @@ assets/fonts/                 Playfair Display and Open Sans (SIL Open Font Lice
 - Text: edit the HTML file of the page directly.
 - The header, navigation and footer are repeated in every page. If you change one, change it in all of them (search for `site-header` / `site-footer`).
 - All links are relative, so the site works both at a domain root and under a sub-path.
+- The stylesheet and scripts are linked as `site.css?v=3`, `hero.js?v=3`, … After changing one of them, bump that number in every page so browsers fetch the new file instead of a cached one.
 
 ## Adding a project
 
