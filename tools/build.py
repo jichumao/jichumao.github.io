@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "8"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "9"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 EMAIL = "maojichu@gmail.com"
 SOCIAL = [
@@ -601,6 +601,7 @@ HOME_ABOUT = [
     "I’m a <strong>Graphics Performance Engineer</strong> at <strong>TikTok</strong>, optimizing its real-time effect rendering engine. I graduated from the University of Pennsylvania (UPenn) in <strong>May 2026</strong> with a master’s in <strong>Computer Science &amp; Computer Graphics</strong>.",
     'Before that, I interned at TikTok, <a href="https://www.infoldgames.com/en/home">Infold Games</a>, <a href="https://www.apple.com/">Apple Inc.</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a>, and was a teaching assistant for UPenn’s computer graphics courses. During my studies in Software Engineering and Computer Graphics, I designed &amp; developed various interesting games and software toolkits.',
     "I have shared my previous works here, and I will be really excited if you like it! &lt;3",
+    'Away from the GPU I take photographs: landscapes, cities after dark and the odd portrait. <a href="photography/">See the photographs</a>.',
 ]
 
 ABOUT_INTRO = [
@@ -608,6 +609,7 @@ ABOUT_INTRO = [
     "I’m a <strong>Graphics Performance Engineer</strong> at <strong>TikTok</strong>, where I optimize the real-time effect rendering engine used by hundreds of millions of creators every day.",
     "I graduated from the University of Pennsylvania (UPenn) in May 2026 with a Master of Science in Engineering in Computer Science &amp; Computer Graphics. I specialize in GPU rendering, real-time graphics and advanced rendering techniques, with hands-on experience in CUDA, OpenGL, Vulkan and Unreal Engine.",
     "During my studies in Software Engineering and Computer Graphics, I designed &amp; developed various interesting games and software toolkits.",
+    'Away from the GPU I take photographs: landscapes, cities after dark and the odd portrait. <a href="../photography/">See the photographs</a>.',
 ]
 WORK = [
     ("TikTok", "Jul 2026 – Present", "Graphics Performance Engineer",
@@ -659,7 +661,7 @@ def tags_html(p, indent="        "):
 
 def page(*, root, path, title, desc, body, og_image, current="", scripts=()):
     canonical = f"{SITE}/{path}"
-    nav = [("Works", f"{root}#works", "works"), ("About", f"{root}about/", "about")]
+    nav = [("Works", f"{root}#works", "works"), ("About", f"{root}about/", "about"), ("Photography", f"{root}photography/", "photography")]
     cur = ' aria-current="page"'
     nav_html = "".join(f'\n      <a href="{u}"{cur if key == current else ""}>{n}</a>' for n, u, key in nav)
     js = "".join(f'\n<script src="{root}assets/js/{s}?v={ASSET_V}" defer></script>' for s in scripts)
@@ -1062,9 +1064,15 @@ def build_misc():
     write(".nojekyll", "")
     write("CNAME", "jichu.art\n")
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
-    urls = [""] + ["about/"] + [f'works/{p["slug"]}/' for p in PROJECTS]
+    urls = [""] + ["about/"] + [f'works/{p["slug"]}/' for p in PROJECTS] + PHOTO_PAGES
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
           + "".join(f"  <url><loc>{SITE}/{u}</loc></url>\n" for u in urls) + "</urlset>\n")
 
+# The photography section has its own generator (tools/photography.py); it is built here so that
+# one command rebuilds the whole site and its pages land in the sitemap.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import photography
+PHOTO_PAGES = photography.build(OUT, ASSET_V)
+
 build_home(); build_projects(); build_about(); build_redirects(); build_misc()
-print("built", len(PROJECTS), "project pages")
+print("built", len(PROJECTS), "project pages and", len(PHOTO_PAGES), "photography pages")
