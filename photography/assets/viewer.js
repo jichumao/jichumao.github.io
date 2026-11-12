@@ -16,7 +16,7 @@
     '<button class="v-btn v-prev" type="button" aria-label="Previous photograph">' + svg("M15 5l-7 7 7 7") + "</button>" +
     '<img class="v-img" alt="">' +
     '<button class="v-btn v-next" type="button" aria-label="Next photograph">' + svg("M9 5l7 7-7 7") + "</button>" +
-    '</div><p class="v-cap" aria-live="polite"><span><b class="v-title"></b> <span class="v-count"></span></span><span class="v-set"></span></p>';
+    '</div><p class="v-cap" aria-live="polite"><span><b class="v-title"></b> <span class="v-count"></span><span class="v-place"></span></span><span class="v-set"></span></p>';
   document.body.appendChild(el);
 
   var stage = el.querySelector(".v-stage"), img = el.querySelector(".v-img"), cap = el.querySelector(".v-cap");
@@ -52,6 +52,7 @@
     img.src = a.href;
     el.querySelector(".v-title").textContent = title;
     el.querySelector(".v-count").textContent = (i + 1) + " / " + links.length;
+    el.querySelector(".v-place").textContent = a.dataset.cap || "";
     el.querySelector(".v-set").textContent = a.dataset.settings || "";
     prev.disabled = i === 0; next.disabled = i === links.length - 1;
     history.replaceState(history.state, "", "#" + (i + 1));

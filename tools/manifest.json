@@ -920,7 +920,7 @@
  "tree-creator/cover": {
   "alpha": false,
   "h": 1000,
-  "layout": "panels",
+  "layout": "full",
   "th": 600,
   "tw": 900,
   "w": 1500

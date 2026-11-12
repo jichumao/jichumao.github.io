@@ -25,9 +25,10 @@ tools/previews.py             builds the short preview loops that play on the ca
 tools/cover-src/              video frames and screenshots that the covers use
 tools/manifest.json           image and clip dimensions the generator reads
 
-photography/index.html        photography: opening picture, one tile per series, about
+photography/index.html        photography: opening slideshow, subject links, one tile per series, about
 photography/<series>/         one page per series
-photography/assets/           photo.css (all styles) and viewer.js (full-screen viewer), both written by hand
+photography/<subject>/        one page per subject (landscape, coast, night ...), plus all/ with every photograph
+photography/assets/           photo.css (all styles), viewer.js (full-screen viewer), hero.js (opening slideshow); written by hand
 photography/img/              NNN-2400.webp, NNN-1400.webp, NNN-700.webp for each photograph (long side in pixels)
 tools/photography.py          generator for the photography pages: series, order, rows, captions
 tools/photos.py               prepares new photographs (resize, sRGB, strip metadata)
@@ -91,6 +92,8 @@ python3 tools/previews.py .                    # all previews
 python3 tools/previews.py . cuda-path-tracer   # one project
 ```
 
+Two covers are not made from screenshots: `tree-creator` and `glsl-shaders` use new renders produced by running the project's own code (the L-system core; the shader files) outside its original application. `tools/cover-src/tree-plate/README.md` and `tools/cover-src/glsl-cow/README.md` say exactly how, and each project page says so too.
+
 ## Adding a project
 
 1. Put images in `assets/img/<project>/`: a full-size WebP (long side up to 2000 px) and a `-thumb` version about 800 px wide.
@@ -107,7 +110,10 @@ python3 tools/previews.py . cuda-path-tracer   # one project
 **Everything editable is in `tools/photography.py`:**
 
 - `SERIES`: one entry per series, in the order they appear. `rows` is the sequence, for example `[[58], [57, 54], [61]]` is one frame, then a pair, then one frame. `cover` is the photograph on the index tile. `focus` (optional) says which part of the cover to keep where a tile has to crop it.
-- `HOME_ROWS`: how the series tiles are paired on the index page. The first series has no tile; the opening picture (`HERO`) is its link.
+- `HOME_ROWS`: how the series tiles are paired on the index page.
+- `SLIDES`: the opening slideshow. Each entry is a photograph for wide screens, one for upright phones, and the series it links to.
+- `SUBJECTS`: the subject pages. A photograph can sit under several subjects and must sit under at least one; the rows on these pages are packed automatically.
+- `PLACE`: where a single photograph was taken, when that is more exact than its series' `where`. Shown in the viewer's caption.
 - `ALT`: one plain sentence per photograph. The build stops if one is missing.
 - `ABOUT`: the text at the foot of the index page.
 

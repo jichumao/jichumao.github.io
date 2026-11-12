@@ -3,8 +3,8 @@
 Run through tools/build.py, or on its own from the repo root:
     python3 tools/photography.py .
 
-Everything editable is in this file: SERIES (order, titles, rows) and ALT
-(one description per photograph). tools/photos.json holds what was measured
+Everything editable is in this file: SERIES (order, titles, rows), HOME_ROWS,
+SLIDES, SUBJECTS, PLACE and ALT (one description per photograph). tools/photos.json holds what was measured
 from the files (pixel sizes, placeholder colour, camera settings).
 The stylesheet and the viewer are hand-written: photography/assets/.
 """
@@ -25,64 +25,121 @@ P = json.load(open(os.path.join(HERE, "photos.json")))
 SERIES = [
     dict(slug="above-the-fog", title="Above the Fog", where="California", when="July 2025",
          note="An evening on a ridge trail while the marine layer filled the valleys below.",
-         rows=[[4], [3, 1], [5], [2, 0, 13], [12], [16, 17]], cover=4),
-    dict(slug="macau", title="Macau", where="", when="January 2026",
-         note="An afternoon in the old town, then the casinos after dark.",
-         rows=[[242, 241], [246, 244, 247], [249, 255, 251], [252]], cover=247, focus="50% 62%"),
-    dict(slug="salt", title="Salt", where="Alviso, California", when="June 2025",
-         note="Salt ponds at the southern end of San Francisco Bay.",
-         rows=[[58], [57, 54], [61], [62, 52, 64], [63, 53]], cover=58),
-    dict(slug="subway", title="Subway", where="", when="April 2025",
-         note="One subway car in black and white, on a 50 mm lens.",
-         rows=[[398], [399, 397], [391], [394, 396], [392, 395], [400]], cover=391),
-    dict(slug="rose", title="Rose", where="", when="",
-         note="A portrait session in a café.",
-         rows=[[127, 136], [129, 132, 137], [145, 146]], cover=132, focus="50% 30%"),
-    dict(slug="guangzhou", title="Guangzhou", where="", when="January 2026",
-         note="Museum halls by day, the Pearl River after dark.",
-         rows=[[214, 216], [213, 215], [219, 308, 220], [221]], cover=214, focus="50% 62%"),
-    dict(slug="pacific", title="Pacific", where="San Francisco", when="July 2025",
-         note="The western edge of the city on a clear afternoon.",
-         rows=[[90], [95, 96], [101, 97], [91], [98, 104], [87, 88]], cover=90),
-    dict(slug="dry-hills", title="Dry Hills", where="California", when="July 2025",
-         note="Sunset from the grazing land above the valley.",
-         rows=[[71], [77, 79], [76], [80]], cover=80),
+         rows=[[4], [3, 7], [5], [1, 2, 0], [14, 13], [12], [16, 17]], cover=4),
     dict(slug="rooftop", title="Rooftop", where="Chongqing", when="June 2026",
          note="LED glasses and two light sticks, high above the city at night.",
-         rows=[[18, 20, 22], [25, 21]], cover=21, focus="50% 55%"),
-    dict(slug="fourth-of-july", title="Fourth of July", where="San Francisco Bay", when="July 2025",
-         note="From dusk to the fireworks, seen from across the bay.",
-         rows=[[114, 115], [116], [118], [120, 122], [126, 124]], cover=120),
-    dict(slug="tea-hills", title="Tea Hills", where="Zhejiang", when="December 2025",
-         note="A tea estate built around a château-style hotel.",
-         rows=[[200, 201], [202, 198], [206, 205]], cover=206),
+         rows=[[18, 20, 22], [25, 21]], cover=20, focus="50% 52%"),
+    dict(slug="macau", title="Macau", where="Macau Peninsula and Cotai", when="January 2026",
+         note="An afternoon in the old town, then the casinos after dark.",
+         rows=[[242, 241], [246, 244, 247], [249, 255, 251], [252]], cover=252),
+    dict(slug="salt", title="Salt", where="Alviso Marina County Park, San Jose", when="June 2025",
+         note="Salt ponds at the southern end of San Francisco Bay.",
+         rows=[[58], [57, 54], [60, 56], [61], [62, 52, 64], [63, 53]], cover=54),
+    dict(slug="rose", title="Rose", where="Quzhou, Zhejiang", when="May 2025",
+         note="A portrait session in a café.",
+         rows=[[127, 136], [129, 132, 137], [138, 140], [142, 145, 146]], cover=132, focus="50% 30%"),
+    dict(slug="fourth-of-july", title="Fourth of July", where="Yerba Buena Island, San Francisco", when="July 2025",
+         note="From dusk to the fireworks, seen from the middle of the bay.",
+         rows=[[114, 115], [117], [116, 118], [120, 122], [126, 124]], cover=117),
+    dict(slug="guangzhou", title="Guangzhou", where="", when="January 2026",
+         note="Museum halls by day, the Pearl River after dark.",
+         rows=[[214, 216], [213, 215], [219, 308, 220], [221]], cover=221, focus="50% 45%"),
     dict(slug="evening-walk", title="Evening Walk", where="", when="May 2025",
          note="Portraits in a park, from the last daylight until the lamps came on.",
          rows=[[43, 38, 40], [46, 49, 51]], cover=38, focus="50% 30%"),
+    dict(slug="pacific", title="Pacific", where="Ocean Beach and Sutro Baths, San Francisco", when="July 2025",
+         note="The western edge of the city on a clear afternoon.",
+         rows=[[90], [95, 96], [89, 97], [101, 92], [91], [103, 100], [98, 104], [87, 88]], cover=90),
+    dict(slug="dry-hills", title="Dry Hills", where="California", when="July 2025",
+         note="Sunset from the grazing land above the valley.",
+         rows=[[71], [73, 74], [72], [77, 79], [76], [68, 81], [80]], cover=80),
+    dict(slug="subway", title="Subway", where="", when="April 2025",
+         note="One subway car in black and white, on a 50 mm lens.",
+         rows=[[398], [399, 397], [391], [393, 396], [394, 392], [395, 400]], cover=398),
+    dict(slug="cherry-blossom", title="Cherry Blossom", where="Philadelphia", when="March 2026",
+         note="The spring festival: blossom overhead, drums on the stage.",
+         rows=[[173, 165, 171], [168, 172]], cover=165),
     dict(slug="zhuhai", title="Zhuhai", where="", when="January 2026",
          note="The opera house on the water, from late afternoon into the night.",
-         rows=[[228, 222], [230], [232], [240], [256, 238]], cover=232),
+         rows=[[228, 222, 226], [230], [232], [240], [256, 238]], cover=232),
+    dict(slug="tea-hills", title="Tea Hills", where="Wuyi, Jinhua, Zhejiang", when="December 2025",
+         note="A tea estate built around a château-style hotel.",
+         rows=[[200, 201], [197, 198], [202, 199], [206, 205]], cover=206),
     dict(slug="off-season", title="Off-season", where="Atlantic City and Cape May, New Jersey", when="March 2025",
          note="The Jersey Shore before the summer crowds.",
-         rows=[[261], [373, 372, 368], [289], [285], [288]], cover=261),
-    dict(slug="pennsylvania", title="Pennsylvania", where="", when="October 2025",
+         rows=[[261], [390, 363], [267, 366], [368, 270], [373, 374], [372, 284], [289], [285], [384, 288]], cover=288),
+    dict(slug="pennsylvania", title="Pennsylvania", where="Near Allentown", when="October 2025",
          note="A gorge overlook, an orchard and a small town in autumn.",
-         rows=[[187], [181, 182, 174], [188, 194, 189], [190, 193]], cover=194, focus="50% 28%"),
+         rows=[[187], [183, 181], [182, 174], [188, 194, 189], [190, 193]], cover=187),
+    dict(slug="tabby", title="Tabby", where="", when="February 2025",
+         note="One cat, one afternoon, one lens held very close.",
+         rows=[[299], [300, 302], [303, 301]], cover=300),
+    dict(slug="february", title="February", where="", when="2025",
+         note="Small things from one winter month: tail lights, a crescent moon, a squirrel.",
+         rows=[[324], [320, 323], [337, 321]], cover=324),
 ]
 
-# Rows of series tiles on the index page, by slug.
-# The first series has no tile: the opening picture is its link.
+# Rows of series tiles on the index page, by slug. Every series appears once.
 HOME_ROWS = [
+    ["above-the-fog", "rooftop"],
     ["macau", "salt"],
-    ["subway", "rose"],
-    ["guangzhou", "pacific"],
-    ["dry-hills", "rooftop"],
-    ["fourth-of-july", "tea-hills"],
-    ["evening-walk", "zhuhai"],
+    ["rose", "fourth-of-july"],
+    ["guangzhou", "evening-walk"],
+    ["pacific", "dry-hills"],
+    ["subway", "cherry-blossom"],
+    ["zhuhai", "tea-hills"],
     ["off-season", "pennsylvania"],
+    ["tabby", "february"],
 ]
-# Opening picture of the index page: one photograph for wide screens, one for upright phones.
-HERO = dict(wide=16, tall=1, series="above-the-fog")
+
+# Opening slideshow of the index page: (photograph for wide screens, photograph for upright phones, series it links to).
+SLIDES = [
+    (12, 13, "above-the-fog"),
+    (252, 247, "macau"),
+    (58, 57, "salt"),
+    (117, 114, "fourth-of-july"),
+    (221, 308, "guangzhou"),
+    (232, 228, "zhuhai"),
+]
+
+# Subject pages. A photograph can be listed under more than one subject; every photograph needs at least one.
+SUBJECTS = [
+    dict(slug="landscape", title="Landscape",
+         photos=[4, 3, 7, 5, 2, 14, 13, 12, 16, 17, 58, 57, 60, 56, 62, 52, 71, 73, 74, 72, 77, 79, 68, 81, 80, 200, 201, 198, 187, 183, 285]),
+    dict(slug="coast", title="Coast",
+         photos=[90, 95, 96, 89, 97, 101, 91, 103, 100, 104, 228, 222, 226, 261, 390, 366, 284, 289, 285, 384, 288]),
+    dict(slug="night", title="Night",
+         photos=[251, 252, 255, 308, 220, 221, 114, 115, 117, 116, 118, 120, 122, 126, 124, 206, 205, 240, 256, 238, 324, 18, 20, 22, 25, 21, 80]),
+    dict(slug="architecture", title="Architecture",
+         photos=[242, 241, 244, 249, 251, 252, 64, 63, 214, 216, 213, 215, 219, 88, 201, 197, 202, 199, 206, 230, 232, 240, 222, 363, 267, 373, 374]),
+    dict(slug="street", title="Street",
+         photos=[246, 247, 53, 87, 98, 76, 74, 368, 372, 188, 194, 189, 168, 214, 7]),
+    dict(slug="portrait", title="Portrait",
+         photos=[127, 136, 129, 132, 137, 138, 140, 142, 145, 146, 43, 38, 40, 46, 49, 51, 18, 20, 22, 25, 21, 194, 189]),
+    dict(slug="black-and-white", title="Black and White",
+         photos=[398, 399, 397, 391, 393, 396, 394, 392, 395, 400, 267]),
+    dict(slug="animals", title="Animals",
+         photos=[95, 96, 101, 92, 81, 80, 270, 299, 300, 302, 303, 301, 337]),
+    dict(slug="details", title="Details",
+         photos=[1, 0, 17, 54, 61, 215, 255, 395, 181, 182, 174, 190, 193, 165, 171, 173, 172, 323, 321, 320]),
+]
+
+# Where a single photograph was taken, when that is more exact than its series' "where".
+PLACE = {
+    242: "Grand Lisboa", 244: "Grand Lisboa", 246: "Casino Lisboa", 252: "Wynn Palace, Cotai",
+    249: "The Venetian Macao, Cotai", 251: "The Londoner Macao, Cotai",
+    308: "Canton Tower", 220: "Chigang Pagoda", 221: "Haixin Bridge and Zhujiang New Town",
+    232: "Zhuhai Opera House", 230: "Zhuhai Opera House", 240: "Zhuhai Opera House", 226: "Fisher Girl statue",
+    90: "Ocean Beach, San Francisco", 95: "Ocean Beach, San Francisco", 96: "Ocean Beach, San Francisco",
+    89: "Ocean Beach, San Francisco", 97: "Ocean Beach, San Francisco",
+    91: "Sutro Baths, San Francisco", 101: "Sutro Baths, San Francisco", 103: "Sutro Baths, San Francisco",
+    100: "Seal Rocks, San Francisco", 104: "Golden Gate Bridge",
+    116: "Bay Bridge, east span", 117: "Bay Bridge and San Francisco",
+    261: "Atlantic City", 390: "Steel Pier, Atlantic City", 363: "Atlantic City", 267: "Atlantic City",
+    366: "Atlantic City", 368: "Atlantic City", 374: "Cape May", 289: "Cape May",
+    284: "Cape May Lighthouse", 285: "Cape May Lighthouse", 384: "Sunset Beach, Cape May", 288: "Sunset Beach, Cape May",
+    183: "Orchard near Allentown", 181: "Orchard near Allentown", 182: "Orchard near Allentown", 174: "Orchard near Allentown",
+}
 
 # One plain description per photograph (used as alt text).
 ALT = {
@@ -216,6 +273,52 @@ ALT = {
     198: "A road with a painted arrow curving past a pond and a pruned pine.",
     206: "The hotel lit at night, mirrored in still water.",
     205: "An outdoor Christmas tree wrapped in lights against a dark sky.",
+    # added later
+    7: "Two long shadows fall across a dirt trail through golden grass.",
+    14: "The sun sinking into the fog beyond a ridge, seen through grass stalks.",
+    56: "A lump of salt standing in still red water.",
+    60: "A white salt flat with a shallow pool winding through it.",
+    68: "Layered ridges fading into haze under an orange sky.",
+    72: "A rounded hill catching the last light above dry grass.",
+    73: "The valley and its city at golden hour, seen past a slope scattered with rocks.",
+    74: "Three people on a grassy hill looking out over the city below.",
+    81: "A black cow standing by a fence post above the valley lights at dusk.",
+    89: "Bands of sand, surf and sky on an empty beach.",
+    92: "A dog lying in the sun on a concrete ledge.",
+    100: "Sea stacks beyond a bank of yellow flowers.",
+    103: "A grassy ledge and a ruined pool wall, with rocks offshore.",
+    117: "The Bay Bridge strung with lights, leading to the San Francisco skyline at night.",
+    138: "She crouches beside the sofa, looking down.",
+    140: "She crouches beside the sofa and looks up at the camera.",
+    142: "Close portrait: she smiles, shelves and warm light behind her.",
+    183: "Dark red apples on a branch above rows of orchard trees and distant hills.",
+    197: "A stone clock tower behind beds of red and yellow flowers.",
+    199: "The clock tower at dusk beside a wet road.",
+    226: "A statue of a woman holding a pearl aloft, on a rock in the sea.",
+    267: "Cloud shadows on a blank white wall behind a row of lamp posts, in black and white.",
+    284: "A boardwalk ramp zigzagging toward a distant lighthouse.",
+    270: "A squirrel on a weathered boardwalk beside a steel rail.",
+    363: "A pale tower rising behind a curved wall of blue glass.",
+    374: "A Victorian porch hung with pink bows and mirror balls.",
+    390: "An amusement pier with a Ferris wheel, seen from above the shoreline.",
+    384: "The sun low over the sea under heavy cloud, a wreck on the horizon.",
+    366: "A yellow bulldozer at the water's edge beyond dune grass.",
+    393: "A door window beside a 'No exit' sign and graffiti.",
+    165: "A branch of cherry blossom against a blue sky.",
+    171: "Dense pink cherry blossom.",
+    173: "A cherry tree in full bloom beside a road.",
+    168: "Taiko drummers performing on an outdoor stage.",
+    172: "Blossom-covered branches filling the frame.",
+    299: "A tabby cat lying on a dark duvet, looking at the camera.",
+    300: "The cat's face in profile, its eye in sharp focus.",
+    302: "The cat resting its chin, eyes half closed.",
+    303: "The cat looking straight ahead, ears up.",
+    301: "The cat's front paws stretched out on the bed.",
+    324: "A city avenue at night seen from above, tail lights streaking red.",
+    320: "A thin crescent moon in a violet sky beside a brick wall and a railing.",
+    323: "Lights blurred behind a perforated metal screen.",
+    337: "A squirrel clinging head-down to a tree trunk.",
+    321: "A hand holding up a dry maple leaf against bare trees.",
 }
 
 ABOUT = [
@@ -240,12 +343,21 @@ def ids(s):
     return [n for row in s["rows"] for n in row]
 
 
+ORDER = [n for s in SERIES for n in ids(s)]            # every photograph, in site order
+SERIES_OF = {n: s for s in SERIES for n in ids(s)}
+
+
 def meta_line(s):
     return ", ".join(x for x in (s["where"], s["when"]) if x)
 
 
-def count(s):
-    return f'{len(ids(s))} photographs'
+def count(n):
+    return f"{n} photographs"
+
+
+def place(n):
+    """Caption for one photograph: the exact place if known, else where its series was made."""
+    return PLACE.get(n) or SERIES_OF[n]["where"]
 
 
 def srcset(n, img):
@@ -264,35 +376,64 @@ def share(a, total):
     return f"(max-width: 760px) and (orientation: portrait) 100vw, {max(10, round(100 * a / total))}vw"
 
 
-def row_html(row, img, *, eager=False):
+def row_html(row, img, *, eager=False, with_series=False):
     total = sum(ar(n) for n in row)
     cells = []
     for n in row:
         p = ph(n)
         big = p["files"][-1][0]
         st = f' data-settings="{E(p["settings"])}"' if p["settings"] else ""
+        cap = place(n)
+        if with_series:
+            title = SERIES_OF[n]["title"]
+            cap = title if not cap or cap == title else f"{title}, {cap}"
+        cp = f' data-cap="{E(cap)}"' if cap else ""
         cells.append(f'<a class="ph" href="{img}{n:03d}-{big}.webp" style="--ar:{ar(n):.4f};--c:{p["color"]}" '
-                     f'data-w="{p["w"]}" data-h="{p["h"]}" data-srcset="{srcset(n, img)}"{st}>'
+                     f'data-w="{p["w"]}" data-h="{p["h"]}" data-srcset="{srcset(n, img)}"{st}{cp}>'
                      f'{img_tag(n, img, share(ar(n), total), eager=eager)}</a>')
     return f'<div class="row" style="--sum:{total:.4f};--n:{len(row)}">' + "".join(cells) + "</div>"
+
+
+def auto_rows(photos, target=2.7, most=4.3):
+    """Packs photographs into rows for the subject pages: a row closes once its aspect ratios add up to `target`."""
+    rows, cur, total = [], [], 0.0
+    for n in photos:
+        if cur and total + ar(n) > most:
+            rows.append(cur); cur, total = [], 0.0
+        cur.append(n); total += ar(n)
+        if total >= target:
+            rows.append(cur); cur, total = [], 0.0
+    if cur:
+        if rows and total < 1.3 and sum(ar(n) for n in rows[-1]) + total <= most + 0.4:
+            rows[-1] += cur
+        else:
+            rows.append(cur)
+    return rows
 
 
 def tile(s, home, img, total, *, fixed=False):
     n = s["cover"]
     meta = meta_line(s)
     text = (f'<span class="tile-text"><span class="tile-title">{E(s["title"])}</span>'
-            f'<span class="tile-meta">{E(meta) + "<br>" if meta else ""}{count(s)}</span></span>')
+            f'<span class="tile-meta">{E(meta) + "<br>" if meta else ""}{count(len(ids(s)))}</span></span>')
     sizes = "(max-width: 760px) and (orientation: portrait) 100vw, 50vw" if fixed else share(ar(n), total)
     pos = f';--pos:{s["focus"]}' if fixed and s.get("focus") else ""
     return (f'<a class="ph tile" href="{home}{s["slug"]}/" style="--ar:{ar(n):.4f};--c:{ph(n)["color"]}{pos}">'
             f'{img_tag(n, img, sizes, alt="")}{text}</a>')
 
 
-def page(*, title, desc, path, home, body, og, v, series="", viewer=False):
+def subjects_nav(home, current=""):
+    cur = ' aria-current="page"'
+    links = [f'<a href="{home}all/"{cur if current == "all" else ""}>All<sup>{len(ORDER)}</sup></a>']
+    links += [f'<a href="{home}{g["slug"]}/"{cur if current == g["slug"] else ""}>{E(g["title"])}<sup>{len(g["photos"])}</sup></a>' for g in SUBJECTS]
+    return f'<nav class="subjects" id="subjects" aria-label="Subjects"><span class="subjects-label">By subject</span>{"".join(links)}</nav>'
+
+
+def page(*, title, desc, path, home, body, og, v, series="", scripts=()):
     site = home + "../"
     data = f' data-series="{E(series)}"' if series else ""
-    js = f'\n<script src="{home}assets/viewer.js?v={v}" defer></script>' if viewer else ""
-    over = "" if series else " over"
+    js = "".join(f'\n<script src="{home}assets/{s}?v={v}" defer></script>' for s in scripts)
+    over = "" if home else " over"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -317,8 +458,9 @@ def page(*, title, desc, path, home, body, og, v, series="", viewer=False):
   <a class="name" href="{home or "./"}">Jichu Mao</a>
   <nav aria-label="Main">
     <a href="{home}#series">Series</a>
-    <a href="{home}#about">About</a>
-    <a href="{site}">Graphics work</a>
+    <a href="{home}#subjects">Subjects</a>
+    <a class="opt" href="{home}#about">About</a>
+    <a href="{site}">Graphics<span class="wide"> work</span></a>
   </nav>
 </header>
 <main id="main">
@@ -333,30 +475,49 @@ def page(*, title, desc, path, home, body, og, v, series="", viewer=False):
 """
 
 
+def og_file(n):
+    return f"{n:03d}-1400.webp" if any(k == 1400 for k, _ in ph(n)["files"]) else f'{n:03d}-{ph(n)["files"][-1][0]}.webp'
+
+
 def build_home(v):
     img = "img/"
-    h = BY_SLUG[HERO["series"]]
-    w, t = ph(HERO["wide"]), ph(HERO["tall"])
-    hero = f"""<section class="hero">
-  <picture>
-    <source media="(max-aspect-ratio: 4/5)" srcset="{srcset(HERO["tall"], img)}" sizes="150vw" width="{t["w"]}" height="{t["h"]}">
-    <img src="{img}{HERO["wide"]:03d}-1400.webp" srcset="{srcset(HERO["wide"], img)}" sizes="100vw" width="{w["w"]}" height="{w["h"]}" alt="{E(ALT.get(HERO["wide"], ""))}" fetchpriority="high">
-  </picture>
-  <div class="hero-text">
-    <div><h1>Photographs</h1><p>Jichu Mao, 2025 to 2026</p></div>
-    <a class="hero-link" href="{h["slug"]}/"><b>{E(h["title"])}</b><span>{E(meta_line(h))}<br>{count(h)}</span></a>
+    slides, dots = [], []
+    for i, (wide, tall, slug) in enumerate(SLIDES):
+        s = BY_SLUG[slug]
+        w, t = ph(wide), ph(tall)
+        first = i == 0
+        a = "srcset" if first else "data-srcset"
+        src = f'src="{img}{wide:03d}-1400.webp"' if first else f'data-src="{img}{wide:03d}-1400.webp"'
+        hidden = "" if first else ' aria-hidden="true" tabindex="-1"'
+        slides.append(f"""    <a class="slide{" on" if first else ""}" href="{slug}/"{hidden}>
+      <picture>
+        <source media="(max-aspect-ratio: 4/5)" {a}="{srcset(tall, img)}" sizes="150vw" width="{t["w"]}" height="{t["h"]}">
+        <img {src} {a}="{srcset(wide, img)}" sizes="100vw" width="{w["w"]}" height="{w["h"]}" alt="{E(ALT[wide])}"{' fetchpriority="high"' if first else ""}>
+      </picture>
+      <span class="slide-cap"><b>{E(s["title"])}</b><span>{E(meta_line(s))}<br>{count(len(ids(s)))}</span></span>
+    </a>""")
+        dots.append(f'<button class="dot" type="button" aria-label="Show {E(s["title"])}"{" aria-current=" + chr(34) + "true" + chr(34) if first else ""}></button>')
+    hero = f"""<section class="hero" aria-roledescription="carousel" aria-label="Selected photographs">
+  <div class="slides">
+{chr(10).join(slides)}
+  </div>
+  <div class="hero-text"><h1>Photographs</h1><p>Jichu Mao, 2025 to 2026</p></div>
+  <div class="hero-ctl">
+    <button class="hero-pause" type="button" aria-label="Pause slideshow" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M8 5v14M16 5v14"/><path class="i-play" d="M8 5l11 7-11 7z"/></svg></button>
+    {"".join(dots)}
   </div>
 </section>
 """
     seen = [x for row in HOME_ROWS for x in row]
-    assert sorted(seen + [HERO["series"]]) == sorted(BY_SLUG), "HOME_ROWS must list every series but the opening one, once"
+    assert sorted(seen) == sorted(BY_SLUG), "HOME_ROWS must list every series once"
     rows = []
     for row in HOME_ROWS:
         ss = [BY_SLUG[x] for x in row]
         total = sum(ar(s["cover"]) for s in ss)
         rows.append(f'<div class="row" style="--sum:{total:.4f};--n:{len(ss)}">' + "".join(tile(s, "", img, total) for s in ss) + "</div>")
     about = "".join(f"<p>{E(x)}</p>" for x in ABOUT)
-    body = hero + f"""<section class="series-index rows" id="series" aria-label="Series">
+    body = hero + f"""{subjects_nav("")}
+<section class="series-index rows" id="series" aria-label="Series">
 <h2 class="hide">Series</h2>
 {chr(10).join(rows)}
 </section>
@@ -364,9 +525,8 @@ def build_home(v):
   <h2>About</h2>
   <div>{about}<p><a href="mailto:{EMAIL}">{EMAIL}</a><br><a href="../">Rendering and graphics work</a></p></div>
 </section>"""
-    total = sum(len(ids(s)) for s in SERIES)
-    return page(title="Photographs – Jichu Mao", path="photography/", home="", body=body, og=f'{HERO["wide"]:03d}-1400.webp', v=v,
-                desc=f"Photographs by Jichu Mao, 2025 to 2026: {total} pictures in {len(SERIES)} series, from the California coast to Macau at night.")
+    return page(title="Photographs – Jichu Mao", path="photography/", home="", body=body, og=og_file(SLIDES[0][0]), v=v, scripts=("hero.js",),
+                desc=f"Photographs by Jichu Mao, 2025 to 2026: {len(ORDER)} pictures in {len(SERIES)} series, from the California coast to Macau at night.")
 
 
 def build_series(i, v):
@@ -376,7 +536,7 @@ def build_series(i, v):
     panel = (f'<div class="panel"><h1>{E(s["title"])}</h1>'
              + (f'<p class="where">{E(meta)}</p>' if meta else "")
              + (f'<p>{E(s["note"])}</p>' if s["note"] else "")
-             + f'<p class="count">{count(s)}</p></div>')
+             + f'<p class="count">{count(len(ids(s)))}</p></div>')
     lead = f'<div class="lead">{panel}{row_html(s["rows"][0], img, eager=True)}</div>'
     rest = "\n".join(row_html(r, img) for r in s["rows"][1:])
     nxt = [SERIES[(i + 1) % len(SERIES)], SERIES[(i + 2) % len(SERIES)]]
@@ -389,30 +549,54 @@ def build_series(i, v):
   <h2>More series</h2>
   <div class="row">{more}</div>
 </section>"""
-    desc = (s["note"] + " " if s["note"] else "") + f'{count(s).capitalize()} by Jichu Mao' + (f", {meta}." if meta else ".")
+    desc = (s["note"] + " " if s["note"] else "") + f"{count(len(ids(s))).capitalize()} by Jichu Mao" + (f", {meta}." if meta else ".")
     return page(title=f'{s["title"]} – Photographs by Jichu Mao', path=f'photography/{s["slug"]}/', home=home, body=body,
-                og=f'{s["cover"]:03d}-1400.webp' if any(k == 1400 for k, _ in ph(s["cover"])["files"]) else f'{s["cover"]:03d}-{ph(s["cover"])["files"][-1][0]}.webp',
-                v=v, series=s["title"], viewer=True, desc=desc)
+                og=og_file(s["cover"]), v=v, series=s["title"], scripts=("viewer.js",), desc=desc)
+
+
+def build_subject(slug, title, photos, v):
+    """A subject page: every photograph of one kind, across all series, packed into rows automatically."""
+    img, home = "../img/", "../"
+    photos = sorted(photos, key=ORDER.index)
+    rows = auto_rows(photos)
+    names = []
+    for n in photos:
+        t = SERIES_OF[n]["title"]
+        if t not in names:
+            names.append(t)
+    head = (f'<div class="head"><h1>{E(title)}</h1><p class="count">{count(len(photos))} from {len(names)} series</p></div>'
+            + subjects_nav(home, slug))
+    body = head + '\n<div class="rows">\n' + "\n".join(row_html(r, img, eager=i == 0, with_series=True) for i, r in enumerate(rows)) + "\n</div>"
+    return page(title=f"{title} – Photographs by Jichu Mao", path=f"photography/{slug}/", home=home, body=body, og=og_file(photos[0]), v=v,
+                series=title, scripts=("viewer.js",), desc=f"{title}: {count(len(photos))} by Jichu Mao, from {', '.join(names[:6])}{' and more' if len(names) > 6 else ''}.")
 
 
 def build(root, v="1", strict=True):
     """Writes the pages and returns their site-relative paths (for the sitemap)."""
-    used = [n for s in SERIES for n in ids(s)]
-    assert len(used) == len(set(used)), "a photograph is used twice"
+    assert len(ORDER) == len(set(ORDER)), "a photograph is used twice"
+    tagged = {n for g in SUBJECTS for n in g["photos"]}
+    assert tagged <= set(ORDER), f"SUBJECTS lists photographs that are in no series: {sorted(tagged - set(ORDER))}"
+    assert set(ORDER) <= tagged, f"photographs without a subject: {sorted(set(ORDER) - tagged)}"
+    assert set(PLACE) <= set(ORDER), f"PLACE names photographs that are in no series: {sorted(set(PLACE) - set(ORDER))}"
+    slugs = [s["slug"] for s in SERIES] + [g["slug"] for g in SUBJECTS] + ["all"]
+    assert len(slugs) == len(set(slugs)), "a series and a subject share a slug"
     if strict:
-        missing = [n for n in used if not ALT.get(n)]
+        missing = [n for n in ORDER if not ALT.get(n)]
         assert not missing, f"no ALT text for {missing}"
     out = {"photography/index.html": build_home(v)}
     for i, s in enumerate(SERIES):
         out[f'photography/{s["slug"]}/index.html'] = build_series(i, v)
+    out["photography/all/index.html"] = build_subject("all", "All photographs", ORDER, v)
+    for g in SUBJECTS:
+        out[f'photography/{g["slug"]}/index.html'] = build_subject(g["slug"], g["title"], g["photos"], v)
     for path, text in out.items():
         full = os.path.join(root, path)
         os.makedirs(os.path.dirname(full), exist_ok=True)
         with open(full, "w", encoding="utf-8", newline="\n") as f:
             f.write(text)
-    return ["photography/"] + [f'photography/{s["slug"]}/' for s in SERIES]
+    return ["photography/"] + [f"photography/{x}/" for x in slugs]
 
 
 if __name__ == "__main__":
     pages = build(sys.argv[1] if len(sys.argv) > 1 else ".", strict="--draft" not in sys.argv)
-    print("built", len(pages), "photography pages,", sum(len(ids(s)) for s in SERIES), "photographs")
+    print("built", len(pages), "photography pages,", len(ORDER), "photographs")
