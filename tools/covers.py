@@ -149,11 +149,10 @@ COVERS = {
     ],
     # plants grown by the plugin's own L-system core from its bundled grammars (see cover-src/tree-plate/README.md)
     "tree-creator": ("full", C("tree-plate.png"), (0, 0, 3000, 2000)),
-    # the project's shaders run on the cow model from its repository (see cover-src/glsl-cow/README.md)
     "glsl-shaders": [
-        (C("glsl-cow-gold.png"), (0, 0, 2000, 2000)),
-        (C("glsl-cow-gradient.png"), (0, 0, 1200, 1200)),
-        (C("glsl-cow-sobel.png"), (0, 0, 1200, 1200)),
+        (S("glsl-shaders", "matcap-chrome"), (166, 0, 1292, 1126)),
+        (S("glsl-shaders", "sobel"), (166, 0, 1292, 1126)),
+        (S("glsl-shaders", "surface-normals"), (166, 0, 1289, 1123)),
     ],
     "animation-toolkit": [
         (C("animation-behavior.jpg"), (392, 78, 964, 650)),

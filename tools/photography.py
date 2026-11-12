@@ -23,9 +23,9 @@ P = json.load(open(os.path.join(HERE, "photos.json")))
 #   focus  optional. Where to hold the cover when a tile has to crop it
 #          ("More series" at the foot of a series page), as a CSS position.
 SERIES = [
-    dict(slug="above-the-fog", title="Above the Fog", where="California", when="July 2025",
+    dict(slug="above-the-fog", title="Above the Fog", where="Ridge Trailhead, California", when="July 2025",
          note="An evening on a ridge trail while the marine layer filled the valleys below.",
-         rows=[[4], [3, 7], [5], [1, 2, 0], [14, 13], [12], [16, 17]], cover=4),
+         rows=[[4], [3, 7], [5], [1, 2, 0], [14, 13], [12], [16, 17]], cover=12),
     dict(slug="rooftop", title="Rooftop", where="Chongqing", when="June 2026",
          note="LED glasses and two light sticks, high above the city at night.",
          rows=[[18, 20, 22], [25, 21]], cover=20, focus="50% 52%"),
@@ -34,7 +34,7 @@ SERIES = [
          rows=[[242, 241], [246, 244, 247], [249, 255, 251], [252]], cover=252),
     dict(slug="salt", title="Salt", where="Alviso Marina County Park, San Jose", when="June 2025",
          note="Salt ponds at the southern end of San Francisco Bay.",
-         rows=[[58], [57, 54], [60, 56], [61], [62, 52, 64], [63, 53]], cover=54),
+         rows=[[58], [57, 54], [60, 56], [61], [62, 52, 64], [63, 53]], cover=62, focus="50% 58%"),
     dict(slug="rose", title="Rose", where="Quzhou, Zhejiang", when="May 2025",
          note="A portrait session in a café.",
          rows=[[127, 136], [129, 132, 137], [138, 140], [142, 145, 146]], cover=132, focus="50% 30%"),
@@ -44,17 +44,17 @@ SERIES = [
     dict(slug="guangzhou", title="Guangzhou", where="", when="January 2026",
          note="Museum halls by day, the Pearl River after dark.",
          rows=[[214, 216], [213, 215], [219, 308, 220], [221]], cover=221, focus="50% 45%"),
-    dict(slug="evening-walk", title="Evening Walk", where="", when="May 2025",
+    dict(slug="evening-walk", title="Evening Walk", where="Fushan Park, Quzhou, Zhejiang", when="May 2025",
          note="Portraits in a park, from the last daylight until the lamps came on.",
          rows=[[43, 38, 40], [46, 49, 51]], cover=38, focus="50% 30%"),
     dict(slug="pacific", title="Pacific", where="Ocean Beach and Sutro Baths, San Francisco", when="July 2025",
          note="The western edge of the city on a clear afternoon.",
-         rows=[[90], [95, 96], [89, 97], [101, 92], [91], [103, 100], [98, 104], [87, 88]], cover=90),
-    dict(slug="dry-hills", title="Dry Hills", where="California", when="July 2025",
+         rows=[[90], [95, 96], [89, 97], [101, 92], [91], [103, 100], [98, 104], [87, 88]], cover=104, focus="50% 42%"),
+    dict(slug="dry-hills", title="Dry Hills", where="Hills east of San Jose, California", when="July 2025",
          note="Sunset from the grazing land above the valley.",
          rows=[[71], [73, 74], [72], [77, 79], [76], [68, 81], [80]], cover=80),
     dict(slug="subway", title="Subway", where="", when="April 2025",
-         note="One subway car in black and white, on a 50 mm lens.",
+         note="A subway car I built in Unreal Engine, photographed off a 4K monitor with a Canon 5D Mark IV, a 50 mm lens and a polarising filter, then finished to take the digital edge off. Final project for a photography class.",
          rows=[[398], [399, 397], [391], [393, 396], [394, 392], [395, 400]], cover=398),
     dict(slug="cherry-blossom", title="Cherry Blossom", where="Philadelphia", when="March 2026",
          note="The spring festival: blossom overhead, drums on the stage.",
@@ -64,18 +64,18 @@ SERIES = [
          rows=[[228, 222, 226], [230], [232], [240], [256, 238]], cover=232),
     dict(slug="tea-hills", title="Tea Hills", where="Wuyi, Jinhua, Zhejiang", when="December 2025",
          note="A tea estate built around a château-style hotel.",
-         rows=[[200, 201], [197, 198], [202, 199], [206, 205]], cover=206),
+         rows=[[200, 201], [197, 198], [202, 199], [206, 205]], cover=200, focus="50% 40%"),
     dict(slug="off-season", title="Off-season", where="Atlantic City and Cape May, New Jersey", when="March 2025",
          note="The Jersey Shore before the summer crowds.",
          rows=[[261], [390, 363], [267, 366], [368, 270], [373, 374], [372, 284], [289], [285], [384, 288]], cover=288),
     dict(slug="pennsylvania", title="Pennsylvania", where="Near Allentown", when="October 2025",
          note="A gorge overlook, an orchard and a small town in autumn.",
          rows=[[187], [183, 181], [182, 174], [188, 194, 189], [190, 193]], cover=187),
-    dict(slug="tabby", title="Tabby", where="", when="February 2025",
-         note="One cat, one afternoon, one lens held very close.",
+    dict(slug="elliot", title="Elliot", where="", when="February 2025",
+         note="Elliot, a tabby kitten, and a lens held very close.",
          rows=[[299], [300, 302], [303, 301]], cover=300),
-    dict(slug="february", title="February", where="", when="2025",
-         note="Small things from one winter month: tail lights, a crescent moon, a squirrel.",
+    dict(slug="february", title="February", where="Philadelphia", when="2025",
+         note="Homework from my first weeks in a photography class: tail lights, a crescent moon, a squirrel.",
          rows=[[324], [320, 323], [337, 321]], cover=324),
 ]
 
@@ -89,12 +89,12 @@ HOME_ROWS = [
     ["subway", "cherry-blossom"],
     ["zhuhai", "tea-hills"],
     ["off-season", "pennsylvania"],
-    ["tabby", "february"],
+    ["elliot", "february"],
 ]
 
 # Opening slideshow of the index page: (photograph for wide screens, photograph for upright phones, series it links to).
 SLIDES = [
-    (12, 13, "above-the-fog"),
+    (16, 13, "above-the-fog"),
     (252, 247, "macau"),
     (58, 57, "salt"),
     (117, 114, "fourth-of-july"),
@@ -183,7 +183,7 @@ ALT = {
     145: "Close portrait, her eyes turned to the side, shelves behind her.",
     146: "Close portrait from above; she looks down with a slight smile.",
     # Subway
-    398: "The side of a subway car: the number 8805 and a flag decal beside a window.",
+    398: "The side of a subway car in a virtual scene, photographed off a monitor: the number 8805 and a flag decal beside a window.",
     399: "The car's double doors, with stickers reading 'Do not hold doors'.",
     397: "The end of the car, with its headlights and end door.",
     391: "The empty interior of the car, benches along both sides.",
@@ -309,7 +309,7 @@ ALT = {
     173: "A cherry tree in full bloom beside a road.",
     168: "Taiko drummers performing on an outdoor stage.",
     172: "Blossom-covered branches filling the frame.",
-    299: "A tabby cat lying on a dark duvet, looking at the camera.",
+    299: "Elliot, a tabby kitten, lying on a dark duvet and looking at the camera.",
     300: "The cat's face in profile, its eye in sharp focus.",
     302: "The cat resting its chin, eyes half closed.",
     303: "The cat looking straight ahead, ears up.",
@@ -447,7 +447,11 @@ def page(*, title, desc, path, home, body, og, v, series="", scripts=()):
 <meta property="og:title" content="{E(title)}">
 <meta property="og:description" content="{E(desc)}">
 <meta property="og:url" content="{SITE}/{path}">
-<meta property="og:image" content="{SITE}/photography/img/{og}">
+<meta property="og:image" content="{SITE}/photography/og/{og}.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#000000">
 <link rel="icon" href="{site}assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="{site}assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{home}assets/photo.css?v={v}">
@@ -475,10 +479,6 @@ def page(*, title, desc, path, home, body, og, v, series="", scripts=()):
 """
 
 
-def og_file(n):
-    return f"{n:03d}-1400.webp" if any(k == 1400 for k, _ in ph(n)["files"]) else f'{n:03d}-{ph(n)["files"][-1][0]}.webp'
-
-
 def build_home(v):
     img = "img/"
     slides, dots = [], []
@@ -487,12 +487,12 @@ def build_home(v):
         w, t = ph(wide), ph(tall)
         first = i == 0
         a = "srcset" if first else "data-srcset"
-        src = f'src="{img}{wide:03d}-1400.webp"' if first else f'data-src="{img}{wide:03d}-1400.webp"'
+        src = f'src="{img}{wide:03d}-1400.webp" ' if first else ""
         hidden = "" if first else ' aria-hidden="true" tabindex="-1"'
         slides.append(f"""    <a class="slide{" on" if first else ""}" href="{slug}/"{hidden}>
       <picture>
-        <source media="(max-aspect-ratio: 4/5)" {a}="{srcset(tall, img)}" sizes="150vw" width="{t["w"]}" height="{t["h"]}">
-        <img {src} {a}="{srcset(wide, img)}" sizes="100vw" width="{w["w"]}" height="{w["h"]}" alt="{E(ALT[wide])}"{' fetchpriority="high"' if first else ""}>
+        <source media="(max-aspect-ratio: 4/5)" {a}="{srcset(tall, img)}" sizes="118vw" width="{t["w"]}" height="{t["h"]}">
+        <img {src}{a}="{srcset(wide, img)}" sizes="100vw" width="{w["w"]}" height="{w["h"]}" alt="{E(ALT[wide])}"{' fetchpriority="high"' if first else ""}>
       </picture>
       <span class="slide-cap"><b>{E(s["title"])}</b><span>{E(meta_line(s))}<br>{count(len(ids(s)))}</span></span>
     </a>""")
@@ -525,7 +525,7 @@ def build_home(v):
   <h2>About</h2>
   <div>{about}<p><a href="mailto:{EMAIL}">{EMAIL}</a><br><a href="../">Rendering and graphics work</a></p></div>
 </section>"""
-    return page(title="Photographs – Jichu Mao", path="photography/", home="", body=body, og=og_file(SLIDES[0][0]), v=v, scripts=("hero.js",),
+    return page(title="Photographs – Jichu Mao", path="photography/", home="", body=body, og="index", v=v, scripts=("hero.js",),
                 desc=f"Photographs by Jichu Mao, 2025 to 2026: {len(ORDER)} pictures in {len(SERIES)} series, from the California coast to Macau at night.")
 
 
@@ -551,7 +551,7 @@ def build_series(i, v):
 </section>"""
     desc = (s["note"] + " " if s["note"] else "") + f"{count(len(ids(s))).capitalize()} by Jichu Mao" + (f", {meta}." if meta else ".")
     return page(title=f'{s["title"]} – Photographs by Jichu Mao', path=f'photography/{s["slug"]}/', home=home, body=body,
-                og=og_file(s["cover"]), v=v, series=s["title"], scripts=("viewer.js",), desc=desc)
+                og=s["slug"], v=v, series=s["title"], scripts=("viewer.js",), desc=desc)
 
 
 def build_subject(slug, title, photos, v):
@@ -566,8 +566,8 @@ def build_subject(slug, title, photos, v):
             names.append(t)
     head = (f'<div class="head"><h1>{E(title)}</h1><p class="count">{count(len(photos))} from {len(names)} series</p></div>'
             + subjects_nav(home, slug))
-    body = head + '\n<div class="rows">\n' + "\n".join(row_html(r, img, eager=i == 0, with_series=True) for i, r in enumerate(rows)) + "\n</div>"
-    return page(title=f"{title} – Photographs by Jichu Mao", path=f"photography/{slug}/", home=home, body=body, og=og_file(photos[0]), v=v,
+    body = head + '\n<div class="rows grid">\n' + "\n".join(row_html(r, img, eager=i == 0, with_series=True) for i, r in enumerate(rows)) + "\n</div>"
+    return page(title=f"{title} – Photographs by Jichu Mao", path=f"photography/{slug}/", home=home, body=body, og=slug, v=v,
                 series=title, scripts=("viewer.js",), desc=f"{title}: {count(len(photos))} by Jichu Mao, from {', '.join(names[:6])}{' and more' if len(names) > 6 else ''}.")
 
 

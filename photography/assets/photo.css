@@ -124,7 +124,7 @@ a.ph { cursor: zoom-in; }
 .head .count { color: var(--muted); font-size: 13px; margin: 0; }
 .head + .subjects { padding-top: 14px; padding-bottom: 26px; }
 .head + .subjects a { font-size: clamp(17px, 1.5vw, 22px); }
-.head + .subjects sup { font-size: 11px; }
+.head + .subjects sup { font-size: 12px; }
 
 /* Home: series tiles ----------------------------------------------------- */
 
@@ -195,6 +195,11 @@ a.ph { cursor: zoom-in; }
   .hero-text { bottom: 168px; }
   .top nav { gap: 12px; }
   .top nav .wide, .top nav .opt { display: none; }
+  .top nav a { padding: 10px 0; }
+  /* Subject pages: a three-column grid of square crops to browse; the viewer shows each photograph whole. */
+  .rows.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; }
+  .rows.grid .row { display: contents; }
+  .rows.grid .ph { aspect-ratio: 1; }
   .about { grid-template-columns: minmax(0, 1fr); }
   .more .tile { height: 46vw; flex: none; }
 }

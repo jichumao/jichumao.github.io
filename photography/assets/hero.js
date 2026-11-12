@@ -16,8 +16,6 @@
     Array.prototype.forEach.call(slides[i].querySelectorAll("[data-srcset]"), function (n) {
       n.srcset = n.getAttribute("data-srcset"); n.removeAttribute("data-srcset");
     });
-    var img = slides[i].querySelector("img[data-src]");
-    if (img) { img.src = img.getAttribute("data-src"); img.removeAttribute("data-src"); }
   }
 
   function show(i) {
@@ -35,6 +33,7 @@
       load((at + 1) % slides.length);
     };
     if (img.complete && img.naturalWidth) go();
+    else if (img.decode) img.decode().then(go, go);
     else { img.addEventListener("load", go, { once: true }); img.addEventListener("error", go, { once: true }); }
   }
 
@@ -53,5 +52,8 @@
   });
   document.addEventListener("visibilitychange", play);
   if (still) pause.hidden = true;   // nothing moves on its own; the bars still switch pictures
-  load(1); play();
+  // fetch the second picture only once the page itself has finished loading
+  var warm = function () { setTimeout(function () { load(1); }, 1500); };
+  if (document.readyState === "complete") warm(); else window.addEventListener("load", warm);
+  play();
 })();

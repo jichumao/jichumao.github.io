@@ -92,7 +92,7 @@ python3 tools/previews.py .                    # all previews
 python3 tools/previews.py . cuda-path-tracer   # one project
 ```
 
-Two covers are not made from screenshots: `tree-creator` and `glsl-shaders` use new renders produced by running the project's own code (the L-system core; the shader files) outside its original application. `tools/cover-src/tree-plate/README.md` and `tools/cover-src/glsl-cow/README.md` say exactly how, and each project page says so too.
+One cover is not made from screenshots: `tree-creator` uses a new render produced by running the plugin's own L-system core outside Maya. `tools/cover-src/tree-plate/README.md` says exactly how, and the project page says so too.
 
 ## Adding a project
 
