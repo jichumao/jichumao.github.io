@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>World-Space ReSTIR in Vulkan – Jichu · Art</title>
-<meta name="description" content="A world-space global illumination method implemented in a Vulkan ray-tracing pipeline. In large scenes it reaches about 40% higher accuracy than screen-space ReSTIR for roughly 5% extra render time.">
+<meta name="description" content="World-space global illumination in a Vulkan ray-tracing pipeline. About 40% more accurate than screen-space ReSTIR in large scenes, for roughly 5% more render time.">
 <link rel="canonical" href="https://jichu.art/works/world-space-restir/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jichu · Art">
 <meta property="og:title" content="World-Space ReSTIR in Vulkan – Jichu · Art">
-<meta property="og:description" content="A world-space global illumination method implemented in a Vulkan ray-tracing pipeline. In large scenes it reaches about 40% higher accuracy than screen-space ReSTIR for roughly 5% extra render time.">
+<meta property="og:description" content="World-space global illumination in a Vulkan ray-tracing pipeline. About 40% more accurate than screen-space ReSTIR in large scenes, for roughly 5% more render time.">
 <meta property="og:url" content="https://jichu.art/works/world-space-restir/">
 <meta property="og:image" content="https://jichu.art/assets/img/world-space-restir/cover-thumb.webp">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=4">
+<link rel="stylesheet" href="../../assets/css/site.css?v=5">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,16 +32,43 @@
 </header>
 
 <main id="main">
-<article class="project wrap">
-  <a class="back" href="../../#works">← All works</a>
-  <div class="project-grid">
-    <header class="project-info">
-      <h1>World-Space ReSTIR in Vulkan</h1>
-      <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Ray tracing</li><li>ReSTIR</li></ul>
-      <div class="prose">
-        <p>An implementation of <a href="https://wangningbei.github.io/2023/ReSTIR.html">World-Space Spatiotemporal Path Resampling for Path Tracing</a> with Vulkan ray tracing, built on Nvidia’s Vulkan ray-tracing renderer. It was the final project for CIS 565, GPU Programming and Architecture, at the University of Pennsylvania, made together with Zhiyi Zhou.</p>
-        <p>In large scenes it reaches about 40% higher accuracy than screen-space ReSTIR for roughly 5% extra render time.</p>
-        <p>The renderer runs in five passes:</p>
+<article class="project">
+  <header class="project-hero">
+    <div class="project-glow" style="background-image: url(../../assets/img/world-space-restir/glow.webp)" aria-hidden="true"></div>
+    <div class="wrap">
+      <a class="back" href="../../#works">← All works</a>
+      <div class="project-head">
+        <div class="project-title">
+          <h1>World-Space ReSTIR in Vulkan</h1>
+          <p class="project-lead">A world-space global illumination method in a Vulkan ray-tracing pipeline. Path samples are cached in a spatial hash grid and reused across frames and neighbouring cells.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Ray Tracing</li><li>Global Illumination</li><li>ReSTIR</li></ul>
+          <ul class="project-links">
+            <li><a class="button" href="https://github.com/zhiyi1801/CIS-565-2024Fall-Final"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
+            <li><a class="button" href="https://wangningbei.github.io/2023/ReSTIR.html"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M10 12.5h5M10 16h5"/></svg>Paper</a></li>
+          </ul>
+        </div>
+        <figure class="project-cover"><img class="" src="../../assets/img/world-space-restir/cover-thumb.webp" srcset="../../assets/img/world-space-restir/cover-thumb.webp 900w, ../../assets/img/world-space-restir/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Subway scene split along the diagonal between the rendered image and its hash-grid cells, next to a robot test scene and Sponza" fetchpriority="high"></figure>
+      </div>
+      <dl class="facts">
+        <div><dt>Year</dt><dd>2024</dd></div>
+        <div><dt>Team</dt><dd>Two people, with Zhiyi Zhou</dd></div>
+        <div><dt>Course</dt><dd>CIS 5650 GPU Programming and Architecture at UPenn, final project</dd></div>
+        <div><dt>Built on</dt><dd>Nvidia’s Vulkan ray-tracing renderer</dd></div>
+      </dl>
+      <ul class="stats" aria-label="Measured results">
+        <li><strong>≈40%</strong><span>higher accuracy than screen-space ReSTIR in large scenes</span></li>
+        <li><strong>≈5%</strong><span>extra render time</span></li>
+        <li><strong>1.3 M</strong><span>triangles in the subway test scene, at 1 sample per pixel</span></li>
+      </ul>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="project-grid">
+      <div class="project-info">
+        <h2>Overview</h2>
+        <div class="prose">
+        <p>An implementation of <a href="https://wangningbei.github.io/2023/ReSTIR.html">World-Space Spatiotemporal Path Resampling for Path Tracing</a> with Vulkan ray tracing, made together with Zhiyi Zhou.</p>
+        <p>Each frame runs in five passes:</p>
         <ul>
           <li>G-buffer and initial path sampling</li>
           <li>Hash grid construction: path samples go into a world-space hash grid keyed by position and normal, with cells that grow with distance from the camera</li>
@@ -49,13 +76,10 @@
           <li>Final shading of direct and indirect illumination</li>
           <li>Post-processing, including Intel Open Image Denoise</li>
         </ul>
+        <p>The renderer can switch between three paths: the ray-tracing pipeline, ray queries in a compute shader, and world-space ReSTIR.</p>
+        </div>
       </div>
-      <ul class="project-links">
-        <li><a class="button" href="https://github.com/zhiyi1801/CIS-565-2024Fall-Final"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
-        <li><a class="button" href="https://wangningbei.github.io/2023/ReSTIR.html"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M10 12.5h5M10 16h5"/></svg>Paper</a></li>
-      </ul>
-    </header>
-    <div class="project-media">
+      <div class="project-media">
       <h2>Hash grid</h2>
       <ul class="gallery two">
         <li>
@@ -200,12 +224,13 @@
           </figure>
         </li>
       </ul>
+      </div>
     </div>
+    <nav class="pager" aria-label="More works">
+      <span></span>
+      <a class="next" href="../cuda-path-tracer/"><span class="pager-text"><span class="pager-label">Next</span>CUDA Path Tracer</span><img src="../../assets/img/cuda-path-tracer/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"></a>
+    </nav>
   </div>
-  <nav class="pager" aria-label="More works">
-    <span></span>
-    <a class="next" href="../cuda-path-tracer/"><span>Next</span>CUDA Path Tracer</a>
-  </nav>
 </article>
 </main>
 
@@ -225,7 +250,7 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/clips.js?v=4" defer></script>
-<script src="../../assets/js/lightbox.js?v=4" defer></script>
+<script src="../../assets/js/clips.js?v=5" defer></script>
+<script src="../../assets/js/lightbox.js?v=5" defer></script>
 </body>
 </html>

@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Monte Carlo Path Tracer – Jichu · Art</title>
-<meta name="description" content="Monte Carlo path tracer in C++ using Naive, Direct and Multiple Importance Sampling – Direct Lighting Integrator using LTE with Multiple light sources, Multiple materials (BSDF – BRDFs and BTDFs, Fresnel) with Stratified, grid and random sampling techniques.">
+<meta name="description" content="A Monte Carlo path tracer in C++ and GLSL with naive, direct-lighting and multiple-importance-sampling integrators, and BRDF / BTDF materials with Fresnel.">
 <link rel="canonical" href="https://jichu.art/works/monte-carlo-path-tracer/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jichu · Art">
 <meta property="og:title" content="Monte Carlo Path Tracer – Jichu · Art">
-<meta property="og:description" content="Monte Carlo path tracer in C++ using Naive, Direct and Multiple Importance Sampling – Direct Lighting Integrator using LTE with Multiple light sources, Multiple materials (BSDF – BRDFs and BTDFs, Fresnel) with Stratified, grid and random sampling techniques.">
+<meta property="og:description" content="A Monte Carlo path tracer in C++ and GLSL with naive, direct-lighting and multiple-importance-sampling integrators, and BRDF / BTDF materials with Fresnel.">
 <meta property="og:url" content="https://jichu.art/works/monte-carlo-path-tracer/">
 <meta property="og:image" content="https://jichu.art/assets/img/monte-carlo-path-tracer/cover-thumb.webp">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=4">
+<link rel="stylesheet" href="../../assets/css/site.css?v=5">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,21 +32,42 @@
 </header>
 
 <main id="main">
-<article class="project wrap">
-  <a class="back" href="../../#works">← All works</a>
-  <div class="project-grid">
-    <header class="project-info">
-      <h1>Monte Carlo Path Tracer</h1>
-      <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>Qt</li><li>Path tracing</li><li>MIS</li></ul>
-      <div class="prose">
-        <p>Monte Carlo path tracer in C++ using Naive, Direct and Multiple Importance Sampling – Direct Lighting Integrator using LTE with Multiple light sources, Multiple materials (BSDF – BRDFs and BTDFs, Fresnel) with Stratified, grid and random sampling techniques.</p>
-        <p>Sample Renders are as follows:</p>
+<article class="project">
+  <header class="project-hero">
+    <div class="project-glow" style="background-image: url(../../assets/img/monte-carlo-path-tracer/glow.webp)" aria-hidden="true"></div>
+    <div class="wrap">
+      <a class="back" href="../../#works">← All works</a>
+      <div class="project-head">
+        <div class="project-title">
+          <h1>Monte Carlo Path Tracer</h1>
+          <p class="project-lead">A Monte Carlo path tracer in C++ and GLSL. It solves the light transport equation with naive, direct-lighting and multiple-importance-sampling integrators, across specular, microfacet and dielectric materials.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>GLSL</li><li>OpenGL</li><li>Path Tracing</li><li>Multiple Importance Sampling</li><li>BSDF</li></ul>
+          <ul class="project-links">
+            <li><a class="button" href="https://github.com/jichumao/Monte-Carlo-Path-Tracer"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
+          </ul>
+        </div>
+        <figure class="project-cover"><img class="" src="../../assets/img/monte-carlo-path-tracer/cover-thumb.webp" srcset="../../assets/img/monte-carlo-path-tracer/cover-thumb.webp 900w, ../../assets/img/monte-carlo-path-tracer/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Path-traced Cornell boxes: a glass sphere in front of a rock wall, the Veach test scene and a microfacet material test" fetchpriority="high"></figure>
       </div>
-      <ul class="project-links">
-        <li><a class="button" href="https://github.com/jichumao/Monte-Carlo-Path-Tracer"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
-      </ul>
-    </header>
-    <div class="project-media">
+      <dl class="facts">
+        <div><dt>Year</dt><dd>2024</dd></div>
+        <div><dt>Built with</dt><dd>C++, GLSL, OpenGL, Qt</dd></div>
+      </dl>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="project-grid">
+      <div class="project-info">
+        <h2>Overview</h2>
+        <div class="prose">
+        <ul>
+          <li>Integrators: naive, direct lighting, and multiple importance sampling (MIS)</li>
+          <li>Direct lighting from multiple light sources, including point and spot lights</li>
+          <li>Materials: BRDFs and BTDFs with Fresnel, covering specular, microfacet and dielectric surfaces</li>
+          <li>Stratified, grid and random sampling</li>
+        </ul>
+        </div>
+      </div>
+      <div class="project-media">
       <ul class="gallery many">
         <li>
           <figure>
@@ -133,12 +154,13 @@
           </figure>
         </li>
       </ul>
+      </div>
     </div>
+    <nav class="pager" aria-label="More works">
+      <a class="prev" href="../mini-minecraft/"><img src="../../assets/img/mini-minecraft/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"><span class="pager-text"><span class="pager-label">Previous</span>Mini Minecraft</span></a>
+      <a class="next" href="../glsl-shaders/"><span class="pager-text"><span class="pager-label">Next</span>GLSL Shaders</span><img src="../../assets/img/glsl-shaders/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"></a>
+    </nav>
   </div>
-  <nav class="pager" aria-label="More works">
-    <a class="prev" href="../tree-creator-plugin-for-maya-houdini/"><span>Previous</span>Tree Creator – Plugin for Maya &amp; Houdini</a>
-    <a class="next" href="../mini-minecraft/"><span>Next</span>Mini Minecraft</a>
-  </nav>
 </article>
 </main>
 
@@ -158,6 +180,6 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/lightbox.js?v=4" defer></script>
+<script src="../../assets/js/lightbox.js?v=5" defer></script>
 </body>
 </html>

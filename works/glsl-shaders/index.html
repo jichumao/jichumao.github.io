@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GLSL Shaders – Jichu · Art</title>
-<meta name="description" content="Programmed portions of OpenGL’s graphics pipeline by writing a few different vertex and fragment shaders to apply different coloration effects to the surfaces of 3D models.">
+<meta name="description" content="Vertex and fragment shaders for OpenGL: Blinn-Phong lighting, matcaps, vertex deformation, and post-process effects such as bloom, blur, Sobel edges and Worley noise.">
 <link rel="canonical" href="https://jichu.art/works/glsl-shaders/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jichu · Art">
 <meta property="og:title" content="GLSL Shaders – Jichu · Art">
-<meta property="og:description" content="Programmed portions of OpenGL’s graphics pipeline by writing a few different vertex and fragment shaders to apply different coloration effects to the surfaces of 3D models.">
+<meta property="og:description" content="Vertex and fragment shaders for OpenGL: Blinn-Phong lighting, matcaps, vertex deformation, and post-process effects such as bloom, blur, Sobel edges and Worley noise.">
 <meta property="og:url" content="https://jichu.art/works/glsl-shaders/">
 <meta property="og:image" content="https://jichu.art/assets/img/glsl-shaders/cover-thumb.webp">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=4">
+<link rel="stylesheet" href="../../assets/css/site.css?v=5">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,21 +32,41 @@
 </header>
 
 <main id="main">
-<article class="project wrap">
-  <a class="back" href="../../#works">← All works</a>
-  <div class="project-grid">
-    <header class="project-info">
-      <h1>GLSL Shaders</h1>
-      <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>GLSL</li><li>OpenGL</li><li>C++</li></ul>
-      <div class="prose">
-        <p>Programmed portions of OpenGL’s graphics pipeline by writing a few different vertex and fragment shaders to apply different coloration effects to the surfaces of 3D models.</p>
-        <p>Shaders demo video and images as follows:</p>
+<article class="project">
+  <header class="project-hero">
+    <div class="project-glow" style="background-image: url(../../assets/img/glsl-shaders/glow.webp)" aria-hidden="true"></div>
+    <div class="wrap">
+      <a class="back" href="../../#works">← All works</a>
+      <div class="project-head">
+        <div class="project-title">
+          <h1>GLSL Shaders</h1>
+          <p class="project-lead">Portions of OpenGL’s graphics pipeline, programmed by hand: a set of vertex and fragment shaders that apply different coloration effects to the surfaces of 3D models.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>GLSL</li><li>OpenGL</li><li>C++</li><li>Shader Programming</li><li>Post-Processing</li></ul>
+          <ul class="project-links">
+            <li><a class="button" href="https://github.com/jichumao/GLSL-Shaders"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
+          </ul>
+        </div>
+        <figure class="project-cover"><img class="" src="../../assets/img/glsl-shaders/cover-thumb.webp" srcset="../../assets/img/glsl-shaders/cover-thumb.webp 900w, ../../assets/img/glsl-shaders/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="The same 3D model rendered with a chrome matcap shader, a Sobel edge filter and a surface-normal shader" fetchpriority="high"></figure>
       </div>
-      <ul class="project-links">
-        <li><a class="button" href="https://github.com/jichumao/GLSL-Shaders"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
-      </ul>
-    </header>
-    <div class="project-media">
+      <dl class="facts">
+        <div><dt>Year</dt><dd>2023</dd></div>
+        <div><dt>Built with</dt><dd>GLSL, OpenGL, C++</dd></div>
+      </dl>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="project-grid">
+      <div class="project-info">
+        <h2>Overview</h2>
+        <div class="prose">
+        <ul>
+          <li>Surface shaders: Lambert, Blinn-Phong, matcaps, surface normals and a colour gradient</li>
+          <li>Vertex deformation</li>
+          <li>Post-process shaders: greyscale, Gaussian blur, Sobel edge detection, bloom and Worley noise</li>
+        </ul>
+        </div>
+      </div>
+      <div class="project-media">
       <figure class="player">
         <video controls preload="none" playsinline width="1920" height="1080" poster="../../assets/video/glsl-shaders-poster.webp" aria-label="GLSL shaders demo">
           <source src="../../assets/video/glsl-shaders.mp4" type="video/mp4">
@@ -106,7 +126,7 @@
         </li>
         <li>
           <figure>
-            <a class="shot" href="../../assets/img/glsl-shaders/overview.webp"><img src="../../assets/img/glsl-shaders/overview-thumb.webp" width="800" height="617" alt="Overview of all shaders" loading="lazy" decoding="async"></a>
+            <a class="shot" href="../../assets/img/glsl-shaders/color-gradient.webp"><img src="../../assets/img/glsl-shaders/color-gradient-thumb.webp" width="800" height="617" alt="Colour gradient shader" loading="lazy" decoding="async"></a>
           </figure>
         </li>
         <li>
@@ -145,12 +165,13 @@
           </figure>
         </li>
       </ul>
+      </div>
     </div>
+    <nav class="pager" aria-label="More works">
+      <a class="prev" href="../monte-carlo-path-tracer/"><img src="../../assets/img/monte-carlo-path-tracer/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"><span class="pager-text"><span class="pager-label">Previous</span>Monte Carlo Path Tracer</span></a>
+      <a class="next" href="../tree-creator-plugin-for-maya-houdini/"><span class="pager-text"><span class="pager-label">Next</span>Tree Creator – Plugin for Maya &amp; Houdini</span><img src="../../assets/img/tree-creator/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"></a>
+    </nav>
   </div>
-  <nav class="pager" aria-label="More works">
-    <a class="prev" href="../mini-minecraft/"><span>Previous</span>Mini Minecraft</a>
-    <a class="next" href="../animation-toolkit/"><span>Next</span>Animation Toolkit</a>
-  </nav>
 </article>
 </main>
 
@@ -170,6 +191,6 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/lightbox.js?v=4" defer></script>
+<script src="../../assets/js/lightbox.js?v=5" defer></script>
 </body>
 </html>

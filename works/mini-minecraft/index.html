@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mini Minecraft – Jichu · Art</title>
-<meta name="description" content="This is a Minecraft-like game, using OpenGL, C++ and Qt6 for development. Many important features are implemented from 0 to 1 by me in this game.">
+<meta name="description" content="A Minecraft-like game in C++ and OpenGL with no game engine. I built the procedural terrain, the biomes, texture animation and shape-grammar buildings.">
 <link rel="canonical" href="https://jichu.art/works/mini-minecraft/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jichu · Art">
 <meta property="og:title" content="Mini Minecraft – Jichu · Art">
-<meta property="og:description" content="This is a Minecraft-like game, using OpenGL, C++ and Qt6 for development. Many important features are implemented from 0 to 1 by me in this game.">
+<meta property="og:description" content="A Minecraft-like game in C++ and OpenGL with no game engine. I built the procedural terrain, the biomes, texture animation and shape-grammar buildings.">
 <meta property="og:url" content="https://jichu.art/works/mini-minecraft/">
 <meta property="og:image" content="https://jichu.art/assets/img/mini-minecraft/cover-thumb.webp">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=4">
+<link rel="stylesheet" href="../../assets/css/site.css?v=5">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,29 +32,45 @@
 </header>
 
 <main id="main">
-<article class="project wrap">
-  <a class="back" href="../../#works">← All works</a>
-  <div class="project-grid">
-    <header class="project-info">
-      <h1>Mini Minecraft</h1>
-      <ul class="tags" aria-label="Category and tech stack"><li class="cat">Games</li><li>C++</li><li>OpenGL</li><li>GLSL</li><li>Qt6</li></ul>
-      <div class="prose">
-        <p>This is a Minecraft-like game, using OpenGL and C++.</p>
-        <p>I mainly implemented following features in this game:</p>
-        <ul>
-          <li>Procedural Terrain</li>
-          <li>Texturing and Texture Animation</li>
-          <li>Additional Biomes</li>
-          <li>Procedurally Placed Assets</li>
-          <li>Procedural Buildings with Shape Grammars</li>
-        </ul>
-        <p>Here is the demo for our games:</p>
+<article class="project">
+  <header class="project-hero">
+    <div class="project-glow" style="background-image: url(../../assets/img/mini-minecraft/glow.webp)" aria-hidden="true"></div>
+    <div class="wrap">
+      <a class="back" href="../../#works">← All works</a>
+      <div class="project-head">
+        <div class="project-title">
+          <h1>Mini Minecraft</h1>
+          <p class="project-lead">A Minecraft-like game written in C++ and OpenGL. We did not use a game engine: every visual effect is built from OpenGL and Qt.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Games</li><li>C++</li><li>OpenGL</li><li>GLSL</li><li>Qt</li><li>Procedural Generation</li><li>Game Development</li></ul>
+          <ul class="project-links">
+            <li><a class="button" href="https://github.com/jichumao/miniMC"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
+          </ul>
+        </div>
+        <figure class="project-cover"><img class="" src="../../assets/img/mini-minecraft/cover-thumb.webp" srcset="../../assets/img/mini-minecraft/cover-thumb.webp 900w, ../../assets/img/mini-minecraft/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Procedurally generated voxel terrain under a purple sky, with desert and mountain biomes" fetchpriority="high"></figure>
       </div>
-      <ul class="project-links">
-        <li><a class="button" href="https://github.com/jichumao/miniMC"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
-      </ul>
-    </header>
-    <div class="project-media">
+      <dl class="facts">
+        <div><dt>Year</dt><dd>2023</dd></div>
+        <div><dt>Type</dt><dd>Team project</dd></div>
+        <div><dt>Built with</dt><dd>C++, OpenGL, GLSL, Qt 6</dd></div>
+      </dl>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="project-grid">
+      <div class="project-info">
+        <h2>Overview</h2>
+        <div class="prose">
+        <p>I mainly implemented the following features in this game:</p>
+        <ul>
+          <li>Procedural terrain</li>
+          <li>Texturing and texture animation</li>
+          <li>Multiple biomes: grassland, desert, mountain and snowfield</li>
+          <li>Procedurally placed assets</li>
+          <li>Procedural buildings with shape grammars (L-systems)</li>
+        </ul>
+        </div>
+      </div>
+      <div class="project-media">
       <p class="media-label">On YouTube:</p>
       <figure class="player">
         <iframe src="https://www.youtube-nocookie.com/embed/gNmsVbQdZX0" title="Mini Minecraft demo on YouTube" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
@@ -75,12 +91,40 @@
           </figure>
         </li>
       </ul>
+      <h2>Biomes</h2>
+      <ul class="gallery two">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/mini-minecraft/biome-grassland.webp" data-caption="Grassland"><img src="../../assets/img/mini-minecraft/biome-grassland-thumb.webp" width="800" height="584" alt="Grassland" loading="lazy" decoding="async"></a>
+            <figcaption>Grassland</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/mini-minecraft/biome-desert.webp" data-caption="Desert"><img src="../../assets/img/mini-minecraft/biome-desert-thumb.webp" width="800" height="579" alt="Desert" loading="lazy" decoding="async"></a>
+            <figcaption>Desert</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/mini-minecraft/biome-snow.webp" data-caption="Snowfield"><img src="../../assets/img/mini-minecraft/biome-snow-thumb.webp" width="800" height="578" alt="Snowfield" loading="lazy" decoding="async"></a>
+            <figcaption>Snowfield</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/mini-minecraft/biome-mountain.webp" data-caption="Mountain"><img src="../../assets/img/mini-minecraft/biome-mountain-thumb.webp" width="800" height="574" alt="Mountain" loading="lazy" decoding="async"></a>
+            <figcaption>Mountain</figcaption>
+          </figure>
+        </li>
+      </ul>
+      </div>
     </div>
+    <nav class="pager" aria-label="More works">
+      <a class="prev" href="../physically-based-shaders/"><img src="../../assets/img/physically-based-shaders/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"><span class="pager-text"><span class="pager-label">Previous</span>Physically-Based Shaders</span></a>
+      <a class="next" href="../monte-carlo-path-tracer/"><span class="pager-text"><span class="pager-label">Next</span>Monte Carlo Path Tracer</span><img src="../../assets/img/monte-carlo-path-tracer/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"></a>
+    </nav>
   </div>
-  <nav class="pager" aria-label="More works">
-    <a class="prev" href="../monte-carlo-path-tracer/"><span>Previous</span>Monte Carlo Path Tracer</a>
-    <a class="next" href="../glsl-shaders/"><span>Next</span>GLSL Shaders</a>
-  </nav>
 </article>
 </main>
 
@@ -100,6 +144,6 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/lightbox.js?v=4" defer></script>
+<script src="../../assets/js/lightbox.js?v=5" defer></script>
 </body>
 </html>

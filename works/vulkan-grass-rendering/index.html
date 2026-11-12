@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vulkan Grass Rendering – Jichu · Art</title>
-<meta name="description" content="Real-time grass for 3D scenes: a Vulkan grass simulator and renderer that uses a compute shader for physics and culling.">
+<meta name="description" content="Real-time grass in Vulkan. A compute shader simulates and culls every blade; with 32,768 blades, culling lifts the frame rate from 70 to 228 fps.">
 <link rel="canonical" href="https://jichu.art/works/vulkan-grass-rendering/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jichu · Art">
 <meta property="og:title" content="Vulkan Grass Rendering – Jichu · Art">
-<meta property="og:description" content="Real-time grass for 3D scenes: a Vulkan grass simulator and renderer that uses a compute shader for physics and culling.">
+<meta property="og:description" content="Real-time grass in Vulkan. A compute shader simulates and culls every blade; with 32,768 blades, culling lifts the frame rate from 70 to 228 fps.">
 <meta property="og:url" content="https://jichu.art/works/vulkan-grass-rendering/">
 <meta property="og:image" content="https://jichu.art/assets/img/vulkan-grass-rendering/cover-thumb.webp">
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=4">
+<link rel="stylesheet" href="../../assets/css/site.css?v=5">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,23 +32,49 @@
 </header>
 
 <main id="main">
-<article class="project wrap">
-  <a class="back" href="../../#works">← All works</a>
-  <div class="project-grid">
-    <header class="project-info">
-      <h1>Vulkan Grass Rendering</h1>
-      <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Tessellation</li><li>Compute shaders</li></ul>
-      <div class="prose">
-        <p>A grass simulator and renderer written against the Vulkan API. Each blade is a Bézier curve. A compute shader applies gravity, wind and recovery forces to every blade and culls the ones that do not contribute to the frame; tessellation shaders turn the remaining curves into geometry, with more detail close to the camera.</p>
-        <p>It follows the paper <a href="https://www.cg.tuwien.ac.at/research/publications/2017/JAHRMANN-2017-RRTG/JAHRMANN-2017-RRTG-draft.pdf">Responsive Real-Time Grass Rendering for General 3D Scenes</a> by Jahrmann and Wimmer.</p>
-        <p>With 32,768 blades, orientation, view-frustum and distance culling together raise the frame rate from 70.2 to 228.2 FPS.</p>
+<article class="project">
+  <header class="project-hero">
+    <div class="project-glow" style="background-image: url(../../assets/img/vulkan-grass-rendering/glow.webp)" aria-hidden="true"></div>
+    <div class="wrap">
+      <a class="back" href="../../#works">← All works</a>
+      <div class="project-head">
+        <div class="project-title">
+          <h1>Vulkan Grass Rendering</h1>
+          <p class="project-lead">A grass simulator and renderer on the Vulkan API. Every blade is a Bézier curve: a compute shader applies gravity, wind and recovery forces and culls the blades that do not contribute, then tessellation shaders turn the rest into geometry.</p>
+          <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Compute Shaders</li><li>Tessellation</li><li>Real-Time Rendering</li></ul>
+          <ul class="project-links">
+            <li><a class="button" href="https://github.com/jichumao/Vulkan-Grass-Rendering"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
+            <li><a class="button" href="https://www.cg.tuwien.ac.at/research/publications/2017/JAHRMANN-2017-RRTG/JAHRMANN-2017-RRTG-draft.pdf"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M10 12.5h5M10 16h5"/></svg>Paper</a></li>
+          </ul>
+        </div>
+        <figure class="project-cover"><img class="" src="../../assets/img/vulkan-grass-rendering/cover-thumb.webp" srcset="../../assets/img/vulkan-grass-rendering/cover-thumb.webp 900w, ../../assets/img/vulkan-grass-rendering/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="A field of grass blades rendered in real time, with a close-up and a wireframe view of tessellated blades" fetchpriority="high"></figure>
       </div>
-      <ul class="project-links">
-        <li><a class="button" href="https://github.com/jichumao/Vulkan-Grass-Rendering"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
-        <li><a class="button" href="https://www.cg.tuwien.ac.at/research/publications/2017/JAHRMANN-2017-RRTG/JAHRMANN-2017-RRTG-draft.pdf"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M10 12.5h5M10 16h5"/></svg>Paper</a></li>
+      <dl class="facts">
+        <div><dt>Year</dt><dd>2024</dd></div>
+        <div><dt>Type</dt><dd>Individual project</dd></div>
+        <div><dt>Course</dt><dd>CIS 5650 GPU Programming and Architecture at UPenn</dd></div>
+        <div><dt>Tested on</dt><dd>RTX 4090, i7-13700K, Windows 11</dd></div>
+      </dl>
+      <ul class="stats" aria-label="Measured results">
+        <li><strong>70.2 → 228.2 fps</strong><span>with orientation, frustum and distance culling, 32,768 blades</span></li>
+        <li><strong>219.5 fps</strong><span>at 1,048,576 blades with culling, against 74.2 without</span></li>
       </ul>
-    </header>
-    <div class="project-media">
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="project-grid">
+      <div class="project-info">
+        <h2>Overview</h2>
+        <div class="prose">
+        <p>It follows the paper <a href="https://www.cg.tuwien.ac.at/research/publications/2017/JAHRMANN-2017-RRTG/JAHRMANN-2017-RRTG-draft.pdf">Responsive Real-Time Grass Rendering for General 3D Scenes</a> by Jahrmann and Wimmer.</p>
+        <ul>
+          <li>Physics in a compute shader: gravity, wind and recovery forces on every blade</li>
+          <li>Three culling tests in the same shader: orientation, view frustum and distance</li>
+          <li>Tessellation level follows each blade’s distance to the camera, so nearby blades get more detail</li>
+        </ul>
+        </div>
+      </div>
+      <div class="project-media">
       <ul class="gallery wide one">
         <li>
           <figure>
@@ -102,12 +128,13 @@
           </figure>
         </li>
       </ul>
+      </div>
     </div>
+    <nav class="pager" aria-label="More works">
+      <a class="prev" href="../webgpu-clustered-shading/"><img src="../../assets/img/webgpu-clustered-shading/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"><span class="pager-text"><span class="pager-label">Previous</span>WebGPU Forward+ and Clustered Deferred Shading</span></a>
+      <a class="next" href="../physically-based-shaders/"><span class="pager-text"><span class="pager-label">Next</span>Physically-Based Shaders</span><img src="../../assets/img/physically-based-shaders/cover-mini.webp" width="360" height="240" alt="" loading="lazy" decoding="async"></a>
+    </nav>
   </div>
-  <nav class="pager" aria-label="More works">
-    <a class="prev" href="../webgpu-clustered-shading/"><span>Previous</span>WebGPU Forward+ and Clustered Deferred Shading</a>
-    <a class="next" href="../physically-based-shaders/"><span>Next</span>Physically-Based Shaders</a>
-  </nav>
 </article>
 </main>
 
@@ -127,7 +154,7 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/clips.js?v=4" defer></script>
-<script src="../../assets/js/lightbox.js?v=4" defer></script>
+<script src="../../assets/js/clips.js?v=5" defer></script>
+<script src="../../assets/js/lightbox.js?v=5" defer></script>
 </body>
 </html>
