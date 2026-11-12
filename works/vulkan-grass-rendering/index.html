@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vulkan Grass Rendering – Jichu · Art</title>
+<meta name="description" content="Real-time grass for 3D scenes: a Vulkan grass simulator and renderer that uses a compute shader for physics and culling.">
+<link rel="canonical" href="https://jichu.art/works/vulkan-grass-rendering/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Jichu · Art">
+<meta property="og:title" content="Vulkan Grass Rendering – Jichu · Art">
+<meta property="og:description" content="Real-time grass for 3D scenes: a Vulkan grass simulator and renderer that uses a compute shader for physics and culling.">
+<meta property="og:url" content="https://jichu.art/works/vulkan-grass-rendering/">
+<meta property="og:image" content="https://jichu.art/assets/img/vulkan-grass-rendering/cover-thumb.webp">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/css/site.css?v=4">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <p class="site-title"><a href="../../">Jichu · Art</a></p>
+    <p class="site-tagline">A site about Jichu &amp; Art</p>
+    <nav class="site-nav" aria-label="Main">
+      <a href="../../#works" aria-current="page">Works</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<article class="project wrap">
+  <a class="back" href="../../#works">← All works</a>
+  <div class="project-grid">
+    <header class="project-info">
+      <h1>Vulkan Grass Rendering</h1>
+      <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Tessellation</li><li>Compute shaders</li></ul>
+      <div class="prose">
+        <p>A grass simulator and renderer written against the Vulkan API. Each blade is a Bézier curve. A compute shader applies gravity, wind and recovery forces to every blade and culls the ones that do not contribute to the frame; tessellation shaders turn the remaining curves into geometry, with more detail close to the camera.</p>
+        <p>It follows the paper <a href="https://www.cg.tuwien.ac.at/research/publications/2017/JAHRMANN-2017-RRTG/JAHRMANN-2017-RRTG-draft.pdf">Responsive Real-Time Grass Rendering for General 3D Scenes</a> by Jahrmann and Wimmer.</p>
+        <p>With 32,768 blades, orientation, view-frustum and distance culling together raise the frame rate from 70.2 to 228.2 FPS.</p>
+      </div>
+      <ul class="project-links">
+        <li><a class="button" href="https://github.com/jichumao/Vulkan-Grass-Rendering"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
+        <li><a class="button" href="https://www.cg.tuwien.ac.at/research/publications/2017/JAHRMANN-2017-RRTG/JAHRMANN-2017-RRTG-draft.pdf"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M10 12.5h5M10 16h5"/></svg>Paper</a></li>
+      </ul>
+    </header>
+    <div class="project-media">
+      <ul class="gallery wide one">
+        <li>
+          <figure>
+            <video class="clip" data-autoplay controls loop muted playsinline preload="none" width="796" height="796" poster="../../assets/video/grass-showcase-poster.webp" aria-label="8,192 grass blades with dynamic tessellation levels"><source src="../../assets/video/grass-showcase.mp4" type="video/mp4"></video>
+            <figcaption>8,192 grass blades with dynamic tessellation levels</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Level of detail</h2>
+      <ul class="gallery one">
+        <li>
+          <figure>
+            <video class="clip" data-autoplay controls loop muted playsinline preload="none" width="400" height="400" poster="../../assets/video/grass-lod-poster.webp" aria-label="Tessellation level follows the distance to the camera"><source src="../../assets/video/grass-lod.mp4" type="video/mp4"></video>
+            <figcaption>Tessellation level follows the distance to the camera</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Culling</h2>
+      <ul class="gallery three">
+        <li>
+          <figure>
+            <video class="clip" data-autoplay controls loop muted playsinline preload="none" width="636" height="464" poster="../../assets/video/grass-culling-orientation-poster.webp" aria-label="Orientation culling"><source src="../../assets/video/grass-culling-orientation.mp4" type="video/mp4"></video>
+            <figcaption>Orientation culling</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <video class="clip" data-autoplay controls loop muted playsinline preload="none" width="636" height="464" poster="../../assets/video/grass-culling-frustum-poster.webp" aria-label="View-frustum culling"><source src="../../assets/video/grass-culling-frustum.mp4" type="video/mp4"></video>
+            <figcaption>View-frustum culling</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <video class="clip" data-autoplay controls loop muted playsinline preload="none" width="636" height="464" poster="../../assets/video/grass-culling-distance-poster.webp" aria-label="Distance culling"><source src="../../assets/video/grass-culling-distance.mp4" type="video/mp4"></video>
+            <figcaption>Distance culling</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Performance</h2>
+      <ul class="gallery wide two">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/vulkan-grass-rendering/chart-culling.webp" data-caption="Frame rate with each culling method, 32,768 blades"><img src="../../assets/img/vulkan-grass-rendering/chart-culling-thumb.webp" width="761" height="438" alt="Frame rate with each culling method, 32,768 blades" loading="lazy" decoding="async"></a>
+            <figcaption>Frame rate with each culling method, 32,768 blades</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/vulkan-grass-rendering/chart-blade-count.webp" data-caption="Frame rate by number of blades, with and without culling"><img src="../../assets/img/vulkan-grass-rendering/chart-blade-count-thumb.webp" width="800" height="518" alt="Frame rate by number of blades, with and without culling" loading="lazy" decoding="async"></a>
+            <figcaption>Frame rate by number of blades, with and without culling</figcaption>
+          </figure>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <nav class="pager" aria-label="More works">
+    <a class="prev" href="../webgpu-clustered-shading/"><span>Previous</span>WebGPU Forward+ and Clustered Deferred Shading</a>
+    <a class="next" href="../physically-based-shaders/"><span>Next</span>Physically-Based Shaders</a>
+  </nav>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="contact-band">
+    <div class="wrap">
+      <h2>Contact me</h2>
+      <p><a class="mail" href="mailto:maojichu@gmail.com"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>maojichu@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="wrap footer-end">
+    <ul class="social">
+      <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7.5" width="18" height="12" rx="1.5"/><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5"/><path d="M3 13h18"/></svg>LinkedIn</a></li>
+      <li><a href="https://github.com/jichumao"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>GitHub</a></li>
+      <li><a href="https://www.youtube.com/@supermao6744"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>YouTube</a></li>
+    </ul>
+    <p class="copyright">© Jichu Mao</p>
+  </div>
+</footer>
+<script src="../../assets/js/clips.js?v=4" defer></script>
+<script src="../../assets/js/lightbox.js?v=4" defer></script>
+</body>
+</html>

@@ -1,0 +1,885 @@
+{
+ "home/hero": {
+  "w": 2400,
+  "h": 702,
+  "tw": 1200,
+  "th": 351,
+  "alpha": false
+ },
+ "home/avatar": {
+  "w": 480,
+  "h": 480,
+  "tw": 240,
+  "th": 240,
+  "alpha": true
+ },
+ "physically-based-shaders/cover": {
+  "w": 931,
+  "h": 844,
+  "tw": 800,
+  "th": 725,
+  "alpha": false
+ },
+ "physically-based-shaders/white-metal0-rough0": {
+  "w": 1354,
+  "h": 963,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/white-metal1-rough0": {
+  "w": 1354,
+  "h": 963,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/white-metal1-rough025": {
+  "w": 1354,
+  "h": 964,
+  "tw": 800,
+  "th": 570,
+  "alpha": false
+ },
+ "physically-based-shaders/red-metal0-rough0": {
+  "w": 1130,
+  "h": 804,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/red-metal1-rough0": {
+  "w": 1130,
+  "h": 804,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/red-metal1-rough025": {
+  "w": 1130,
+  "h": 804,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/red-metal1-rough050": {
+  "w": 1130,
+  "h": 804,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/red-metal1-rough075": {
+  "w": 1130,
+  "h": 804,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/red-metal1-rough100": {
+  "w": 1130,
+  "h": 804,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/displacement-000": {
+  "w": 1357,
+  "h": 964,
+  "tw": 800,
+  "th": 568,
+  "alpha": false
+ },
+ "physically-based-shaders/displacement-020": {
+  "w": 1356,
+  "h": 964,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/displacement-040": {
+  "w": 1357,
+  "h": 964,
+  "tw": 800,
+  "th": 568,
+  "alpha": false
+ },
+ "physically-based-shaders/displacement-100": {
+  "w": 1357,
+  "h": 966,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/scene-skull": {
+  "w": 1356,
+  "h": 964,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "physically-based-shaders/scene-gun": {
+  "w": 1356,
+  "h": 964,
+  "tw": 800,
+  "th": 569,
+  "alpha": false
+ },
+ "tree-creator/cover": {
+  "w": 1131,
+  "h": 867,
+  "tw": 800,
+  "th": 613,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/cover": {
+  "w": 976,
+  "h": 976,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/specular-brdfs": {
+  "w": 979,
+  "h": 978,
+  "tw": 800,
+  "th": 799,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/naive-integrator": {
+  "w": 981,
+  "h": 979,
+  "tw": 800,
+  "th": 798,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/microfacet-brdfs": {
+  "w": 976,
+  "h": 976,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/direct-sample-spot-light": {
+  "w": 978,
+  "h": 978,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/direct-sample-point-light": {
+  "w": 981,
+  "h": 979,
+  "tw": 800,
+  "th": 798,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/direct-lighting": {
+  "w": 976,
+  "h": 975,
+  "tw": 800,
+  "th": 799,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/mis-2": {
+  "w": 976,
+  "h": 976,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/mis-1": {
+  "w": 975,
+  "h": 976,
+  "tw": 799,
+  "th": 800,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/direct-lighting-cornell-two-lights": {
+  "w": 979,
+  "h": 978,
+  "tw": 800,
+  "th": 799,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/specular-btdfs": {
+  "w": 976,
+  "h": 975,
+  "tw": 800,
+  "th": 799,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/dielectric-materials": {
+  "w": 979,
+  "h": 979,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/veach-naive": {
+  "w": 976,
+  "h": 976,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/veach-direct": {
+  "w": 975,
+  "h": 975,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "monte-carlo-path-tracer/veach-mis": {
+  "w": 976,
+  "h": 976,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "mini-minecraft/cover": {
+  "w": 1611,
+  "h": 1173,
+  "tw": 800,
+  "th": 582,
+  "alpha": false
+ },
+ "mini-minecraft/screenshot-1": {
+  "w": 1611,
+  "h": 1173,
+  "tw": 800,
+  "th": 582,
+  "alpha": false
+ },
+ "mini-minecraft/screenshot-2": {
+  "w": 1891,
+  "h": 1377,
+  "tw": 800,
+  "th": 583,
+  "alpha": false
+ },
+ "glsl-shaders/cover": {
+  "w": 1356,
+  "h": 1051,
+  "tw": 800,
+  "th": 620,
+  "alpha": false
+ },
+ "glsl-shaders/matcap-blue-purple": {
+  "w": 1456,
+  "h": 1128,
+  "tw": 800,
+  "th": 620,
+  "alpha": false
+ },
+ "glsl-shaders/matcap-chrome": {
+  "w": 1458,
+  "h": 1126,
+  "tw": 800,
+  "th": 618,
+  "alpha": false
+ },
+ "glsl-shaders/matcap-orange-green": {
+  "w": 1458,
+  "h": 1128,
+  "tw": 800,
+  "th": 619,
+  "alpha": false
+ },
+ "glsl-shaders/matcap-outline": {
+  "w": 1456,
+  "h": 1126,
+  "tw": 800,
+  "th": 619,
+  "alpha": false
+ },
+ "glsl-shaders/matcap-pearl": {
+  "w": 1459,
+  "h": 1126,
+  "tw": 800,
+  "th": 617,
+  "alpha": false
+ },
+ "glsl-shaders/matcap-red-clay": {
+  "w": 1458,
+  "h": 1128,
+  "tw": 800,
+  "th": 619,
+  "alpha": false
+ },
+ "glsl-shaders/matcap-red-plastic": {
+  "w": 1459,
+  "h": 1125,
+  "tw": 800,
+  "th": 617,
+  "alpha": false
+ },
+ "glsl-shaders/surface-normals": {
+  "w": 1456,
+  "h": 1123,
+  "tw": 800,
+  "th": 617,
+  "alpha": false
+ },
+ "glsl-shaders/vertex-deformation": {
+  "w": 1456,
+  "h": 1128,
+  "tw": 800,
+  "th": 620,
+  "alpha": false
+ },
+ "glsl-shaders/bloom": {
+  "w": 1456,
+  "h": 1126,
+  "tw": 800,
+  "th": 619,
+  "alpha": false
+ },
+ "glsl-shaders/overview": {
+  "w": 1458,
+  "h": 1125,
+  "tw": 800,
+  "th": 617,
+  "alpha": false
+ },
+ "glsl-shaders/gaussian-blur": {
+  "w": 1456,
+  "h": 1126,
+  "tw": 800,
+  "th": 619,
+  "alpha": false
+ },
+ "glsl-shaders/greyscale": {
+  "w": 1455,
+  "h": 1126,
+  "tw": 800,
+  "th": 619,
+  "alpha": false
+ },
+ "glsl-shaders/custom-shader": {
+  "w": 1456,
+  "h": 1125,
+  "tw": 800,
+  "th": 618,
+  "alpha": false
+ },
+ "glsl-shaders/sobel": {
+  "w": 1458,
+  "h": 1126,
+  "tw": 800,
+  "th": 618,
+  "alpha": false
+ },
+ "glsl-shaders/worley-noise": {
+  "w": 1456,
+  "h": 1126,
+  "tw": 800,
+  "th": 619,
+  "alpha": false
+ },
+ "glsl-shaders/lambert": {
+  "w": 1456,
+  "h": 1126,
+  "tw": 800,
+  "th": 619,
+  "alpha": false
+ },
+ "glsl-shaders/blinn-phong": {
+  "w": 1456,
+  "h": 1125,
+  "tw": 800,
+  "th": 618,
+  "alpha": false
+ },
+ "animation-toolkit/cover": {
+  "w": 1798,
+  "h": 1081,
+  "tw": 800,
+  "th": 481,
+  "alpha": false
+ },
+ "maya-3d-scene-modeling/cover": {
+  "w": 1209,
+  "h": 697,
+  "tw": 800,
+  "th": 461,
+  "alpha": false
+ },
+ "maya-3d-scene-modeling/render-2": {
+  "w": 1920,
+  "h": 1080,
+  "tw": 800,
+  "th": 450,
+  "alpha": false
+ },
+ "maya-3d-scene-modeling/render-1": {
+  "w": 1920,
+  "h": 1080,
+  "tw": 800,
+  "th": 450,
+  "alpha": false
+ },
+ "maya-3d-scene-modeling/render-3": {
+  "w": 1158,
+  "h": 638,
+  "tw": 800,
+  "th": 441,
+  "alpha": false
+ },
+ "maya-3d-scene-modeling/render-5": {
+  "w": 998,
+  "h": 542,
+  "tw": 800,
+  "th": 434,
+  "alpha": false
+ },
+ "maya-3d-scene-modeling/render-4": {
+  "w": 922,
+  "h": 520,
+  "tw": 800,
+  "th": 451,
+  "alpha": false
+ },
+ "motion-capture/cover": {
+  "w": 518,
+  "h": 397,
+  "tw": 518,
+  "th": 397,
+  "alpha": false
+ },
+ "houdini-fireworks/cover": {
+  "w": 640,
+  "h": 413,
+  "tw": 640,
+  "th": 413,
+  "alpha": false
+ },
+ "gem-match-game/cover": {
+  "w": 861,
+  "h": 573,
+  "tw": 800,
+  "th": 532,
+  "alpha": false
+ },
+ "world-space-restir/cover": {
+  "w": 1000,
+  "h": 867,
+  "tw": 1000,
+  "th": 867,
+  "alpha": false
+ },
+ "world-space-restir/hash-grid-sponza": {
+  "w": 688,
+  "h": 688,
+  "tw": 688,
+  "th": 688,
+  "alpha": false
+ },
+ "world-space-restir/sponza-1spp-ours": {
+  "w": 796,
+  "h": 691,
+  "tw": 796,
+  "th": 691,
+  "alpha": false
+ },
+ "world-space-restir/sponza-1spp-path-tracing": {
+  "w": 796,
+  "h": 691,
+  "tw": 796,
+  "th": 691,
+  "alpha": false
+ },
+ "world-space-restir/rough-ours": {
+  "w": 793,
+  "h": 670,
+  "tw": 793,
+  "th": 670,
+  "alpha": false
+ },
+ "world-space-restir/rough-path-tracing": {
+  "w": 793,
+  "h": 676,
+  "tw": 793,
+  "th": 676,
+  "alpha": false
+ },
+ "world-space-restir/smooth-ours": {
+  "w": 799,
+  "h": 688,
+  "tw": 799,
+  "th": 688,
+  "alpha": false
+ },
+ "world-space-restir/smooth-path-tracing": {
+  "w": 798,
+  "h": 688,
+  "tw": 798,
+  "th": 688,
+  "alpha": false
+ },
+ "world-space-restir/subway-ours": {
+  "w": 799,
+  "h": 690,
+  "tw": 799,
+  "th": 690,
+  "alpha": false
+ },
+ "world-space-restir/subway-path-tracing": {
+  "w": 798,
+  "h": 690,
+  "tw": 798,
+  "th": 690,
+  "alpha": false
+ },
+ "world-space-restir/subway-hash-grid": {
+  "w": 798,
+  "h": 687,
+  "tw": 798,
+  "th": 687,
+  "alpha": false
+ },
+ "world-space-restir/subway-reference": {
+  "w": 799,
+  "h": 690,
+  "tw": 799,
+  "th": 690,
+  "alpha": false
+ },
+ "world-space-restir/restir-gi": {
+  "w": 796,
+  "h": 688,
+  "tw": 796,
+  "th": 688,
+  "alpha": false
+ },
+ "world-space-restir/sponza-hash-grid-split": {
+  "w": 1014,
+  "h": 879,
+  "tw": 800,
+  "th": 693,
+  "alpha": false
+ },
+ "world-space-restir/denoise": {
+  "w": 1132,
+  "h": 346,
+  "tw": 800,
+  "th": 245,
+  "alpha": false
+ },
+ "world-space-restir/chart-initial-sampling": {
+  "w": 1040,
+  "h": 450,
+  "tw": 800,
+  "th": 346,
+  "alpha": false
+ },
+ "world-space-restir/chart-passes": {
+  "w": 1037,
+  "h": 445,
+  "tw": 800,
+  "th": 343,
+  "alpha": false
+ },
+ "cuda-path-tracer/cover": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/duck-doggy-duck": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/dragon": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/shanghai-nights": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/stone-cat": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/bsdf-diffuse": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/bsdf-diffuse-specular": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/bsdf-specular": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/bsdf-refractive": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/aa-off": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/aa-on": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/dof-lens-00": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/dof-lens-05": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/dof-lens-10": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/dof-focal-05": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/dof-focal-08": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/dof-focal-15": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/gltf-untextured": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/gltf-textured": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/env-off": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/env-on": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/tone-none": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/tone-reinhard": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/tone-aces": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/gamma": {
+  "w": 800,
+  "h": 800,
+  "tw": 800,
+  "th": 800,
+  "alpha": false
+ },
+ "cuda-path-tracer/chart-compaction-depth": {
+  "w": 762,
+  "h": 434,
+  "tw": 762,
+  "th": 434,
+  "alpha": false
+ },
+ "cuda-path-tracer/chart-compaction-scene": {
+  "w": 674,
+  "h": 442,
+  "tw": 674,
+  "th": 442,
+  "alpha": false
+ },
+ "cuda-path-tracer/chart-bbox-culling": {
+  "w": 762,
+  "h": 434,
+  "tw": 762,
+  "th": 434,
+  "alpha": false
+ },
+ "webgpu-clustered-shading/cover": {
+  "w": 1000,
+  "h": 510,
+  "tw": 1000,
+  "th": 510,
+  "alpha": false
+ },
+ "webgpu-clustered-shading/sponza-4k-5000-lights": {
+  "w": 2000,
+  "h": 1020,
+  "tw": 800,
+  "th": 408,
+  "alpha": false
+ },
+ "webgpu-clustered-shading/gbuffer-position": {
+  "w": 345,
+  "h": 295,
+  "tw": 345,
+  "th": 295,
+  "alpha": false
+ },
+ "webgpu-clustered-shading/gbuffer-normal": {
+  "w": 343,
+  "h": 297,
+  "tw": 343,
+  "th": 297,
+  "alpha": false
+ },
+ "webgpu-clustered-shading/gbuffer-color": {
+  "w": 345,
+  "h": 298,
+  "tw": 345,
+  "th": 298,
+  "alpha": false
+ },
+ "webgpu-clustered-shading/gbuffer-depth": {
+  "w": 343,
+  "h": 297,
+  "tw": 343,
+  "th": 297,
+  "alpha": false
+ },
+ "webgpu-clustered-shading/chart-lights": {
+  "w": 762,
+  "h": 434,
+  "tw": 762,
+  "th": 434,
+  "alpha": false
+ },
+ "vulkan-grass-rendering/chart-culling": {
+  "w": 761,
+  "h": 438,
+  "tw": 761,
+  "th": 438,
+  "alpha": false
+ },
+ "vulkan-grass-rendering/chart-blade-count": {
+  "w": 808,
+  "h": 523,
+  "tw": 800,
+  "th": 518,
+  "alpha": false
+ },
+ "clip/restir-hash-grid": {
+  "w": 446,
+  "h": 410
+ },
+ "clip/restir-di": {
+  "w": 446,
+  "h": 410
+ },
+ "clip/restir-spatiotemporal": {
+  "w": 446,
+  "h": 410
+ },
+ "clip/webgpu-moving-lights": {
+  "w": 622,
+  "h": 488
+ },
+ "clip/grass-showcase": {
+  "w": 796,
+  "h": 796
+ },
+ "clip/grass-lod": {
+  "w": 400,
+  "h": 400
+ },
+ "clip/grass-culling-orientation": {
+  "w": 636,
+  "h": 464
+ },
+ "clip/grass-culling-frustum": {
+  "w": 636,
+  "h": 464
+ },
+ "clip/grass-culling-distance": {
+  "w": 636,
+  "h": 464
+ },
+ "vulkan-grass-rendering/cover": {
+  "w": 796,
+  "h": 796,
+  "tw": 796,
+  "th": 796,
+  "alpha": false
+ }
+}

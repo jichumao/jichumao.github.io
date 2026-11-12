@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CUDA Path Tracer – Jichu · Art</title>
+<meta name="description" content="A GPU-accelerated path tracer built with CUDA: glTF model loading, BSDF shading, stream compaction of ray paths, stochastic anti-aliasing, physically-based depth of field, environment maps, tone mapping and bounding-volume culling.">
+<link rel="canonical" href="https://jichu.art/works/cuda-path-tracer/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Jichu · Art">
+<meta property="og:title" content="CUDA Path Tracer – Jichu · Art">
+<meta property="og:description" content="A GPU-accelerated path tracer built with CUDA: glTF model loading, BSDF shading, stream compaction of ray paths, stochastic anti-aliasing, physically-based depth of field, environment maps, tone mapping and bounding-volume culling.">
+<meta property="og:url" content="https://jichu.art/works/cuda-path-tracer/">
+<meta property="og:image" content="https://jichu.art/assets/img/cuda-path-tracer/cover-thumb.webp">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/css/site.css?v=4">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <p class="site-title"><a href="../../">Jichu · Art</a></p>
+    <p class="site-tagline">A site about Jichu &amp; Art</p>
+    <nav class="site-nav" aria-label="Main">
+      <a href="../../#works" aria-current="page">Works</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<article class="project wrap">
+  <a class="back" href="../../#works">← All works</a>
+  <div class="project-grid">
+    <header class="project-info">
+      <h1>CUDA Path Tracer</h1>
+      <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>CUDA</li><li>Path tracing</li><li>glTF</li></ul>
+      <div class="prose">
+        <p>A GPU path tracer built on CUDA, based on CIS 5650 at UPenn. It is rooted in physically-based rendering, loads glTF meshes and materials, and simulates light transport to produce soft shadows, caustics and depth of field.</p>
+        <p>The highlight renders use 5,000 samples per pixel or more, with up to 8 bounces per ray.</p>
+        <p>Visual features:</p>
+        <ul>
+          <li>Diffuse, glossy, perfectly specular and refractive BSDFs</li>
+          <li>Stochastic sampled anti-aliasing</li>
+          <li>Physically-based depth of field with a thin-lens camera</li>
+          <li>glTF mesh loading with texture mapping</li>
+          <li>HDR environment maps</li>
+          <li>ACES and Reinhard tone mapping, gamma correction</li>
+        </ul>
+        <p>Performance work:</p>
+        <ul>
+          <li>Stream compaction removes finished rays; in open scenes render time drops from 25.7 ms to 18.2 ms</li>
+          <li>Bounding-box culling for glTF meshes, 20–40% faster on low- to mid-poly models</li>
+          <li>Material sorting was measured too, and turned out slower on small scenes</li>
+        </ul>
+      </div>
+      <ul class="project-links">
+        <li><a class="button" href="https://github.com/jichumao/CUDA-Path-Tracer"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>Source code</a></li>
+      </ul>
+    </header>
+    <div class="project-media">
+      <h2>Highlights</h2>
+      <ul class="gallery two">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/duck-doggy-duck.webp" data-caption="Duck-Doggy-Duck, 5,000 spp"><img src="../../assets/img/cuda-path-tracer/duck-doggy-duck-thumb.webp" width="800" height="800" alt="Duck-Doggy-Duck, 5,000 spp" loading="lazy" decoding="async"></a>
+            <figcaption>Duck-Doggy-Duck, 5,000 spp</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/dragon.webp" data-caption="The Dragon Beneath Starlit Skies, 43,200 spp"><img src="../../assets/img/cuda-path-tracer/dragon-thumb.webp" width="800" height="800" alt="The Dragon Beneath Starlit Skies, 43,200 spp" loading="lazy" decoding="async"></a>
+            <figcaption>The Dragon Beneath Starlit Skies, 43,200 spp</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/shanghai-nights.webp" data-caption="Shanghai Nights, 5,000 spp"><img src="../../assets/img/cuda-path-tracer/shanghai-nights-thumb.webp" width="800" height="800" alt="Shanghai Nights, 5,000 spp" loading="lazy" decoding="async"></a>
+            <figcaption>Shanghai Nights, 5,000 spp</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/stone-cat.webp" data-caption="Stone Cat Guardian, 5,000 spp"><img src="../../assets/img/cuda-path-tracer/stone-cat-thumb.webp" width="800" height="800" alt="Stone Cat Guardian, 5,000 spp" loading="lazy" decoding="async"></a>
+            <figcaption>Stone Cat Guardian, 5,000 spp</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Material shading</h2>
+      <ul class="gallery two">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/bsdf-diffuse.webp" data-caption="Diffuse"><img src="../../assets/img/cuda-path-tracer/bsdf-diffuse-thumb.webp" width="800" height="800" alt="Diffuse" loading="lazy" decoding="async"></a>
+            <figcaption>Diffuse</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/bsdf-diffuse-specular.webp" data-caption="Partially diffuse and specular"><img src="../../assets/img/cuda-path-tracer/bsdf-diffuse-specular-thumb.webp" width="800" height="800" alt="Partially diffuse and specular" loading="lazy" decoding="async"></a>
+            <figcaption>Partially diffuse and specular</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/bsdf-specular.webp" data-caption="Perfectly specular"><img src="../../assets/img/cuda-path-tracer/bsdf-specular-thumb.webp" width="800" height="800" alt="Perfectly specular" loading="lazy" decoding="async"></a>
+            <figcaption>Perfectly specular</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/bsdf-refractive.webp" data-caption="Refractive"><img src="../../assets/img/cuda-path-tracer/bsdf-refractive-thumb.webp" width="800" height="800" alt="Refractive" loading="lazy" decoding="async"></a>
+            <figcaption>Refractive</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Anti-aliasing</h2>
+      <ul class="gallery two">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/aa-off.webp" data-caption="Anti-aliasing off"><img src="../../assets/img/cuda-path-tracer/aa-off-thumb.webp" width="800" height="800" alt="Anti-aliasing off" loading="lazy" decoding="async"></a>
+            <figcaption>Anti-aliasing off</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/aa-on.webp" data-caption="Anti-aliasing on"><img src="../../assets/img/cuda-path-tracer/aa-on-thumb.webp" width="800" height="800" alt="Anti-aliasing on" loading="lazy" decoding="async"></a>
+            <figcaption>Anti-aliasing on</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Depth of field</h2>
+      <p class="media-label">Focal length 9.0, lens radius 0, 0.5 and 1.0</p>
+      <ul class="gallery three">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/dof-lens-00.webp" data-caption="Lens radius 0.0"><img src="../../assets/img/cuda-path-tracer/dof-lens-00-thumb.webp" width="800" height="800" alt="Lens radius 0.0" loading="lazy" decoding="async"></a>
+            <figcaption>Lens radius 0.0</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/dof-lens-05.webp" data-caption="Lens radius 0.5"><img src="../../assets/img/cuda-path-tracer/dof-lens-05-thumb.webp" width="800" height="800" alt="Lens radius 0.5" loading="lazy" decoding="async"></a>
+            <figcaption>Lens radius 0.5</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/dof-lens-10.webp" data-caption="Lens radius 1.0"><img src="../../assets/img/cuda-path-tracer/dof-lens-10-thumb.webp" width="800" height="800" alt="Lens radius 1.0" loading="lazy" decoding="async"></a>
+            <figcaption>Lens radius 1.0</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <p class="media-label">Lens radius 0.1, focal length 5, 8 and 15</p>
+      <ul class="gallery three">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/dof-focal-05.webp" data-caption="Focal length 5.0"><img src="../../assets/img/cuda-path-tracer/dof-focal-05-thumb.webp" width="800" height="800" alt="Focal length 5.0" loading="lazy" decoding="async"></a>
+            <figcaption>Focal length 5.0</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/dof-focal-08.webp" data-caption="Focal length 8.0"><img src="../../assets/img/cuda-path-tracer/dof-focal-08-thumb.webp" width="800" height="800" alt="Focal length 8.0" loading="lazy" decoding="async"></a>
+            <figcaption>Focal length 8.0</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/dof-focal-15.webp" data-caption="Focal length 15.0"><img src="../../assets/img/cuda-path-tracer/dof-focal-15-thumb.webp" width="800" height="800" alt="Focal length 15.0" loading="lazy" decoding="async"></a>
+            <figcaption>Focal length 15.0</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>glTF meshes and textures</h2>
+      <ul class="gallery two">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/gltf-untextured.webp" data-caption="Model without texture"><img src="../../assets/img/cuda-path-tracer/gltf-untextured-thumb.webp" width="800" height="800" alt="Model without texture" loading="lazy" decoding="async"></a>
+            <figcaption>Model without texture</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/gltf-textured.webp" data-caption="Texture sampled with interpolated UVs"><img src="../../assets/img/cuda-path-tracer/gltf-textured-thumb.webp" width="800" height="800" alt="Texture sampled with interpolated UVs" loading="lazy" decoding="async"></a>
+            <figcaption>Texture sampled with interpolated UVs</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Environment map</h2>
+      <ul class="gallery two">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/env-off.webp" data-caption="Environment map off"><img src="../../assets/img/cuda-path-tracer/env-off-thumb.webp" width="800" height="800" alt="Environment map off" loading="lazy" decoding="async"></a>
+            <figcaption>Environment map off</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/env-on.webp" data-caption="Environment map on"><img src="../../assets/img/cuda-path-tracer/env-on-thumb.webp" width="800" height="800" alt="Environment map on" loading="lazy" decoding="async"></a>
+            <figcaption>Environment map on</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Tone mapping</h2>
+      <ul class="gallery two">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/tone-none.webp" data-caption="No tone mapping"><img src="../../assets/img/cuda-path-tracer/tone-none-thumb.webp" width="800" height="800" alt="No tone mapping" loading="lazy" decoding="async"></a>
+            <figcaption>No tone mapping</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/tone-reinhard.webp" data-caption="Reinhard"><img src="../../assets/img/cuda-path-tracer/tone-reinhard-thumb.webp" width="800" height="800" alt="Reinhard" loading="lazy" decoding="async"></a>
+            <figcaption>Reinhard</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/tone-aces.webp" data-caption="ACES"><img src="../../assets/img/cuda-path-tracer/tone-aces-thumb.webp" width="800" height="800" alt="ACES" loading="lazy" decoding="async"></a>
+            <figcaption>ACES</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/gamma.webp" data-caption="With gamma correction"><img src="../../assets/img/cuda-path-tracer/gamma-thumb.webp" width="800" height="800" alt="With gamma correction" loading="lazy" decoding="async"></a>
+            <figcaption>With gamma correction</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <h2>Performance</h2>
+      <ul class="gallery wide three">
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/chart-compaction-depth.webp" data-caption="Stream compaction: rays remaining at each trace depth, open scene"><img src="../../assets/img/cuda-path-tracer/chart-compaction-depth-thumb.webp" width="762" height="434" alt="Stream compaction: rays remaining at each trace depth, open scene" loading="lazy" decoding="async"></a>
+            <figcaption>Stream compaction: rays remaining at each trace depth, open scene</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/chart-compaction-scene.webp" data-caption="Stream compaction: render time, open and closed scene"><img src="../../assets/img/cuda-path-tracer/chart-compaction-scene-thumb.webp" width="674" height="442" alt="Stream compaction: render time, open and closed scene" loading="lazy" decoding="async"></a>
+            <figcaption>Stream compaction: render time, open and closed scene</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <a class="shot" href="../../assets/img/cuda-path-tracer/chart-bbox-culling.webp" data-caption="Bounding-box culling: frame rate by triangle count"><img src="../../assets/img/cuda-path-tracer/chart-bbox-culling-thumb.webp" width="762" height="434" alt="Bounding-box culling: frame rate by triangle count" loading="lazy" decoding="async"></a>
+            <figcaption>Bounding-box culling: frame rate by triangle count</figcaption>
+          </figure>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <nav class="pager" aria-label="More works">
+    <a class="prev" href="../world-space-restir/"><span>Previous</span>World-Space ReSTIR in Vulkan</a>
+    <a class="next" href="../webgpu-clustered-shading/"><span>Next</span>WebGPU Forward+ and Clustered Deferred Shading</a>
+  </nav>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="contact-band">
+    <div class="wrap">
+      <h2>Contact me</h2>
+      <p><a class="mail" href="mailto:maojichu@gmail.com"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>maojichu@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="wrap footer-end">
+    <ul class="social">
+      <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7.5" width="18" height="12" rx="1.5"/><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5"/><path d="M3 13h18"/></svg>LinkedIn</a></li>
+      <li><a href="https://github.com/jichumao"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>GitHub</a></li>
+      <li><a href="https://www.youtube.com/@supermao6744"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>YouTube</a></li>
+    </ul>
+    <p class="copyright">© Jichu Mao</p>
+  </div>
+</footer>
+<script src="../../assets/js/lightbox.js?v=4" defer></script>
+</body>
+</html>

@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jichu · Art – A site about Jichu &amp; Art</title>
-<meta name="description" content="Portfolio of Jichu Mao, Graphics Performance Engineer: computer graphics, rendering, animation and game projects.">
+<title>Jichu Mao – Graphics Performance Engineer | Jichu · Art</title>
+<meta name="description" content="Portfolio of Jichu Mao, Graphics Performance Engineer at TikTok: real-time rendering, GPU path tracing, shaders, graphics tools, games and animation.">
 <link rel="canonical" href="https://jichu.art/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jichu · Art">
-<meta property="og:title" content="Jichu · Art – A site about Jichu &amp; Art">
-<meta property="og:description" content="Portfolio of Jichu Mao, Graphics Performance Engineer: computer graphics, rendering, animation and game projects.">
+<meta property="og:title" content="Jichu Mao – Graphics Performance Engineer | Jichu · Art">
+<meta property="og:description" content="Portfolio of Jichu Mao, Graphics Performance Engineer at TikTok: real-time rendering, GPU path tracing, shaders, graphics tools, games and animation.">
 <meta property="og:url" content="https://jichu.art/">
 <meta property="og:image" content="https://jichu.art/assets/img/home/hero-thumb.webp">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=3">
+<link rel="stylesheet" href="assets/css/site.css?v=4">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -40,8 +40,10 @@
   <div class="wrap hero-text">
     <p class="hero-year" id="year">2026</p>
     <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
-    <h1>Welcome to JICHU&nbsp;·&nbsp;ART</h1>
-    <p class="hero-sub">A Hub for ART · CG · GAMES</p>
+    <h1>Jichu Mao</h1>
+    <p class="hero-role">Graphics Performance Engineer at TikTok</p>
+    <p class="hero-lead">I work on real-time rendering and GPU performance. This site is my hub for art, CG and games: the renderers, shaders, tools and games I’ve built along the way.</p>
+    <p class="hero-actions"><a class="button-fill" href="#works">See the work</a><a class="button" href="about/">About me</a></p>
   </div>
 </section>
 
@@ -49,77 +51,106 @@
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow">Portfolio</p>
-      <h2>Previous Works</h2>
-      <p>Click ‘READ MORE’ to Watch the Demo</p>
+      <h2>Selected Works</h2>
+      <p>Renderers, shaders, tools, games and animation. Open a project for demos, renders and source code.</p>
+      <div class="work-filter" role="group" aria-label="Filter works by category" hidden><button type="button" data-cat="all" aria-pressed="true">All <span>14</span></button><button type="button" data-cat="rendering" aria-pressed="false">Rendering <span>7</span></button><button type="button" data-cat="tools" aria-pressed="false">Tools <span>2</span></button><button type="button" data-cat="games" aria-pressed="false">Games <span>2</span></button><button type="button" data-cat="animation" aria-pressed="false">Animation <span>3</span></button><button type="button" data-cat="art" aria-pressed="false">Art <span>1</span></button></div>
     </div>
     <ul class="work-grid">
-      <li class="work">
+      <li class="work" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/world-space-restir/cover-thumb.webp" width="1000" height="867" alt="" loading="lazy" decoding="async"></div>
+        <h3><a href="works/world-space-restir/">World-Space ReSTIR in Vulkan</a></h3>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Ray tracing</li><li>ReSTIR</li></ul>
+        <p class="work-excerpt">A world-space global illumination method implemented in a Vulkan ray-tracing pipeline. In large scenes it reaches about 40% higher accuracy than screen-space ReSTIR for roughly 5% extra render time.</p>
+        <span class="button" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/cuda-path-tracer/cover-thumb.webp" width="800" height="800" alt="" loading="lazy" decoding="async"></div>
+        <h3><a href="works/cuda-path-tracer/">CUDA Path Tracer</a></h3>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>CUDA</li><li>Path tracing</li><li>glTF</li></ul>
+        <p class="work-excerpt">A GPU-accelerated path tracer built with CUDA: glTF model loading, BSDF shading, stream compaction of ray paths, stochastic anti-aliasing, physically-based depth of field, environment maps, tone mapping and bounding-volume culling.</p>
+        <span class="button" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/webgpu-clustered-shading/cover-thumb.webp" width="1000" height="510" alt="" loading="lazy" decoding="async"></div>
+        <h3><a href="works/webgpu-clustered-shading/">WebGPU Forward+ and Clustered Deferred Shading</a></h3>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>TypeScript</li><li>WebGPU</li><li>WGSL</li><li>Compute shaders</li></ul>
+        <p class="work-excerpt">Forward+ and clustered deferred shading implemented in WebGPU. It handles more than 1,000 dynamic lights and raises the frame rate by about 25%.</p>
+        <span class="button" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/vulkan-grass-rendering/cover-thumb.webp" width="796" height="796" alt="" loading="lazy" decoding="async"></div>
+        <h3><a href="works/vulkan-grass-rendering/">Vulkan Grass Rendering</a></h3>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>Vulkan</li><li>GLSL</li><li>Tessellation</li><li>Compute shaders</li></ul>
+        <p class="work-excerpt">Real-time grass for 3D scenes: a Vulkan grass simulator and renderer that uses a compute shader for physics and culling.</p>
+        <span class="button" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work" data-cats="rendering">
         <div class="work-frame"><img class="work-thumb" src="assets/img/physically-based-shaders/cover-thumb.webp" width="800" height="725" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/physically-based-shaders/">Physically-Based Shaders</a></h3>
-        <p class="work-cat">Softwares</p>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>OpenGL</li><li>GLSL</li><li>Qt</li></ul>
         <p class="work-excerpt">The PBR implementation uses the Cook-Torrance model in a physically based rendering pipeline, along with image-based lighting, as well as custom scenes and environment maps.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
-      <li class="work">
+      <li class="work" data-cats="tools">
         <div class="work-frame"><img class="work-thumb" src="assets/img/tree-creator/cover-thumb.webp" width="800" height="613" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/tree-creator-plugin-for-maya-houdini/">Tree Creator – Plugin for Maya &amp; Houdini</a></h3>
-        <p class="work-cat">Softwares</p>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Tools</li><li>Maya</li><li>Houdini</li><li>L-System</li></ul>
         <p class="work-excerpt">This is a Maya &amp; Houdini plugin development project. The function of this plugin is to create different fractal plants in Maya or Houdini based on the L-System grammar input by the user.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
-      <li class="work">
+      <li class="work" data-cats="rendering">
         <div class="work-frame"><img class="work-thumb" src="assets/img/monte-carlo-path-tracer/cover-thumb.webp" width="800" height="800" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/monte-carlo-path-tracer/">Monte Carlo Path Tracer</a></h3>
-        <p class="work-cat">Softwares</p>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>C++</li><li>Qt</li><li>Path tracing</li><li>MIS</li></ul>
         <p class="work-excerpt">Monte Carlo path tracer in C++ using Naive, Direct and Multiple Importance Sampling – Direct Lighting Integrator using LTE with Multiple light sources, Multiple materials (BSDF – BRDFs and BTDFs, Fresnel) with Stratified, grid and random sampling techniques.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
-      <li class="work">
+      <li class="work" data-cats="games">
         <div class="work-frame"><img class="work-thumb" src="assets/img/mini-minecraft/cover-thumb.webp" width="800" height="582" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/mini-minecraft/">Mini Minecraft</a></h3>
-        <p class="work-cat">Games</p>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Games</li><li>C++</li><li>OpenGL</li><li>GLSL</li><li>Qt6</li></ul>
         <p class="work-excerpt">This is a Minecraft-like game, using OpenGL, C++ and Qt6 for development. Many important features are implemented from 0 to 1 by me in this game.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
-      <li class="work">
+      <li class="work" data-cats="rendering">
         <div class="work-frame"><img class="work-thumb" src="assets/img/glsl-shaders/cover-thumb.webp" width="800" height="620" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/glsl-shaders/">GLSL Shaders</a></h3>
-        <p class="work-cat">Softwares</p>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering</li><li>GLSL</li><li>OpenGL</li><li>C++</li></ul>
         <p class="work-excerpt">Programmed portions of OpenGL’s graphics pipeline by writing a few different vertex and fragment shaders to apply different coloration effects to the surfaces of 3D models.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
-      <li class="work">
+      <li class="work" data-cats="animation tools">
         <div class="work-frame"><img class="work-thumb" src="assets/img/animation-toolkit/cover-thumb.webp" width="800" height="481" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/animation-toolkit/">Animation Toolkit</a></h3>
-        <p class="work-cat">Animation / Softwares</p>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Animation</li><li class="cat">Tools</li><li>Curve editor</li><li>FK / IK</li><li>Particle systems</li></ul>
         <p class="work-excerpt">An Interactive 2D animation toolkit that includes: Curve Editor Rotations, FK, IK, Particle Systems, Firework Simulation, Behavioural Animation</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
-      <li class="work">
+      <li class="work" data-cats="art">
         <div class="work-frame"><img class="work-thumb" src="assets/img/maya-3d-scene-modeling/cover-thumb.webp" width="800" height="461" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/maya-3d-scene-modeling-project/">Maya 3D Scene Modeling Project</a></h3>
-        <p class="work-cat">Art Designs</p>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Art</li><li>Maya 2024</li><li>Modeling</li><li>Lighting</li></ul>
         <p class="work-excerpt">A room modeling project using Maya 2024. After modeling, mapping and finally lighting, I built a room.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
-      <li class="work">
+      <li class="work" data-cats="animation">
         <div class="work-frame"><img class="work-thumb" src="assets/img/motion-capture/cover-thumb.webp" width="518" height="397" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/motion-capture/">Motion Capture</a></h3>
-        <p class="work-cat">Animation</p>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Animation</li><li>MotionBuilder 2024</li><li>Motion capture</li></ul>
         <p class="work-excerpt">A motion capture animation production project, I used the motion capture equipment of the SIGLAB at the University of Pennsylvania and produced motion capture animation using MotionBuilder 2024.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
-      <li class="work">
+      <li class="work" data-cats="animation">
         <div class="work-frame"><img class="work-thumb" src="assets/img/houdini-fireworks/cover-thumb.webp" width="640" height="413" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/houdini-based-fireworks-simulation/">Houdini-based Fireworks Simulation</a></h3>
-        <p class="work-cat">Animation</p>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Animation</li><li>Houdini</li><li>Particle simulation</li></ul>
         <p class="work-excerpt">This is a fireworks physics simulation project created with Houdini, in which I produced particle simulations for four different types of fireworks effects.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
-      <li class="work">
+      <li class="work" data-cats="games">
         <div class="work-frame"><img class="work-thumb" src="assets/img/gem-match-game/cover-thumb.webp" width="800" height="532" alt="" loading="lazy" decoding="async"></div>
         <h3><a href="works/gem-match-game/">Gem Match Game</a></h3>
-        <p class="work-cat">Games</p>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Games</li><li>C++</li><li>Qt</li><li>Easy2D</li></ul>
         <p class="work-excerpt">This is a classic gem puzzle game written in C++, Qt Widget and the Easy2D game engine.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
@@ -132,9 +163,9 @@
     <div class="about-side">
       <img class="avatar" src="assets/img/home/avatar.webp" width="480" height="480" alt="Portrait of Jichu Mao" loading="lazy" decoding="async">
       <ul class="social">
-        <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
-        <li><a href="https://github.com/jichumao">GitHub</a></li>
-        <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
+        <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7.5" width="18" height="12" rx="1.5"/><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5"/><path d="M3 13h18"/></svg>LinkedIn</a></li>
+        <li><a href="https://github.com/jichumao"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>GitHub</a></li>
+        <li><a href="https://www.youtube.com/@supermao6744"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>YouTube</a></li>
       </ul>
     </div>
     <div class="about-main">
@@ -154,18 +185,19 @@
   <div class="contact-band">
     <div class="wrap">
       <h2>Contact me</h2>
-      <p>Email: <a href="mailto:maojichu@gmail.com">maojichu@gmail.com</a></p>
+      <p><a class="mail" href="mailto:maojichu@gmail.com"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>maojichu@gmail.com</a></p>
     </div>
   </div>
   <div class="wrap footer-end">
     <ul class="social">
-      <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
-      <li><a href="https://github.com/jichumao">GitHub</a></li>
-      <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
+      <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7.5" width="18" height="12" rx="1.5"/><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5"/><path d="M3 13h18"/></svg>LinkedIn</a></li>
+      <li><a href="https://github.com/jichumao"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>GitHub</a></li>
+      <li><a href="https://www.youtube.com/@supermao6744"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>YouTube</a></li>
     </ul>
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="assets/js/hero.js?v=3" defer></script>
+<script src="assets/js/hero.js?v=4" defer></script>
+<script src="assets/js/works.js?v=4" defer></script>
 </body>
 </html>
