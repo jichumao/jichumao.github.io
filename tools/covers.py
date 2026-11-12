@@ -129,6 +129,21 @@ COVERS = {
         (S("monte-carlo-path-tracer", "veach-mis"), (4, 4, 972, 972)),
         (S("monte-carlo-path-tracer", "microfacet-brdfs"), (4, 4, 972, 972)),
     ],
+    "stream-compaction": [
+        (C("stream-compaction-bars.png"), None),
+        (C("stream-compaction-chart-size.png"), None),
+        (C("stream-compaction-chart-block.png"), None),
+    ],
+    "unity-stylization": [
+        (C("stylization-scene.png"), (215, 0, 685, 470)),
+        (S("unity-stylization", "mode-2"), None),
+        (S("unity-stylization", "mode-3"), None),
+    ],
+    "houdini-procedural": [
+        (S("houdini-procedural", "jellyfish"), None),
+        (S("houdini-procedural", "veins"), None),
+        (S("houdini-procedural", "building-1"), None),
+    ],
     "physically-based-shaders": [
         (S("physically-based-shaders", "scene-skull"), (71, 97, 909, 935)),
         (S("physically-based-shaders", "scene-gun"), (20, 97, 858, 935)),

@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "6"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "7"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 EMAIL = "maojichu@gmail.com"
 SOCIAL = [
@@ -278,6 +278,40 @@ PROJECTS = [
     ],
   },
   {
+    "slug": "cuda-stream-compaction", "img": "stream-compaction",
+    "title": "CUDA Stream Compaction", "cats": ["rendering"], "year": "2024", "kind": "Individual project",
+    "tags": ["C++", "CUDA", "GPU Programming", "Parallel Algorithms", "Performance Profiling", "Nsight Compute"],
+    "excerpt": "Scan and stream compaction on the GPU in CUDA, profiled with Nsight Compute. The work-efficient scan handles 134 million elements in 26 ms; the CPU needs 190.",
+    "lead": "Prefix-sum scan and stream compaction in CUDA: a CPU baseline, a naive GPU scan, a work-efficient GPU scan and Thrust, timed against each other and profiled with Nsight Compute.",
+    "cover_alt": "Bar chart of scan times on 134 million elements, with line charts of run time by array size and by block size",
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5650 GPU Programming and Architecture at UPenn"),
+              ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
+    "stats": [("190.1 → 26.2 ms", "exclusive scan of 134 million elements, CPU against the work-efficient GPU scan"),
+              ("251.3 → 31.4 ms", "stream compaction, fastest CPU version against the GPU"),
+              ("43.66%", "under-used streaming multiprocessors in the up-sweep, found with Nsight Compute")],
+    "links": [("Source code", GH + "Stream-Compaction", "code")],
+    "blocks": [
+      ("p", "Stream compaction removes the elements a later stage no longer needs, such as terminated rays in a path tracer. It is built on scan, so most of the work went into the scan."),
+      ("features", [
+          ("layers", "CPU baseline", "Scan and compaction in plain loops, used to check the GPU results"),
+          ("grid", "Naive GPU scan", "One kernel launch per level, working in global memory"),
+          ("zap", "Work-efficient GPU scan", "Up-sweep and down-sweep over a balanced tree, with arrays padded to a power of two"),
+          ("filter", "Stream compaction", "Map to booleans, scan, then scatter"),
+          ("chip", "Thrust", "thrust::exclusive_scan as the reference"),
+      ]),
+      ("h3", "What the profiler showed"),
+      ("p", "In Nsight Compute the up-sweep takes most of the time: 28.38 ms per kernel on average, against 20.26 ms for the down-sweep. Some streaming multiprocessors run up to 43.66% below the average load, so the next step would be to balance the work across them and tighten memory access."),
+      ("h2", "Exclusive scan, 134 million elements"),
+      ("bars", {"unit": "ms", "rows": [("CPU", 190.1, False), ("Naive GPU", 35.0, False), ("Work-efficient GPU", 26.2, True), ("Thrust", 2.9, False)]}),
+      ("note", "Block size 256, power-of-two array. Thrust stays well ahead of both hand-written versions."),
+      ("h2", "Stream compaction, 134 million elements"),
+      ("bars", {"unit": "ms", "rows": [("CPU, with scan", 565.4, False), ("CPU, without scan", 251.3, False), ("Work-efficient GPU", 31.4, True)]}),
+      ("h2", "Charts and profile"),
+      ("gallery", [shot("chart-size", "Run time by array size"), shot("chart-block-size", "Run time by block size"),
+                   shot("nsight-compute", "Nsight Compute profile of the work-efficient scan")]),
+    ],
+  },
+  {
     "slug": "physically-based-shaders", "old": "physically-based-shaders", "img": "physically-based-shaders",
     "title": "Physically-Based Shaders", "cats": ["rendering"], "year": "2023", "kind": "Individual project",
     "tags": ["C++", "OpenGL", "GLSL", "PBR", "Image-Based Lighting", "Qt"],
@@ -406,6 +440,33 @@ PROJECTS = [
     ],
   },
   {
+    "slug": "unity-stylized-scene", "img": "unity-stylization",
+    "title": "Stylized 3D Scene in Unity", "cats": ["rendering"], "year": "2024", "kind": "Individual project",
+    "tags": ["Unity", "Shader Graph", "C#", "Non-Photorealistic Rendering", "Post-Processing", "Technical Art"],
+    "excerpt": "A stylized real-time scene in Unity after concept art from the game GRIS: rim lighting, textured shadows, animated colours, Sobel outlines and ACES tone mapping.",
+    "lead": "A piece of 2D concept art from the game GRIS, rebuilt as a real-time 3D scene in Unity with non-photorealistic shading.",
+    "cover_alt": "A small cube-headed character among red plants and butterflies, shown in green, orange and yellow colour themes",
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5660 Procedural Graphics at UPenn"), ("Built with", "Unity, Shader Graph, C#")],
+    "links": [("Source code", GH + "CIS5660-hw04-stylization", "code")],
+    "blocks": [
+      ("features", [
+          ("sun", "Lighting", "A surface shader that supports multiple lights, with a rim light on back-lit edges"),
+          ("grid", "Textured shadows", "Shadow materials sampled in object UV space, with a tiling control"),
+          ("droplet", "Animated colour", "The leaves shift between four colour schemes over time"),
+          ("curve", "Outlines", "A full-screen pass runs a Sobel filter on depth and normals; noise makes the lines move"),
+          ("sliders", "Tone mapping", "A second full-screen pass applies ACES"),
+          ("repeat", "Three modes", "The space bar switches the colour theme, the camera speed and the butterflies’ colours"),
+      ]),
+      ("html", '<p>The character and butterfly models are by other artists on Sketchfab: <a href="https://sketchfab.com/3d-models/gris-forest-friend-8378306886034f2fa590978d8d2506dc0">Forest Friend</a> and <a href="https://sketchfab.com/3d-models/butterflies-poster-2-444a930949e44c3abaa085fbb5a63e0c">Butterflies</a>.</p>'),
+      ("gallery-wide", [clip("stylization-1", "", "The camera moving through the stylized scene")]),
+      ("gallery", [clip("stylization-2", "", "The scene switching to the orange theme"), clip("stylization-3", "", "The scene in the yellow theme")]),
+      ("h2", "Shading"),
+      ("gallery", [shot("rim-light", "Rim light"), shot("shadow-texture", "Custom shadow texture"), shot("tone-mapping", "With ACES tone mapping")]),
+      ("h2", "Three modes"),
+      ("gallery", [shot("mode-1", "Mode 1"), shot("mode-2", "Mode 2"), shot("mode-3", "Mode 3")]),
+    ],
+  },
+  {
     "slug": "tree-creator-plugin-for-maya-houdini", "old": "tree-creator-plugin-for-maya-houdini", "img": "tree-creator",
     "title": "Tree Creator – Plugin for Maya & Houdini", "cats": ["tools"], "year": "2024", "kind": "Individual project",
     "tags": ["C++", "Python", "Maya API", "Houdini HDK", "L-System", "Plugin Development"],
@@ -422,6 +483,35 @@ PROJECTS = [
       ("video", {"file": "tree-creator-maya-demo", "w": 1920, "h": 1080, "title": "Tree Creator – Maya plugin demo"}),
       ("label", "Houdini Plugin Demo:"),
       ("video", {"file": "tree-creator-houdini-demo", "w": 1920, "h": 1080, "title": "Tree Creator – Houdini plugin demo"})
+    ],
+  },
+  {
+    "slug": "houdini-procedural-modeling", "img": "houdini-procedural",
+    "title": "Procedural Jellyfish and Buildings in Houdini", "cats": ["animation", "tools"], "year": "2024", "kind": "Individual project",
+    "tags": ["Houdini", "Procedural Modeling", "Vellum Simulation", "Houdini Digital Asset", "Technical Art"],
+    "excerpt": "A jellyfish modelled and animated procedurally in Houdini, and a digital asset that generates multi-floor buildings with adjustable windows, doors and balconies.",
+    "lead": "Two procedural modeling projects in Houdini: a jellyfish whose bell, arms, veins, organs and tentacles each come out of a node network, and a digital asset that stacks floors into a building.",
+    "cover_alt": "A procedurally modelled jellyfish, its network of veins, and a generated multi-floor building",
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5660 Procedural Graphics at UPenn"), ("Built with", "Houdini, Vellum, SideFX Labs")],
+    "links": [("Jellyfish source", GH + "CIS5660-hw02-jellyfish", "code"), ("Buildings source", GH + "CIS5660-hw03-buildings", "code")],
+    "blocks": [
+      ("h3", "Jellyfish"),
+      ("features", [
+          ("droplet", "Bell", "A profile curve revolved around the y-axis, shaped by two Bend nodes and animated with keyframes"),
+          ("wind", "Arms", "Cloth simulation: Vellum constraints, then the Vellum solver"),
+          ("tree", "Veins", "The bell is remeshed into triangles, Find Shortest Path grows the branches, and they are resampled, fused and smoothed"),
+          ("curve", "Organs", "A Bézier curve swept into a tube, rotated and copied, with Mountain noise for variation"),
+          ("particles", "Tentacles", "Lines copied onto points of the rim and simulated with Vellum, the way hair is"),
+      ]),
+      ("h3", "Building generator"),
+      ("p", "A Houdini Digital Asset that stacks boxes into floors and adds pillars, borders, and supports under overhangs. Windows, doors and balconies have width and height controls, and an alternative set of models can be switched in with one click."),
+      ("html", '<p>The setup follows <a href="https://www.youtube.com/watch?v=uIe97023sDk">Simon Houdini’s procedural house tutorial</a>. The alternative door, balcony and window models come from Sketchfab and are credited in the repository.</p>'),
+      ("gallery", [clip("jellyfish", "", "The jellyfish swimming"), shot("jellyfish", "", "The finished jellyfish")]),
+      ("h2", "Parts of the jellyfish"),
+      ("gallery", [shot("bell", "Bell"), shot("arms", "Arms"), shot("veins", "Veins"), shot("organs", "Organs"), shot("tentacles", "Tentacles"), shot("node-graph", "Node network")]),
+      ("h2", "Building generator"),
+      ("video", {"file": "houdini-buildings", "title": "Building generator demo in Houdini", "w": 1448, "h": 960}),
+      ("gallery", [shot("building-1", "", "A generated building"), shot("building-2", "", "A second generated building")]),
     ],
   },
   {
@@ -673,10 +763,17 @@ def render_blocks(proj, root):
         elif kind == "steps":
             rows = "\n".join(f"        <li><strong>{E(t)}</strong><span>{E(d)}</span></li>" for t, d in val)
             media.append(f'      <ol class="steps">\n{rows}\n      </ol>')
+        elif kind == "bars":
+            top = max(v for _, v, _ in val["rows"])
+            rows = "\n".join(f'        <div class="bars-row{" hi" if hi else ""}"><dt>{E(n)}</dt><dd><i class="bar" style="flex-basis: {v / top * 80:.2f}%"></i>'
+                             f'<span>{v:.1f} {E(val["unit"])}</span></dd></div>' for n, v, hi in val["rows"])
+            media.append(f'      <dl class="bars">\n{rows}\n      </dl>')
         elif kind == "ul":
             prose.append("        <ul>\n" + "\n".join(f"          <li>{E(i)}</li>" for i in val) + "\n        </ul>")
         elif kind == "h2":
             media.append(f"      <h2>{E(val)}</h2>")
+        elif kind == "note":
+            media.append(f'      <p class="media-note">{E(val)}</p>')
         elif kind == "label":
             media.append(f'      <p class="media-label">{E(val)}</p>')
         elif kind == "video":

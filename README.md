@@ -46,9 +46,9 @@ Fields of a project:
 | `facts` | label and value pairs under the page header |
 | `stats` | measured results as figure and description; leave out when there are none |
 | `links` | buttons for source code, demo, paper |
-| `blocks` | text blocks (`p`, `html`, `ul`, `h3`, `features`) fill the left column, media blocks (`h2`, `label`, `steps`, `video`, `embed`, `table`, `gallery`, `gallery-wide`) the right |
+| `blocks` | text blocks (`p`, `html`, `ul`, `h3`, `features`) fill the left column, media blocks (`h2`, `label`, `note`, `steps`, `bars`, `video`, `embed`, `table`, `gallery`, `gallery-wide`) the right |
 
-`features` is a list of `(icon, name, detail)` rows; the icon names are the keys of `ICONS`. `steps` is a numbered sequence of `(name, detail)`, for things that really happen in order. Images whose name starts with `chart-` are shown inverted so that light spreadsheet charts match the dark page.
+`features` is a list of `(icon, name, detail)` rows; the icon names are the keys of `ICONS`. `steps` is a numbered sequence of `(name, detail)`, for things that really happen in order. `bars` is a bar chart drawn in HTML: `{"unit": "ms", "rows": [(label, value, highlight), ...]}`, every bar on the same scale; `note` is a small line of text under it. Images whose name starts with `chart-` are shown inverted so that light spreadsheet charts match the dark page.
 
 After editing, rebuild from the repository root (Python 3, no packages needed):
 
@@ -58,7 +58,7 @@ python3 tools/build.py . tools/manifest.json
 
 A quick text fix can also be made straight in the HTML. Make the same change in `tools/build.py`, otherwise the next rebuild overwrites it.
 
-The stylesheet and scripts are linked as `site.css?v=6`, `hero.js?v=6`, and so on. After changing one of them, raise `ASSET_V` in `tools/build.py` and rebuild, so browsers fetch the new file instead of a cached one.
+The stylesheet and scripts are linked as `site.css?v=7`, `hero.js?v=7`, and so on. After changing one of them, raise `ASSET_V` in `tools/build.py` and rebuild, so browsers fetch the new file instead of a cached one.
 
 All links are relative, so the site works both at a domain root and under a sub-path.
 
