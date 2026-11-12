@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monte Carlo Path Tracer – Jichu · Art</title>
+<meta name="description" content="Monte Carlo path tracer in C++ using Naive, Direct and Multiple Importance Sampling – Direct Lighting Integrator using LTE with Multiple light sources, Multiple materials (BSDF – BRDFs and BTDFs, Fresnel) with Stratified, grid and random sampling techniques.">
+<link rel="canonical" href="https://jichu.art/works/monte-carlo-path-tracer/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Jichu · Art">
+<meta property="og:title" content="Monte Carlo Path Tracer – Jichu · Art">
+<meta property="og:description" content="Monte Carlo path tracer in C++ using Naive, Direct and Multiple Importance Sampling – Direct Lighting Integrator using LTE with Multiple light sources, Multiple materials (BSDF – BRDFs and BTDFs, Fresnel) with Stratified, grid and random sampling techniques.">
+<meta property="og:url" content="https://jichu.art/works/monte-carlo-path-tracer/">
+<meta property="og:image" content="https://jichu.art/assets/img/monte-carlo-path-tracer/cover-thumb.webp">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <p class="site-title"><a href="../../">Jichu · Art</a></p>
+    <p class="site-tagline">A site about Jichu &amp; Art</p>
+    <nav class="site-nav" aria-label="Main">
+      <a href="../../#works" aria-current="page">Works</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<article class="project wrap">
+  <a class="back" href="../../#works">← All works</a>
+  <h1>Monte Carlo Path Tracer</h1>
+  <p class="work-cat">Softwares</p>
+  <div class="prose">
+    <p>Monte Carlo path tracer in C++ using Naive, Direct and Multiple Importance Sampling – Direct Lighting Integrator using LTE with Multiple light sources, Multiple materials (BSDF – BRDFs and BTDFs, Fresnel) with Stratified, grid and random sampling techniques.</p>
+    <p>Sample Renders are as follows:</p>
+  </div>
+  <ul class="gallery">
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/specular-brdfs.webp" data-caption="Specular BRDFs"><img src="../../assets/img/monte-carlo-path-tracer/specular-brdfs-thumb.webp" width="800" height="799" alt="Specular BRDFs" loading="lazy" decoding="async"></a>
+        <figcaption>Specular BRDFs</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/naive-integrator.webp" data-caption="Naive Integrator"><img src="../../assets/img/monte-carlo-path-tracer/naive-integrator-thumb.webp" width="800" height="798" alt="Naive Integrator" loading="lazy" decoding="async"></a>
+        <figcaption>Naive Integrator</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/microfacet-brdfs.webp" data-caption="Microfacet BRDFs"><img src="../../assets/img/monte-carlo-path-tracer/microfacet-brdfs-thumb.webp" width="800" height="800" alt="Microfacet BRDFs" loading="lazy" decoding="async"></a>
+        <figcaption>Microfacet BRDFs</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/direct-sample-spot-light.webp" data-caption="DirectSampleSpotLight"><img src="../../assets/img/monte-carlo-path-tracer/direct-sample-spot-light-thumb.webp" width="800" height="800" alt="DirectSampleSpotLight" loading="lazy" decoding="async"></a>
+        <figcaption>DirectSampleSpotLight</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/direct-sample-point-light.webp" data-caption="DirectSamplePointLight"><img src="../../assets/img/monte-carlo-path-tracer/direct-sample-point-light-thumb.webp" width="800" height="798" alt="DirectSamplePointLight" loading="lazy" decoding="async"></a>
+        <figcaption>DirectSamplePointLight</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/direct-lighting.webp" data-caption="Direct Lighting"><img src="../../assets/img/monte-carlo-path-tracer/direct-lighting-thumb.webp" width="800" height="799" alt="Direct Lighting" loading="lazy" decoding="async"></a>
+        <figcaption>Direct Lighting</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/mis-2.webp" data-caption="Multiple Importance Sampling 2"><img src="../../assets/img/monte-carlo-path-tracer/mis-2-thumb.webp" width="800" height="800" alt="Multiple Importance Sampling 2" loading="lazy" decoding="async"></a>
+        <figcaption>Multiple Importance Sampling 2</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/mis-1.webp" data-caption="Multiple Importance Sampling 1"><img src="../../assets/img/monte-carlo-path-tracer/mis-1-thumb.webp" width="799" height="800" alt="Multiple Importance Sampling 1" loading="lazy" decoding="async"></a>
+        <figcaption>Multiple Importance Sampling 1</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/direct-lighting-cornell-two-lights.webp" data-caption="DirectLighting – CornellBoxTwoLights"><img src="../../assets/img/monte-carlo-path-tracer/direct-lighting-cornell-two-lights-thumb.webp" width="800" height="799" alt="DirectLighting – CornellBoxTwoLights" loading="lazy" decoding="async"></a>
+        <figcaption>DirectLighting – CornellBoxTwoLights</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/specular-btdfs.webp" data-caption="Specular BTDFs"><img src="../../assets/img/monte-carlo-path-tracer/specular-btdfs-thumb.webp" width="800" height="799" alt="Specular BTDFs" loading="lazy" decoding="async"></a>
+        <figcaption>Specular BTDFs</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/dielectric-materials.webp" data-caption="Specular BTDFs – Dielectric materials"><img src="../../assets/img/monte-carlo-path-tracer/dielectric-materials-thumb.webp" width="800" height="800" alt="Specular BTDFs – Dielectric materials" loading="lazy" decoding="async"></a>
+        <figcaption>Specular BTDFs – Dielectric materials</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/veach-naive.webp" data-caption="Veach Scene (BSDF Integrator)"><img src="../../assets/img/monte-carlo-path-tracer/veach-naive-thumb.webp" width="800" height="800" alt="Veach Scene (BSDF Integrator)" loading="lazy" decoding="async"></a>
+        <figcaption>Veach Scene (BSDF Integrator)</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/veach-direct.webp" data-caption="Veach Scene (Direct Light Integrator)"><img src="../../assets/img/monte-carlo-path-tracer/veach-direct-thumb.webp" width="800" height="800" alt="Veach Scene (Direct Light Integrator)" loading="lazy" decoding="async"></a>
+        <figcaption>Veach Scene (Direct Light Integrator)</figcaption>
+      </figure>
+    </li>
+    <li>
+      <figure>
+        <a class="shot" href="../../assets/img/monte-carlo-path-tracer/veach-mis.webp" data-caption="Veach Scene (MIS Integrator)"><img src="../../assets/img/monte-carlo-path-tracer/veach-mis-thumb.webp" width="800" height="800" alt="Veach Scene (MIS Integrator)" loading="lazy" decoding="async"></a>
+        <figcaption>Veach Scene (MIS Integrator)</figcaption>
+      </figure>
+    </li>
+  </ul>
+  <nav class="pager" aria-label="More works">
+    <a class="prev" href="../tree-creator-plugin-for-maya-houdini/"><span>Previous</span>Tree Creator – Plugin for Maya &amp; Houdini</a>
+    <a class="next" href="../mini-minecraft/"><span>Next</span>Mini Minecraft</a>
+  </nav>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <h2>Contact me</h2>
+    <p>Email: <a href="mailto:jichumao@seas.upenn.edu">jichumao@seas.upenn.edu</a></p>
+    <ul class="social">
+        <li><a href="https://www.linkedin.com/in/jichu-mao-a3a980226/">LinkedIn</a></li>
+        <li><a href="https://github.com/jichumao">GitHub</a></li>
+        <li><a href="https://www.youtube.com/@supermao6744">YouTube</a></li>
+      </ul>
+    <p class="copyright">© Jichu Mao</p>
+  </div>
+</footer>
+<script src="../../assets/js/lightbox.js" defer></script>
+</body>
+</html>
