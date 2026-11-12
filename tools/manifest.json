@@ -59,6 +59,10 @@
   "h": 796,
   "w": 796
  },
+ "clip/jellyfish": {
+  "h": 800,
+  "w": 800
+ },
  "clip/restir-di": {
   "h": 410,
   "w": 446
@@ -70,6 +74,18 @@
  "clip/restir-spatiotemporal": {
   "h": 410,
   "w": 446
+ },
+ "clip/stylization-1": {
+  "h": 470,
+  "w": 858
+ },
+ "clip/stylization-2": {
+  "h": 470,
+  "w": 858
+ },
+ "clip/stylization-3": {
+  "h": 470,
+  "w": 858
  },
  "clip/webgpu-moving-lights": {
   "h": 488,
@@ -467,6 +483,76 @@
   "tw": 900,
   "w": 1500
  },
+ "houdini-procedural/arms": {
+  "alpha": false,
+  "h": 921,
+  "th": 800,
+  "tw": 769,
+  "w": 885
+ },
+ "houdini-procedural/bell": {
+  "alpha": false,
+  "h": 922,
+  "th": 800,
+  "tw": 769,
+  "w": 886
+ },
+ "houdini-procedural/building-1": {
+  "alpha": false,
+  "h": 1137,
+  "th": 759,
+  "tw": 800,
+  "w": 1198
+ },
+ "houdini-procedural/building-2": {
+  "alpha": false,
+  "h": 1093,
+  "th": 751,
+  "tw": 800,
+  "w": 1165
+ },
+ "houdini-procedural/cover": {
+  "alpha": false,
+  "h": 1000,
+  "th": 600,
+  "tw": 900,
+  "w": 1500
+ },
+ "houdini-procedural/jellyfish": {
+  "alpha": false,
+  "h": 1143,
+  "th": 800,
+  "tw": 792,
+  "w": 1132
+ },
+ "houdini-procedural/node-graph": {
+  "alpha": false,
+  "h": 1304,
+  "th": 713,
+  "tw": 800,
+  "w": 1464
+ },
+ "houdini-procedural/organs": {
+  "alpha": false,
+  "h": 775,
+  "th": 775,
+  "tw": 721,
+  "w": 721
+ },
+ "houdini-procedural/tentacles": {
+  "alpha": false,
+  "h": 1021,
+  "th": 800,
+  "tw": 762,
+  "w": 973
+ },
+ "houdini-procedural/veins": {
+  "alpha": false,
+  "h": 913,
+  "th": 800,
+  "tw": 795,
+  "w": 907
+ },
  "maya-3d-scene-modeling/cover": {
   "alpha": false,
   "h": 1000,
@@ -789,12 +875,89 @@
   "tw": 900,
   "w": 1500
  },
+ "stream-compaction/chart-block-size": {
+  "alpha": false,
+  "h": 570,
+  "th": 550,
+  "tw": 800,
+  "w": 829
+ },
+ "stream-compaction/chart-size": {
+  "alpha": false,
+  "h": 588,
+  "th": 567,
+  "tw": 800,
+  "w": 830
+ },
+ "stream-compaction/cover": {
+  "alpha": false,
+  "h": 1000,
+  "th": 600,
+  "tw": 900,
+  "w": 1500
+ },
+ "stream-compaction/nsight-compute": {
+  "alpha": false,
+  "h": 1215,
+  "th": 585,
+  "tw": 800,
+  "w": 1661
+ },
  "tree-creator/cover": {
   "alpha": false,
   "h": 1000,
   "th": 600,
   "tw": 900,
   "w": 1500
+ },
+ "unity-stylization/cover": {
+  "alpha": false,
+  "h": 1000,
+  "th": 600,
+  "tw": 900,
+  "w": 1500
+ },
+ "unity-stylization/mode-1": {
+  "alpha": false,
+  "h": 703,
+  "th": 703,
+  "tw": 759,
+  "w": 759
+ },
+ "unity-stylization/mode-2": {
+  "alpha": false,
+  "h": 702,
+  "th": 702,
+  "tw": 690,
+  "w": 690
+ },
+ "unity-stylization/mode-3": {
+  "alpha": false,
+  "h": 699,
+  "th": 699,
+  "tw": 685,
+  "w": 685
+ },
+ "unity-stylization/rim-light": {
+  "alpha": false,
+  "h": 727,
+  "th": 727,
+  "tw": 798,
+  "w": 798
+ },
+ "unity-stylization/shadow-texture": {
+  "alpha": false,
+  "h": 618,
+  "th": 618,
+  "tw": 627,
+  "w": 627
+ },
+ "unity-stylization/tone-mapping": {
+  "alpha": false,
+  "h": 486,
+  "th": 451,
+  "tw": 800,
+  "w": 862
  },
  "vulkan-grass-rendering/chart-blade-count": {
   "alpha": false,

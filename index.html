@@ -15,7 +15,7 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=6">
+<link rel="stylesheet" href="assets/css/site.css?v=7">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -53,7 +53,7 @@
       <p class="eyebrow">Portfolio</p>
       <h2>Selected Works</h2>
       <p>Renderers, shaders, tools, games and animation. Open a project for demos, renders and source code.</p>
-      <div class="work-filter" role="group" aria-label="Filter works by category" hidden><button type="button" data-cat="all" aria-pressed="true">All <span>16</span></button><button type="button" data-cat="rendering" aria-pressed="false">Rendering &amp; GPU <span>9</span></button><button type="button" data-cat="tools" aria-pressed="false">Tools <span>2</span></button><button type="button" data-cat="games" aria-pressed="false">Games <span>2</span></button><button type="button" data-cat="animation" aria-pressed="false">Animation <span>3</span></button><button type="button" data-cat="art" aria-pressed="false">Art <span>1</span></button></div>
+      <div class="work-filter" role="group" aria-label="Filter works by category" hidden><button type="button" data-cat="all" aria-pressed="true">All <span>19</span></button><button type="button" data-cat="rendering" aria-pressed="false">Rendering &amp; GPU <span>11</span></button><button type="button" data-cat="tools" aria-pressed="false">Tools <span>3</span></button><button type="button" data-cat="games" aria-pressed="false">Games <span>2</span></button><button type="button" data-cat="animation" aria-pressed="false">Animation <span>4</span></button><button type="button" data-cat="art" aria-pressed="false">Art <span>1</span></button></div>
     </div>
     <ul class="work-grid">
       <li class="work" data-cats="rendering">
@@ -97,6 +97,14 @@
         <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/stream-compaction/cover-thumb.webp" srcset="assets/img/stream-compaction/cover-thumb.webp 900w, assets/img/stream-compaction/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-stream-compaction.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
+        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+        <h3><a href="works/cuda-stream-compaction/">CUDA Stream Compaction</a></h3>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>CUDA</li><li>GPU Programming</li><li>Parallel Algorithms</li><li>Performance Profiling</li><li>Nsight Compute</li></ul>
+        <p class="work-excerpt">Scan and stream compaction on the GPU in CUDA, profiled with Nsight Compute. The work-efficient scan handles 134 million elements in 26 ms; the CPU needs 190.</p>
+        <span class="button" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work" data-cats="rendering">
         <div class="work-frame"><img class="work-thumb" src="assets/img/physically-based-shaders/cover-thumb.webp" srcset="assets/img/physically-based-shaders/cover-thumb.webp 900w, assets/img/physically-based-shaders/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-physically-based-shaders.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
         <p class="work-meta"><span>2023</span><span>Individual project</span></p>
         <h3><a href="works/physically-based-shaders/">Physically-Based Shaders</a></h3>
@@ -136,12 +144,28 @@
         <p class="work-excerpt">A WebGL fireball shaped by 3D Perlin noise and FBM, with live controls for colour, amplitude and frequency. It runs in the browser.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
+      <li class="work" data-cats="rendering">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/unity-stylization/cover-thumb.webp" srcset="assets/img/unity-stylization/cover-thumb.webp 900w, assets/img/unity-stylization/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-unity-stylization.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
+        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+        <h3><a href="works/unity-stylized-scene/">Stylized 3D Scene in Unity</a></h3>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>Unity</li><li>Shader Graph</li><li>C#</li><li>Non-Photorealistic Rendering</li><li>Post-Processing</li><li>Technical Art</li></ul>
+        <p class="work-excerpt">A stylized real-time scene in Unity after concept art from the game GRIS: rim lighting, textured shadows, animated colours, Sobel outlines and ACES tone mapping.</p>
+        <span class="button" aria-hidden="true">Read more</span>
+      </li>
       <li class="work" data-cats="tools">
         <div class="work-frame"><img class="work-thumb" src="assets/img/tree-creator/cover-thumb.webp" srcset="assets/img/tree-creator/cover-thumb.webp 900w, assets/img/tree-creator/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-tree-creator.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
         <p class="work-meta"><span>2024</span><span>Individual project</span></p>
         <h3><a href="works/tree-creator-plugin-for-maya-houdini/">Tree Creator – Plugin for Maya &amp; Houdini</a></h3>
         <ul class="tags" aria-label="Category and tech stack"><li class="cat">Tools</li><li>C++</li><li>Python</li><li>Maya API</li><li>Houdini HDK</li><li>L-System</li><li>Plugin Development</li></ul>
         <p class="work-excerpt">Two plugins, one for Maya and one for Houdini, that grow fractal plants from an L-system grammar the user writes.</p>
+        <span class="button" aria-hidden="true">Read more</span>
+      </li>
+      <li class="work" data-cats="animation tools">
+        <div class="work-frame"><img class="work-thumb" src="assets/img/houdini-procedural/cover-thumb.webp" srcset="assets/img/houdini-procedural/cover-thumb.webp 900w, assets/img/houdini-procedural/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-houdini-procedural.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
+        <p class="work-meta"><span>2024</span><span>Individual project</span></p>
+        <h3><a href="works/houdini-procedural-modeling/">Procedural Jellyfish and Buildings in Houdini</a></h3>
+        <ul class="tags" aria-label="Category and tech stack"><li class="cat">Animation</li><li class="cat">Tools</li><li>Houdini</li><li>Procedural Modeling</li><li>Vellum Simulation</li><li>Houdini Digital Asset</li><li>Technical Art</li></ul>
+        <p class="work-excerpt">A jellyfish modelled and animated procedurally in Houdini, and a digital asset that generates multi-floor buildings with adjustable windows, doors and balconies.</p>
         <span class="button" aria-hidden="true">Read more</span>
       </li>
       <li class="work" data-cats="animation tools">
@@ -227,8 +251,8 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="assets/js/hero.js?v=6" defer></script>
-<script src="assets/js/works.js?v=6" defer></script>
-<script src="assets/js/previews.js?v=6" defer></script>
+<script src="assets/js/hero.js?v=7" defer></script>
+<script src="assets/js/works.js?v=7" defer></script>
+<script src="assets/js/previews.js?v=7" defer></script>
 </body>
 </html>

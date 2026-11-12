@@ -371,6 +371,17 @@ a.button-fill:hover { background: transparent; color: var(--text); }
 .gallery figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
 .clip { width: 100%; height: auto; display: block; border: 1px solid var(--line); background: #000; }
 
+/* Bar chart: every bar is drawn to the same scale, the longest one being 80% of the track */
+.bars { margin: 0 0 14px; display: grid; gap: 12px; }
+.bars-row { display: grid; grid-template-columns: minmax(0, 11.5em) minmax(0, 1fr); gap: 4px 18px; align-items: center; }
+.bars dt { font-size: 15px; line-height: 1.35; color: var(--text); }
+.bars dd { margin: 0; display: flex; align-items: center; gap: 12px; min-width: 0; }
+.bar { flex: 0 0 0; height: 22px; min-width: 2px; background: #5c5c5c; }
+.bars-row.hi .bar { background: var(--accent); }
+.bars dd span { font-family: var(--mono); font-size: 14px; white-space: nowrap; color: var(--body); }
+.bars-row.hi dd span { color: var(--text); }
+.media-note { margin: 0 0 8px; font-size: 14.5px; line-height: 1.55; color: var(--muted); max-width: 46em; }
+.bars + h2 { margin-top: 44px; }
 .table-wrap { overflow-x: auto; margin: 0 0 28px; }
 table { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
 td { font-family: var(--mono); font-size: 14px; }
@@ -439,6 +450,7 @@ tbody td:last-child { color: var(--text); }
   .hero-media::after { background: rgba(0, 0, 0, .62); }
   .work-grid { grid-template-columns: minmax(0, 1fr); }
   .about-grid, .project-grid, .project-head { grid-template-columns: minmax(0, 1fr); }
+  .bars-row { grid-template-columns: minmax(0, 1fr); }
   .project-glow { opacity: .34; }
   .stats { grid-template-columns: 1fr; }
   .about-page .about-side, .project-info { position: static; }

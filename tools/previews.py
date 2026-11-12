@@ -64,6 +64,9 @@ PREVIEWS = {
     "webgpu-clustered-shading": ("video", V("webgpu-moving-lights"), (67, 0, 488, 488), 12.5, 5.5),
     "vulkan-grass-rendering": ("video", V("grass-showcase"), (88, 170, 620, 620), 0, 5.4),
     "cuda-flocking": ("video", V("flocking-swarm"), (0, 0, 640, 640), 0, 3.0, 38),
+    "stream-compaction": ("stills", [(C("stream-compaction-chart-size.png"), None), (C("stream-compaction-chart-block.png"), None)]),
+    "unity-stylization": ("video", V("stylization-2"), (215, 0, 470, 470), 0, 6.0),
+    "houdini-procedural": ("video", V("jellyfish"), (0, 0, 800, 800), 0, 2.3),
     "physically-based-shaders": ("stills", [(S("physically-based-shaders", n), VP) for n in
                                             ("red-metal1-rough0", "red-metal1-rough025", "red-metal1-rough050", "red-metal1-rough075", "red-metal1-rough100")]
                                  + [(S("physically-based-shaders", "scene-gun"), (20, 97, 858, 935)), (S("physically-based-shaders", "displacement-100"), (61, 97, 899, 935))]),
