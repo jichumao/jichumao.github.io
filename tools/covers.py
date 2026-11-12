@@ -147,15 +147,13 @@ COVERS = {
         (S("physically-based-shaders", "scene-gun"), (20, 97, 858, 935)),
         (S("physically-based-shaders", "displacement-100"), (61, 97, 899, 935)),
     ],
-    "tree-creator": [
-        ("lineart", C("tree-diagram.jpg"), (310, 45, 675, 410)),
-        (C("tree-maya.jpg"), (670, 300, 1090, 720)),
-        (C("tree-houdini.jpg"), (368, 509, 688, 829)),
-    ],
+    # plants grown by the plugin's own L-system core from its bundled grammars (see cover-src/tree-plate/README.md)
+    "tree-creator": ("full", C("tree-plate.png"), (0, 0, 3000, 2000)),
+    # the project's shaders run on the cow model from its repository (see cover-src/glsl-cow/README.md)
     "glsl-shaders": [
-        (S("glsl-shaders", "matcap-chrome"), (166, 0, 1292, 1126)),
-        (S("glsl-shaders", "sobel"), (166, 0, 1292, 1126)),
-        (S("glsl-shaders", "surface-normals"), (166, 0, 1289, 1123)),
+        (C("glsl-cow-gold.png"), (0, 0, 2000, 2000)),
+        (C("glsl-cow-gradient.png"), (0, 0, 1200, 1200)),
+        (C("glsl-cow-sobel.png"), (0, 0, 1200, 1200)),
     ],
     "animation-toolkit": [
         (C("animation-behavior.jpg"), (392, 78, 964, 650)),

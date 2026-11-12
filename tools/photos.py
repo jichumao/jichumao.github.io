@@ -29,7 +29,7 @@ AUTHOR = "Jichu Mao"
 RIGHTS = "© Jichu Mao. All rights reserved."
 STATEMENT = "https://jichu.art/photography/"
 # Photograph numbers that must not carry the author tag (pictures someone else took, for example).
-UNTAGGED = {18, 20, 21, 22, 25}
+UNTAGGED = set()
 STAMP = f'''<?xpacket begin="\ufeff" id="W5M0MpCehiHzreSzNTczkc9d"?>
 <x:xmpmeta xmlns:x="adobe:ns:meta/">
  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
