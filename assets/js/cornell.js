@@ -264,7 +264,7 @@
 
   function fit() {
     var box = media.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var k = Math.min(1, Math.sqrt(1.5e6 / (box.width * box.height * dpr * dpr))) * scale;   // at most ~1.5 million pixels
+    var k = Math.min(1, Math.sqrt(1.0e6 / (box.width * box.height * dpr * dpr))) * scale;   // at most ~1 million pixels
     R.size(Math.max(2, Math.round(box.width * dpr * k)), Math.max(2, Math.round(box.height * dpr * k)));
   }
   function label() {
@@ -275,9 +275,9 @@
     if (!onScreen || document.hidden) { running = false; return; }
     if (last) {                                       // too slow for this screen: trace fewer pixels
       times.push(t - last);
-      if (times.length === 24) {
+      if (times.length === 12) {                    // judged on the middle of a dozen frames
         times.sort(function (a, b) { return a - b; });
-        if (times[12] > 45 && slow < 3) { slow++; scale *= 0.72; fit(); }
+        if (times[6] > 30 && slow < 4) { slow++; scale *= 0.72; fit(); }
         times = [];
       }
     }
