@@ -40,33 +40,44 @@
   var TRACE = [
     "#version 300 es",
     "precision highp float; precision highp int;",
-    "uniform vec2 uRes; uniform int uFrame, uSeed; uniform sampler2D uPrev, uPrevGeo;",
+    "uniform vec2 uRes; uniform int uFrame, uSeed; uniform sampler2D uPrev, uPrevGeo, uPrev1, uPrev2, uPrev3;",
     "uniform vec3 uEye, uFwd, uRight, uUp; uniform float uTanY, uAspect, uFocus, uLens; uniform vec2 uShift;",
     "uniform vec4 uL[9];              // each letter: x, z, cos and sin of its turn about the vertical",
-    "layout(location = 0) out vec4 oColor;    // running average: colour, and in alpha its luminance squared",
+    "uniform vec4 uA; uniform float uWZ;   // the arch of light behind the letters: centre x and z, radius, tube; the wall's z",
+    // light transport is linear in what the lights emit, so each group of lights gets its own running average, traced
+    // with white light; their colours are mixed in afterwards, every frame, and can change without tracing again
+    "layout(location = 0) out vec4 oColor;    // the white lights (softbox, strip, dome); alpha: luminance squared of it all",
     "layout(location = 1) out vec4 oGeo;      // running average of what the camera ray hit first: normal, distance",
+    // the arch's colour runs smoothly along it: three colours blended by quadratic Bernstein weights, one group each
+    "layout(location = 2) out vec4 oG1;       // the arch's first colour (strongest at its left foot) and the neon H",
+    "layout(location = 3) out vec4 oG2;       // its middle colour (strongest at the top) and the dot",
+    "layout(location = 4) out vec4 oG3;       // its last colour (at the right foot)",
     "#define PI 3.14159265",
     "const float EPS = 1e-4;",
     // the letters: strokes HW wide either side of their centre lines, cap height 1, extruded 2 * DEPTH, edges rounded
     "const float HW = 0.085, DEPTH = 0.13, RR = 0.028, TUBE = 0.05, LIFT = 0.085;",
     "const vec2 GX[9] = vec2[9](vec2(-.335, .275), vec2(-.085, .085), vec2(-.485, .487), vec2(-.36, .36), vec2(-.385, .385), vec2(-.1, .1), vec2(-.465, .465), vec2(-.385, .405), vec2(-.445, .445));",
-    "const int NONE = 0, FLOOR = 1, KEY = 2, RIM = 3, LETTER = 10;   // LETTER + 0..8: J I C H U . A R T",
+    "const int NONE = 0, FLOOR = 1, KEY = 2, RIM = 3, WALL = 4, ARCH = 5, LETTER = 10;   // LETTER + 0..8: J I C H U . A R T",
     // lights: the neon H, the glowing dot, and a large softbox above and behind the camera, turned towards the letters
     // (from there its reflection in the floor falls outside the picture), with a faint dome of light overhead
-    "const vec3 NEON_E = vec3(16.0, 2.3, 1.1);",
-    "const vec3 DOT_E = vec3(2.4, 5.2, 10.5); const float DOT_R = 0.1, DOT_Y = 0.565;",
+    "const float NEON_W = 9.5, DOT_W = 7.5, ARCH_W = 7.;            // how bright the coloured lights are, before colour",
+    "const float DOT_R = 0.1, DOT_Y = 0.565;",
     "const vec3 KEY_C = vec3(2.5, 9., 14.), KEY_U = vec3(-3.15, 0., .563), KEY_V = vec3(-.197, 1.894, -1.101);   // centre, half-sides",
     "const vec3 KEY_E = vec3(6.2, 6.0, 5.6), SKY = vec3(.018, .02, .026);",
     // a cool strip above and behind the letters, out of the picture, that draws their top and back edges
     "const vec3 RIM_C = vec3(0., 7.6, -3.2), RIM_U = vec3(4.5, 0., 0.), RIM_V = vec3(0., 0.112, 0.224), RIM_E = vec3(3.4, 3.8, 4.5);",
-    "const float P_NEON = 0.3, P_DOT = 0.14, P_RIM = 0.14;            // how often each light is sampled (the softbox: the rest)",
+    "const float P_NEON = 0.2, P_DOT = 0.1, P_ARCH = 0.3, P_RIM = 0.1;   // how often each light is sampled (the softbox: the rest)",
+    "const float P_KEY = 1. - P_NEON - P_DOT - P_ARCH - P_RIM;",
     "const float NEON_L = 2.62;                                       // total length of the H's tubes",
     "const float SIG = 0.0045, HG = 0.8;                             // haze density, forward scattering",
-    "const float SSS_T = 16.; const vec3 SSS_A = vec3(.998, .992, .978);  // inside the U: how often light scatters, what it keeps",
-    "const vec3 SAPPHIRE = vec3(3.2, 1.35, .22);                      // the A's absorption per unit length",
+    "const float SSS_T = 16.; const vec3 SSS_A = vec3(.998, .997, .995);  // inside the U: how often light scatters, what it keeps",
+    "const vec3 SAPPHIRE = vec3(.35, .18, .14);                       // the A's absorption per unit length: clear, faintly cool",
     "const vec3 MED_C = vec3(0., 1., 0.); const float MED_R = 24.;",
     "const vec3 WL[31] = vec3[31](vec3(0.009, 0.000, 0.178), vec3(0.090, 0.000, 0.601), vec3(0.209, 0.000, 1.921), vec3(0.304, 0.000, 4.079), vec3(0.457, 0.000, 5.102), vec3(0.297, 0.000, 5.229), vec3(0.000, 0.000, 4.886), vec3(0.000, 0.094, 3.756), vec3(0.000, 0.512, 2.300), vec3(0.000, 1.007, 1.245), vec3(0.000, 1.621, 0.608), vec3(0.000, 2.415, 0.178), vec3(0.000, 3.281, 0.000), vec3(0.000, 3.841, 0.000), vec3(0.000, 3.945, 0.000), vec3(0.000, 3.760, 0.000), vec3(0.732, 3.318, 0.000), vec3(1.779, 2.690, 0.000), vec3(2.798, 1.937, 0.000), vec3(3.640, 1.149, 0.000), vec3(4.170, 0.434, 0.000), vec3(4.213, 0.000, 0.000), vec3(3.737, 0.000, 0.000), vec3(2.937, 0.000, 0.000), vec3(2.055, 0.000, 0.000), vec3(1.283, 0.000, 0.000), vec3(0.714, 0.000, 0.000), vec3(0.354, 0.000, 0.000), vec3(0.156, 0.000, 0.000), vec3(0.060, 0.007, 0.000), vec3(0.020, 0.007, 0.000));",
     "uint rs; float gLam, gFilm; vec3 gN; float gZ;",
+    "vec3 L0, L1, L2, L3;                                              // what each group of lights has given this sample",
+    "void addW(vec4 w, vec3 v) { L0 += v * w.x; L1 += v * w.y; L2 += v * w.z; L3 += v * w.w; }",
+    "vec3 archW(float u) { return vec3((1. - u) * (1. - u), 2. * u * (1. - u), u * u); }",
     "uint hash(uint x){ x ^= x >> 16; x *= 0x7feb352du; x ^= x >> 15; x *= 0x846ca68bu; x ^= x >> 16; return x; }",
     "float rnd(){ rs = rs * 747796405u + 2891336453u; uint w = ((rs >> ((rs >> 28u) + 4u)) ^ rs) * 277803737u; w = (w >> 22u) ^ w; return float(w) * (1.0 / 4294967296.0); }",
     "vec3 specw(float l) { float x = clamp((l - 400.) / 10., 0., 29.999); int i = int(x); return mix(WL[i], WL[i + 1], x - float(i)); }",
@@ -121,6 +132,22 @@
     "  vec3 oc = ro - c; float b = dot(oc, rd), h = b * b - dot(oc, oc) + r * r;",
     "  if (h < 0.) return vec2(1e9, -1e9); h = sqrt(h); return vec2(-b - h, -b + h);",
     "}",
+    // the arch: half a thin torus standing on the floor, facing the camera; marched only through the slab it lies in
+    "float archSDF(vec3 p) { return length(vec2(length(p.xy - vec2(uA.x, 0.)) - uA.z, p.z - uA.y)) - uA.w; }",
+    "float archU(vec3 p) { return clamp(1. - atan(p.y, p.x - uA.x) / PI, 0., 1.); }   // 0 at the left foot, 1 at the right",
+    "vec3 archNormal(vec3 p) { vec3 r = normalize(vec3(p.x - uA.x, p.y, 0.)); return normalize(p - vec3(uA.x, 0., uA.y) - r * uA.z); }",
+    "bool archHit(vec3 ro, vec3 rd, float tmax, out float s) {",
+    "  s = 0.; if (abs(rd.z) < 1e-5) return false;",
+    "  float t0 = (uA.y - 2. * uA.w - ro.z) / rd.z, t1 = (uA.y + 2. * uA.w - ro.z) / rd.z;",
+    "  float a = max(min(t0, t1), EPS), b = min(max(t0, t1), tmax); if (a >= b) return false;",
+    "  float t = a;",
+    "  for (int i = 0; i < 32; i++) {",
+    "    vec3 p = ro + rd * t; float d = archSDF(p);",
+    "    if (d < 2e-4) { s = t; return p.y > 0.; }",
+    "    t += max(d, 2e-4); if (t > b) return false;",
+    "  }",
+    "  return false;",
+    "}",
     "bool rect(vec3 ro, vec3 rd, vec3 C, vec3 U, vec3 V, float tmax, out float s) {   // a rectangle: centre, half-sides",
     "  vec3 n = cross(U, V); float dn = dot(rd, n); s = 0.;",
     "  if (abs(dn) < 1e-9) return false;",
@@ -133,6 +160,8 @@
     "  if (rd.y < 0.) { s = -ro.y / rd.y; if (s > EPS && s < t) { t = s; m = FLOOR; } }",
     "  if (rect(ro, rd, KEY_C, KEY_U, KEY_V, t, s)) { t = s; m = KEY; }",
     "  if (rect(ro, rd, RIM_C, RIM_U, RIM_V, t, s)) { t = s; m = RIM; }",
+    "  if (rd.z < 0.) { s = (uWZ - ro.z) / rd.z; if (s > EPS && s < t) { t = s; m = WALL; } }",
+    "  if (archHit(ro, rd, t, s)) { t = s; m = ARCH; }",
     "  for (int g = 0; g < 9; g++) if (marchLetter(g, ro, rd, t, s)) { t = s; m = LETTER + g; }",
     "  return m;",
     "}",
@@ -147,25 +176,29 @@
     "vec3 schlick(vec3 f0, float c) { return f0 + (1. - f0) * pow(1. - c, 5.); }",
     "vec3 ggxHalf(vec3 n, float a) { float u = rnd(), th = atan(a * sqrt(u / (1. - u))), ph = 2. * PI * rnd(); vec3 t = ortho(n), b = cross(n, t); return normalize(t * cos(ph) * sin(th) + b * sin(ph) * sin(th) + n * cos(th)); }",
     // light sampling: picks a light and a point on it; returns its radiance, fills direction, distance and pdf (solid angle)
-    "vec3 sampleLight(vec3 p, bool noRim, out vec3 wi, out float dist, out float pdf) {",
-    "  vec3 lp, ln, Le; float area, sel, x = rnd();",
+    "vec3 sampleLight(vec3 p, bool noRim, out vec3 wi, out float dist, out float pdf, out vec4 gw) {",
+    "  vec3 lp, ln, Le; float area, sel, x = rnd(); gw = vec4(1., 0., 0., 0.);",
     "  if (x < P_NEON) {",
     "    vec4 L = uL[3]; float u = rnd() * NEON_L, ph = 2. * PI * rnd(); vec3 a, r;",
     "    if (u < 1.) { a = vec3(-.31, u, 0.); r = vec3(cos(ph), 0., sin(ph)); }",
     "    else if (u < 2.) { a = vec3(.31, u - 1., 0.); r = vec3(cos(ph), 0., sin(ph)); }",
     "    else { a = vec3(-.31 + (u - 2.), .5, 0.); r = vec3(0., cos(ph), sin(ph)); }",
     "    lp = toWorld(a + r * TUBE + vec3(0., LIFT, 0.), L) + vec3(L.x, 0., L.y); ln = toWorld(r, L);",
-    "    area = 2. * PI * TUBE * NEON_L; Le = NEON_E; sel = P_NEON;",
+    "    area = 2. * PI * TUBE * NEON_L; Le = vec3(NEON_W); sel = P_NEON; gw = vec4(0., 1., 0., 0.);",
     "  } else if (x < P_NEON + P_DOT) {",
     "    vec4 L = uL[5]; float z = 2. * rnd() - 1., ph = 2. * PI * rnd(), sn = sqrt(1. - z * z);",
     "    ln = vec3(sn * cos(ph), z, sn * sin(ph)); lp = vec3(L.x, DOT_Y, L.y) + ln * DOT_R;",
-    "    area = 4. * PI * DOT_R * DOT_R; Le = DOT_E; sel = P_DOT;",
-    "  } else if (x < P_NEON + P_DOT + P_RIM) {",
+    "    area = 4. * PI * DOT_R * DOT_R; Le = vec3(DOT_W); sel = P_DOT; gw = vec4(0., 0., 1., 0.);",
+    "  } else if (x < P_NEON + P_DOT + P_ARCH) {",
+    "    float u = rnd(), th = PI * (1. - u), ph = 2. * PI * rnd(); vec3 r = vec3(cos(th), sin(th), 0.);",
+    "    ln = r * cos(ph) + vec3(0., 0., sin(ph)); lp = vec3(uA.x, 0., uA.y) + r * uA.z + ln * uA.w;",
+    "    area = 2. * PI * uA.w * PI * uA.z; Le = vec3(ARCH_W); sel = P_ARCH; gw = vec4(0., archW(u));",
+    "  } else if (x < P_NEON + P_DOT + P_ARCH + P_RIM) {",
     "    lp = RIM_C + RIM_U * (rnd() * 2. - 1.) + RIM_V * (rnd() * 2. - 1.); ln = normalize(cross(RIM_U, RIM_V));",
     "    area = 4. * length(RIM_U) * length(RIM_V); Le = noRim ? vec3(0.) : RIM_E; sel = P_RIM;",
     "  } else {",
     "    lp = KEY_C + KEY_U * (rnd() * 2. - 1.) + KEY_V * (rnd() * 2. - 1.); ln = normalize(cross(KEY_U, KEY_V));",
-    "    area = 4. * length(KEY_U) * length(KEY_V); Le = KEY_E; sel = 1. - P_NEON - P_DOT - P_RIM;",
+    "    area = 4. * length(KEY_U) * length(KEY_V); Le = KEY_E; sel = P_KEY;",
     "  }",
     "  vec3 d = lp - p; float d2 = dot(d, d); dist = sqrt(d2); wi = d / dist;",
     "  float cl = dot(-wi, ln); if (cl <= 0.) { pdf = 0.; return vec3(0.); }",
@@ -176,7 +209,8 @@
     "float lightPdf(int m, vec3 wi, float dist, vec3 ln) {             // pdf of having sampled this point of light m",
     "  float cl = abs(dot(wi, ln)); if (cl < 1e-4) return 0.;",
     "  float a = m == LETTER + 3 ? P_NEON / (2. * PI * TUBE * NEON_L) : m == LETTER + 5 ? P_DOT / (4. * PI * DOT_R * DOT_R)",
-    "          : m == RIM ? P_RIM / (4. * length(RIM_U) * length(RIM_V)) : (1. - P_NEON - P_DOT - P_RIM) / (4. * length(KEY_U) * length(KEY_V));",
+    "          : m == ARCH ? P_ARCH / (2. * PI * uA.w * PI * uA.z)",
+    "          : m == RIM ? P_RIM / (4. * length(RIM_U) * length(RIM_V)) : P_KEY / (4. * length(KEY_U) * length(KEY_V));",
     "  return a * dist * dist / cl;",
     "}",
     // thin-film interference (the R): a clear oxide film over metal, its reflectance per wavelength (Airy, unpolarised)
@@ -205,9 +239,10 @@
     // 2 a metal under a thin oxide film (its Fresnel term worked out per wavelength)
     "void material(int m, out int kind, out vec3 c, out float a) {",
     "  kind = 0;",
-    "  if (m == LETTER + 2) { kind = 1; c = vec3(1., .766, .336); a = .1; }            // C: polished gold",
-    "  else if (m == LETTER + 7) { kind = 2; c = vec3(0.); a = .16; }                   // R: heat-tinted titanium",
+    "  if (m == LETTER + 2) { kind = 1; c = vec3(.91, .92, .93); a = .2; }             // C: brushed silver",
+    "  else if (m == LETTER + 7) { c = vec3(.004); a = .012; }                          // R: black glass, a dark mirror",
     "  else if (m == LETTER + 8) { c = vec3(.86, .85, .83); a = .03; }                 // T: glazed porcelain",
+    "  else if (m == WALL) { c = vec3(.016, .016, .018); a = .25; }                    // the back wall, far off: dark satin",
     "  else { c = vec3(.018, .018, .02); a = .022; }                                     // the wet black floor",
     "}",
     "vec3 bsdf(int m, vec3 n, vec3 wo, vec3 wi, out float pdf) {",
@@ -236,8 +271,8 @@
     "  return normalize(t * cos(ph) * sn + b * sin(ph) * sn + d * c);",
     "}",
 
-    "vec3 radiance(vec3 ro, vec3 rd, float lambda) {",
-    "  vec3 L = vec3(0.), T = vec3(1.);",
+    "void radiance(vec3 ro, vec3 rd, float lambda) {",
+    "  vec3 T = vec3(1.); L0 = L1 = L2 = L3 = vec3(0.); vec4 gw;",
     "  int mode = 0;                 // how we got here: 0 camera or specular, 1 medium (light already sampled), 2 MIS",
     "  float lastPdf = 0.; bool split = false, fromFloor = false;",
     "  for (int b = 0; b < 8; b++) {",
@@ -246,7 +281,9 @@
     "    int m = trace(ro, rd, max(med.y, EPS), t);",
     "    if (b == 0) {                                            // for the denoiser: what this camera ray hit first",
     "      gZ = m == NONE ? 1e3 : t;",
-    "      vec3 g = m == NONE || m == KEY || m == RIM ? -rd : m == FLOOR ? vec3(0., 1., 0.) : letterNormal(m - LETTER, ro + rd * t);",
+    "      vec3 hp = ro + rd * t;",
+    "      vec3 g = m == NONE || m == KEY || m == RIM ? -rd : m == FLOOR ? vec3(0., 1., 0.) : m == WALL ? vec3(0., 0., 1.)",
+    "             : m == ARCH ? archNormal(hp) : letterNormal(m - LETTER, hp);",
     "      gN = dot(g, rd) > 0. ? -g : g;",
     "    }",
     // light scattered towards the camera by the haze. On the camera ray it is estimated once per sample, at a point
@@ -255,22 +292,24 @@
     "    float tseg = min(t, med.y), tf = -log(1. - rnd()) / SIG; bool along = b == 0 && tseg > 0.;",
     "    if (along) {",
     "      float a = 1. - exp(-SIG * tseg), ts = -log(1. - rnd() * a) / SIG, dist, pdf; vec3 wi;",
-    "      vec3 Le = sampleLight(ro + rd * ts, false, wi, dist, pdf);",
-    "      if (pdf > 0.) L += T * a * Le * hgPhase(dot(rd, wi)) / pdf;",
+    "      vec3 Le = sampleLight(ro + rd * ts, false, wi, dist, pdf, gw);",
+    "      if (pdf > 0.) addW(gw, T * a * Le * hgPhase(dot(rd, wi)) / pdf);",
     "    }",
     "    if (tf < tseg) {                                         // the free flight ends in the haze: scatter",
     "      vec3 p = ro + rd * tf, wi; float dist, pdf;",
-    "      if (!along) { vec3 Le = sampleLight(p, false, wi, dist, pdf); if (pdf > 0.) L += T * Le * hgPhase(dot(rd, wi)) / pdf; }",
+    "      if (!along) { vec3 Le = sampleLight(p, false, wi, dist, pdf, gw); if (pdf > 0.) addW(gw, T * Le * hgPhase(dot(rd, wi)) / pdf); }",
     "      ro = p; rd = hgSample(rd); mode = 1; continue;",
     "    }",
-    "    if (m == NONE) { if (mode != 1) L += T * env(rd); break; }   // found only by BSDF rays, never sampled directly",
-    "    vec3 p = ro + rd * t, n = m == FLOOR ? vec3(0., 1., 0.) : m == KEY ? normalize(cross(KEY_U, KEY_V)) : m == RIM ? normalize(cross(RIM_U, RIM_V)) : letterNormal(m - LETTER, p);",
+    "    if (m == NONE) { if (mode != 1) L0 += T * env(rd); break; }  // found only by BSDF rays, never sampled directly",
+    "    vec3 p = ro + rd * t, n = m == FLOOR ? vec3(0., 1., 0.) : m == WALL ? vec3(0., 0., 1.) : m == KEY ? normalize(cross(KEY_U, KEY_V))",
+    "         : m == RIM ? normalize(cross(RIM_U, RIM_V)) : m == ARCH ? archNormal(p) : letterNormal(m - LETTER, p);",
     "    bool inside = dot(n, rd) > 0.; if (inside) n = -n;          // n now faces the ray",
-    "    if (m == KEY || m == RIM || m == LETTER + 3 || m == LETTER + 5) {   // a light",
-    "      vec3 Le = m == KEY ? KEY_E : m == RIM ? RIM_E : m == LETTER + 3 ? NEON_E : DOT_E;",
+    "    if (m == KEY || m == RIM || m == ARCH || m == LETTER + 3 || m == LETTER + 5) {   // a light",
+    "      vec3 Le = m == KEY ? KEY_E : m == RIM ? RIM_E : vec3(m == ARCH ? ARCH_W : m == LETTER + 3 ? NEON_W : DOT_W);",
+    "      vec4 g = m == ARCH ? vec4(0., archW(archU(p))) : m == LETTER + 3 ? vec4(0., 1., 0., 0.) : m == LETTER + 5 ? vec4(0., 0., 1., 0.) : vec4(1., 0., 0., 0.);",
     "      if ((m == KEY || m == RIM) && inside || m == RIM && fromFloor) break;   // the panels shine one way",
-    "      if (mode == 0) L += T * Le;",
-    "      else if (mode == 2) { float pl = lightPdf(m, rd, t, n); L += T * Le * lastPdf * lastPdf / (lastPdf * lastPdf + pl * pl); }",
+    "      if (mode == 0) addW(g, T * Le);",
+    "      else if (mode == 2) { float pl = lightPdf(m, rd, t, n); addW(g, T * Le * lastPdf * lastPdf / (lastPdf * lastPdf + pl * pl)); }",
     "      break;",
     "    }",
     "    vec3 wo = -rd;",
@@ -310,13 +349,9 @@
     "      if (!gone) break;",
     "      mode = 0;",
     "    } else {                                                   // light sampling and BSDF sampling, combined by MIS",
-    "      if (m == LETTER + 7) {                                   // the film's colours: one wavelength, a thickness up the letter",
-    "        if (!split) { split = true; T *= specw(lambda); }",
-    "        vec4 Lt = uL[7]; gLam = lambda; gFilm = 30. + 150. * toLocal(p - vec3(Lt.x, 0., Lt.y), Lt).y;",
-    "      }",
     "      vec3 q = p + n * 1e-3, wi; float dist, pl, pb;",
-    "      vec3 Le = sampleLight(q, m == FLOOR, wi, dist, pl);   // light linking: the strip is not seen in the floor",
-    "      if (pl > 0.) { vec3 f = bsdf(m, n, wo, wi, pb); if (pb > 0.) L += T * Le * f * dot(n, wi) / pl * (pl * pl / (pl * pl + pb * pb)); }",
+    "      vec3 Le = sampleLight(q, m == FLOOR, wi, dist, pl, gw);   // light linking: the strip is not seen in the floor",
+    "      if (pl > 0.) { vec3 f = bsdf(m, n, wo, wi, pb); if (pb > 0.) addW(gw, T * Le * f * dot(n, wi) / pl * (pl * pl / (pl * pl + pb * pb))); }",
     "      rd = bsdfDir(m, n, wo);",
     "      vec3 f = bsdf(m, n, wo, rd, pb);",
     "      if (pb <= 0.) break;",
@@ -324,7 +359,6 @@
     "    }",
     "    if (b > 2) { float q = clamp(max(T.x, max(T.y, T.z)), .05, .95); if (rnd() > q) break; T /= q; }",
     "  }",
-    "  return L;",
     "}",
     "void main() {",
     "  uvec2 px = uvec2(gl_FragCoord.xy);",
@@ -335,17 +369,39 @@
     "  vec3 focus = uEye + dir * (uFocus / dot(dir, uFwd));",
     "  float a = 2. * PI * rnd(), r = uLens * sqrt(rnd());",
     "  vec3 eye = uEye + (uRight * cos(a) + uUp * sin(a)) * r;",
-    "  vec3 c = radiance(eye, normalize(focus - eye), lambda);",
-    "  float lum = dot(c, vec3(.2126, .7152, .0722)); if (lum > 10.) { c *= 10. / lum; lum = 10.; }   // tame fireflies",
-    "  vec4 prev = uFrame == 0 ? vec4(0.) : texelFetch(uPrev, ivec2(px), 0), pg = uFrame == 0 ? vec4(0.) : texelFetch(uPrevGeo, ivec2(px), 0);",
+    "  radiance(eye, normalize(focus - eye), lambda);",
+    "  float lum = dot(L0 + L1 + L2 + L3, vec3(.2126, .7152, .0722));",
+    "  if (lum > 10.) { float s = 10. / lum; L0 *= s; L1 *= s; L2 *= s; L3 *= s; lum = 10.; }   // tame fireflies",
+    "  ivec2 ip = ivec2(px); bool z = uFrame == 0;",
     "  float k = 1. / float(uFrame + 1);",
-    "  oColor = mix(prev, vec4(c, lum * lum), k);",
-    "  oGeo = mix(pg, vec4(gN, gZ), k);",
+    "  oColor = mix(z ? vec4(0.) : texelFetch(uPrev, ip, 0), vec4(L0, lum * lum), k);",
+    "  oGeo = mix(z ? vec4(0.) : texelFetch(uPrevGeo, ip, 0), vec4(gN, gZ), k);",
+    "  oG1 = mix(z ? vec4(0.) : texelFetch(uPrev1, ip, 0), vec4(L1, 0.), k);",
+    "  oG2 = mix(z ? vec4(0.) : texelFetch(uPrev2, ip, 0), vec4(L2, 0.), k);",
+    "  oG3 = mix(z ? vec4(0.) : texelFetch(uPrev3, ip, 0), vec4(L3, 0.), k);",
     "}"
   ].join("\n");
 
   // where the letters stand: one gently curved row on a wide screen; on a tall one JICHU behind and ·ART in front
   var WIDTH = [0.61, 0.17, 0.97, 0.72, 0.77, 0.2, 0.93, 0.79, 0.89], CENTRE = [-0.03, 0, 0.001, 0, 0, 0, 0, 0.01, 0];
+  function arch(wide) {             // the arch behind the letters (centre x, z, radius, tube) and the back wall's z
+    return { a: wide ? new Float32Array([0, -3.4, 3.05, 0.032]) : new Float32Array([0, -3.6, 1.6, 0.03]), wall: -7.5 };
+  }
+  // the colours the lights flow through: amber, coral, rose, violet, indigo, and back again, each group a little behind
+  // the one on its left, so the colour travels across the picture
+  var FLOW = [[1.0, 0.52, 0.16], [1.0, 0.3, 0.24], [0.92, 0.22, 0.5], [0.56, 0.26, 0.95], [0.22, 0.36, 1.0]];
+  function flow(x) {
+    var n = FLOW.length - 1, u = x - Math.floor(x / (2 * n)) * 2 * n;
+    if (u > n) u = 2 * n - u;
+    var i = Math.min(n - 1, Math.floor(u)), f = u - i; f = f * f * (3 - 2 * f);
+    var a = FLOW[i], b = FLOW[i + 1], c = [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+    var l = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    return [c[0] * 0.5 / l, c[1] * 0.5 / l, c[2] * 0.5 / l];   // every colour equally bright
+  }
+  function colours(t) {              // t in seconds; a full sweep there and back takes about 40 s
+    var x = t * 0.2;
+    return [].concat(flow(x), flow(x - 1.0), flow(x - 2.0));
+  }
   function layout(wide) {
     var L = new Float32Array(36), rows = wide ? [[0, 1, 2, 3, 4, 5, 6, 7, 8]] : [[0, 1, 2, 3, 4], [5, 6, 7, 8]];
     var zs = wide ? [0] : [-1.45, 1.35], GAP = 0.17, K = wide ? 0.055 : 0.03;
@@ -359,6 +415,19 @@
     });
     return L;
   }
+
+  var COMBINE = [                   // the groups of lights, each in its colour of the moment
+    "#version 300 es",
+    "precision highp float;",
+    "uniform sampler2D uS, uG1, uG2, uG3; uniform vec3 uC1, uC2, uC3;",
+    "out vec4 o;",
+    "void main() {",
+    "  ivec2 p = ivec2(gl_FragCoord.xy);",
+    "  vec4 s = texelFetch(uS, p, 0); vec3 g1 = texelFetch(uG1, p, 0).rgb, g2 = texelFetch(uG2, p, 0).rgb, g3 = texelFetch(uG3, p, 0).rgb;",
+    "  float l = dot(s.rgb + g1 + g2 + g3, vec3(.2126, .7152, .0722));",
+    "  o = vec4(s.rgb + uC1 * g1 + uC2 * g2 + uC3 * g3, max(0., s.a - l * l));   // alpha: how much the samples vary",
+    "}"
+  ].join("\n");
 
   var DENOISE = [
     "#version 300 es",
@@ -375,7 +444,7 @@
     "    float l = lumi(c0.rgb), s1 = 0., s2 = 0.;                // before that from its neighbours",
     "    for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) { float q = comp(lumi(texelFetch(uCol, clamp(p + ivec2(x, y), ivec2(0), mx), 0).rgb)); s1 += q; s2 += q * q; }",
     "    s1 /= 9.;",
-    "    sig = uN >= 6. ? sqrt(max(0., c0.a - l * l) / uN) / ((1. + l) * (1. + l)) : sqrt(max(0., s2 / 9. - s1 * s1));",
+    "    sig = uN >= 6. ? sqrt(c0.a / uN) / ((1. + l) * (1. + l)) : sqrt(max(0., s2 / 9. - s1 * s1));",
     "  } else sig = c0.a;",
     "  const float K[3] = float[3](.375, .25, .0625);",
     "  vec3 acc = vec3(0.); float ws = 0.;",
@@ -438,13 +507,15 @@
     opt = opt || {};
     var gl = canvas.getContext("webgl2", { antialias: false, depth: false, alpha: false, powerPreference: "high-performance", preserveDrawingBuffer: !!opt.preserve });
     if (!gl || !gl.getExtension("EXT_color_buffer_float")) return null;
-    var tr, dn, sh;
-    try { tr = program(gl, TRACE); dn = program(gl, DENOISE); sh = program(gl, SHOW); } catch (e) { if (opt.log) opt.log(String(e)); return null; }
+    if (gl.getParameter(gl.MAX_DRAW_BUFFERS) < 5) return null;
+    var tr, dn, sh, cb;
+    try { tr = program(gl, TRACE); dn = program(gl, DENOISE); sh = program(gl, SHOW); cb = program(gl, COMBINE); } catch (e) { if (opt.log) opt.log(String(e)); return null; }
     var buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-    var tex = [], geo = [], fbo = [], dtex = [], dfbo = [], w = 0, h = 0, frame = 0, cur = 0;
+    var tex = [], geo = [], grp = [[], [], []], fbo = [], dtex = [], dfbo = [], ctex = null, cfbo = null, w = 0, h = 0, frame = 0, cur = 0;
+    var time = opt.time == null ? 1.3 : opt.time, bar = null;
     // GPU time per frame from timer queries, where the browser offers them: read a few frames later, without waiting
     var tq = gl.getExtension("EXT_disjoint_timer_query_webgl2"), pending = [], gpu = [], gen = 0;
     var DENOISE_UNTIL = 600;          // after this many samples the average is clean enough to show as it is
@@ -461,25 +532,33 @@
     function size(W, H) {
       if (W === w && H === h) return;
       w = W; h = H; canvas.width = w; canvas.height = h; gen++; gpu = [];
+      var A = [gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1, gl.COLOR_ATTACHMENT2, gl.COLOR_ATTACHMENT3, gl.COLOR_ATTACHMENT4];
       for (var i = 0; i < 2; i++) {
-        if (tex[i]) { gl.deleteTexture(tex[i]); gl.deleteTexture(geo[i]); gl.deleteTexture(dtex[i]); gl.deleteFramebuffer(fbo[i]); gl.deleteFramebuffer(dfbo[i]); }
+        if (tex[i]) {
+          [tex[i], geo[i], dtex[i], grp[0][i], grp[1][i], grp[2][i]].forEach(function (t) { gl.deleteTexture(t); });
+          gl.deleteFramebuffer(fbo[i]); gl.deleteFramebuffer(dfbo[i]);
+        }
         tex[i] = texture(gl.RGBA32F); geo[i] = texture(gl.RGBA16F); dtex[i] = texture(gl.RGBA16F);
+        for (var g = 0; g < 3; g++) grp[g][i] = texture(gl.RGBA32F);
         fbo[i] = gl.createFramebuffer();
         gl.bindFramebuffer(gl.FRAMEBUFFER, fbo[i]);
-        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex[i], 0);
-        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, geo[i], 0);
-        gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1]);
+        [tex[i], geo[i], grp[0][i], grp[1][i], grp[2][i]].forEach(function (t, k) { gl.framebufferTexture2D(gl.FRAMEBUFFER, A[k], gl.TEXTURE_2D, t, 0); });
+        gl.drawBuffers(A);
         dfbo[i] = gl.createFramebuffer();
         gl.bindFramebuffer(gl.FRAMEBUFFER, dfbo[i]);
         gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, dtex[i], 0);
       }
+      if (ctex) { gl.deleteTexture(ctex); gl.deleteFramebuffer(cfbo); }
+      ctex = texture(gl.RGBA16F); cfbo = gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER, cfbo);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, ctex, 0);
       frame = 0;
     }
     // framing: the row across a wide picture, a little above the middle; on a tall one both rows, seen from higher up
     var lay = null, layWide = null;
     function camera() {
       var aspect = w / h, tanY = Math.tan(17 * Math.PI / 180), wide = aspect > 1.15;
-      if (layWide !== wide) { layWide = wide; lay = layout(wide); }
+      if (layWide !== wide) { layWide = wide; lay = layout(wide); bar = arch(wide); }
       var target = wide ? [0, 0.62, -0.35] : [0, 0.62, 0];
       var dist = wide ? Math.max(7.4, 4.75 / (tanY * aspect)) : Math.max(7.5, 2.12 / (tanY * aspect));
       var shift = wide ? [0, 0.12] : [0, 0.26], pitch = view.pitch + (wide ? 0 : 0.53);
@@ -498,22 +577,37 @@
       gl.useProgram(tr.p);
       gl.bindFramebuffer(gl.FRAMEBUFFER, fbo[1 - cur]);
       gl.viewport(0, 0, w, h);
-      gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, geo[cur]);
-      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex[cur]);
-      gl.uniform1i(u.uPrev, 0); gl.uniform1i(u.uPrevGeo, 1); gl.uniform2f(u.uRes, w, h); gl.uniform1i(u.uFrame, frame); gl.uniform1i(u.uSeed, opt.seed || 0);
+      [tex[cur], geo[cur], grp[0][cur], grp[1][cur], grp[2][cur]].forEach(function (t, k) { gl.activeTexture(gl.TEXTURE0 + k); gl.bindTexture(gl.TEXTURE_2D, t); });
+      gl.uniform1i(u.uPrev, 0); gl.uniform1i(u.uPrevGeo, 1); gl.uniform1i(u.uPrev1, 2); gl.uniform1i(u.uPrev2, 3); gl.uniform1i(u.uPrev3, 4);
+      gl.uniform2f(u.uRes, w, h); gl.uniform1i(u.uFrame, frame); gl.uniform1i(u.uSeed, opt.seed || 0);
       gl.uniform3fv(u.uEye, c.eye); gl.uniform3fv(u.uFwd, c.f); gl.uniform3fv(u.uRight, c.r); gl.uniform3fv(u.uUp, c.u);
       gl.uniform1f(u.uTanY, c.tanY); gl.uniform1f(u.uAspect, c.aspect); gl.uniform2fv(u.uShift, c.shift);
       gl.uniform1f(u.uFocus, c.focus); gl.uniform1f(u.uLens, c.lens); gl.uniform4fv(u.uL, lay);
+      gl.uniform4fv(u.uA, bar.a); gl.uniform1f(u.uWZ, bar.wall);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       cur = 1 - cur; frame++;
-      var shown = tex[cur];
+      present(fade);
+      if (q) { gl.endQuery(tq.TIME_ELAPSED_EXT); pending.push({ q: q, gen: gen }); }
+      poll();
+    }
+    // mixes the groups of lights in their colours, denoises while the average is young, and shows it
+    function present(fade) {
+      var col = colours(time);
+      gl.useProgram(cb.p);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, cfbo);
+      gl.viewport(0, 0, w, h);
+      [tex[cur], grp[0][cur], grp[1][cur], grp[2][cur]].forEach(function (t, k) { gl.activeTexture(gl.TEXTURE0 + k); gl.bindTexture(gl.TEXTURE_2D, t); });
+      gl.uniform1i(cb.u.uS, 0); gl.uniform1i(cb.u.uG1, 1); gl.uniform1i(cb.u.uG2, 2); gl.uniform1i(cb.u.uG3, 3);
+      gl.uniform3fv(cb.u.uC1, col.slice(0, 3)); gl.uniform3fv(cb.u.uC2, col.slice(3, 6)); gl.uniform3fv(cb.u.uC3, col.slice(6, 9));
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      var shown = ctex;
       if (frame < DENOISE_UNTIL && !opt.raw) {        // four passes, 1, 2, 4 and 8 pixels apart
         gl.useProgram(dn.p);
         gl.uniform1i(dn.u.uCol, 0); gl.uniform1i(dn.u.uGeo, 1); gl.uniform2f(dn.u.uRes, w, h); gl.uniform1f(dn.u.uN, frame);
         gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, geo[cur]); gl.activeTexture(gl.TEXTURE0);
         for (var k = 0; k < 4; k++) {
           gl.bindFramebuffer(gl.FRAMEBUFFER, dfbo[k & 1]);
-          gl.bindTexture(gl.TEXTURE_2D, k === 0 ? tex[cur] : dtex[(k - 1) & 1]);
+          gl.bindTexture(gl.TEXTURE_2D, k === 0 ? ctex : dtex[(k - 1) & 1]);
           gl.uniform1i(dn.u.uStep, 1 << k); gl.uniform1i(dn.u.uFirst, k === 0 ? 1 : 0);
           gl.drawArrays(gl.TRIANGLES, 0, 3);
         }
@@ -522,12 +616,10 @@
       gl.useProgram(sh.p);
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       gl.viewport(0, 0, w, h);
-      gl.bindTexture(gl.TEXTURE_2D, shown);
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, shown);
       gl.uniform1i(sh.u.uAcc, 0); gl.uniform2f(sh.u.uRes, w, h); gl.uniform1f(sh.u.uFade, fade == null ? 1 : fade);
       gl.uniform1f(sh.u.uExposure, opt.exposure || 1.0);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-      if (q) { gl.endQuery(tq.TIME_ELAPSED_EXT); pending.push({ q: q, gen: gen }); }
-      poll();
     }
     function poll() {
       while (pending.length && gl.getQueryParameter(pending[0].q, gl.QUERY_RESULT_AVAILABLE)) {
@@ -546,14 +638,16 @@
       gl.bindFramebuffer(gl.FRAMEBUFFER, fbo[cur]); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.FLOAT, px);
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     }
-    function read(which) {            // for offline stills: the running averages, bottom row first. Colour (alpha: mean
-      var out = new Float32Array(w * h * 4);   // luminance squared), or with "geo" the first-hit normals and distances
-      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo[cur]); gl.readBuffer(which === "geo" ? gl.COLOR_ATTACHMENT1 : gl.COLOR_ATTACHMENT0);
+    function read(which) {            // for offline stills, bottom row first: the colour mixed at the current colours
+      var out = new Float32Array(w * h * 4);   // (alpha: how much the samples vary), or with "geo" the first hits
+      if (which === "geo") { gl.bindFramebuffer(gl.FRAMEBUFFER, fbo[cur]); gl.readBuffer(gl.COLOR_ATTACHMENT1); }
+      else { present(1); gl.bindFramebuffer(gl.FRAMEBUFFER, cfbo); gl.readBuffer(gl.COLOR_ATTACHMENT0); }
       gl.readPixels(0, 0, w, h, gl.RGBA, gl.FLOAT, out); gl.readBuffer(gl.COLOR_ATTACHMENT0);
       return out;
     }
     return {
-      size: size, step: step, gl: gl, read: read, sync: sync, gpuMs: gpuMs, timed: !!tq,
+      size: size, step: step, present: present, gl: gl, read: read, sync: sync, gpuMs: gpuMs, timed: !!tq,
+      get time() { return time; }, set time(t) { time = t; },
       get frame() { return frame; },
       turn: function (yaw) { view.yaw = yaw; frame = 0; },
       get yaw() { return view.yaw; }
@@ -609,30 +703,33 @@
   function label() {
     if (spp) spp.textContent = R.frame.toLocaleString("en-US") + (R.frame === 1 ? " sample" : " samples") + " per pixel.";
   }
-  var last = 0;
+  var last = 0, tick = 0;
   function frame(t) {
     if (!onScreen || document.hidden) { running = false; return; }
     if (!startedAt) { startedAt = t; media.classList.add("live"); }
     var fade = Math.min(1, (t - startedAt) / 500);
-    R.step(fade);
-    if (R.timed) {
-      var ms = R.gpuMs(), early = t - startedAt < 2500;
-      if (ms && (early || (ms > 20 && slow < 6)) && retarget(ms, early) && !early) slow++;
-    } else if (last) {                                // slow frames: time the GPU before tracing fewer pixels
-      times.push(t - last);
-      if (times.length === 12) {
-        times.sort(function (a, b) { return a - b; });
-        if (times[6] > 34 && slow < 6) { var m = measure(fade); if (m > 20) { slow++; retarget(m); } }
-        times = [];
+    R.time = 1.3 + (t - startedAt) / 1000;               // the lights' colours keep flowing
+    if (R.frame < DONE) {
+      R.step(fade);
+      if (R.timed) {
+        var ms = R.gpuMs(), early = t - startedAt < 2500;
+        if (ms && (early || (ms > 20 && slow < 6)) && retarget(ms, early) && !early) slow++;
+      } else if (last) {                              // slow frames: time the GPU before tracing fewer pixels
+        times.push(t - last);
+        if (times.length === 12) {
+          times.sort(function (a, b) { return a - b; });
+          if (times[6] > 34 && slow < 6) { var m = measure(fade); if (m > 20) { slow++; retarget(m); } }
+          times = [];
+        }
       }
-    }
+      if ((R.frame & 7) === 1 || R.frame >= DONE) label();
+      if (R.frame >= DONE) media.classList.add("done");
+    } else if (++tick & 1) R.present(1);              // converged: nothing is traced, only the colours are mixed anew
     last = t;
-    if ((R.frame & 7) === 1 || R.frame >= DONE) label();
-    if (R.frame >= DONE) { running = false; media.classList.add("done"); return; }
     requestAnimationFrame(frame);
   }
   function go() {
-    if (running || !onScreen || document.hidden || R.frame >= DONE) return;
+    if (running || !onScreen || document.hidden) return;
     running = true; last = 0; times = []; requestAnimationFrame(frame);
   }
   fit();
