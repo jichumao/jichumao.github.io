@@ -1,4 +1,4 @@
-/* Home page motion (the opening itself is assets/js/cornell.js).
+/* Home page motion (the opening itself is assets/js/studio.js).
    1. Scrolling: the opening falls behind the page (--p, 0 at the top to 1 once it has scrolled away).
    2. Work covers start as a noisy, unconverged render and settle into the finished picture as they come into view.
    With "reduce motion" asked for, nothing moves. */

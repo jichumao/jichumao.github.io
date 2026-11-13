@@ -1,6 +1,8 @@
 /* The timeline page.
    The list runs newest first. Beside it (on wide screens) a dotted globe turns to the series in the middle of the
-   screen: the places already passed are lit, an arc is drawn from each to the next, and the current one pulses.
+   screen and shows the journey up to that series, in the order it happened: every place visited by then is lit, an
+   arc runs from each to the next, and the current one pulses. Moving up the list (forward in time) the newest leg
+   draws itself in towards the current place; moving down (back in time) it pulls back into it.
    On narrow screens the globe sits above the list, turns slowly and shows every place.
    The globe's land is a Fibonacci lattice of points; which of them are land comes in #tl-data (tools/footprint.py). */
 (function () {
@@ -12,12 +14,12 @@
 
   var wide = window.matchMedia("(min-width: 1000px)");
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var cur = -1, changedAt = 0;
+  var cur = -1, prev = -1, changedAt = 0;   // page order: 0 is the newest series
 
   /* ---- which series is current ---- */
   function setCur(i) {
     if (i === cur) return;
-    cur = i; changedAt = performance.now();
+    prev = cur; cur = i; changedAt = performance.now();
     stops.forEach(function (s, k) { s.classList.toggle("on", wide.matches && k === cur); });
     if (now) {
       now.firstChild.textContent = cur < 0 ? "" : stops[cur].getAttribute("data-title");
@@ -60,16 +62,16 @@
     return [Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon)];
   }
 
-  // stops in page order; each place as a vector; arcs between consecutive places
+  // stops in page order (newest first); each place as a vector; arcs between consecutive places, older to newer
   var S = data.stops.map(function (s, k) {
     return { k: k, n: s.n, at: s.at.map(function (p) { return vec(p[0], p[1]); }), ll: s.at[0] || null };
   });
   var located = S.filter(function (s) { return s.at.length; });
   var arcs = [];
   for (var j = 0; j + 1 < located.length; j++) {
-    var A = located[j].at[0], B = located[j + 1].at[0];
+    var A = located[j + 1].at[0], B = located[j].at[0];          // from the older place to the newer one
     var w = Math.acos(Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2])));
-    if (w > 0.02) arcs.push({ a: A, b: B, w: w, to: located[j + 1].k });
+    if (w > 0.02) arcs.push({ a: A, b: B, w: w, to: located[j].k });
   }
   var labels = data.labels.map(function (l) { return { t: l[0], v: vec(l[1], l[2]), side: l[3] }; });
 
@@ -165,21 +167,22 @@
     c.lineWidth = dpr; c.strokeStyle = "rgba(255,255,255,.07)";
     c.beginPath(); c.arc(cx, cy, R, 0, 7); c.stroke();
 
-    // arcs up to the current series; the newest one draws itself in
-    var follow = wide.matches, upto = follow ? cur : S.length - 1;
+    // the journey up to the current series: every leg that ends at it or before it (page index >= cur)
+    var follow = wide.matches && cur >= 0;
     var grow = reduce ? 1 : Math.min(1, (time - changedAt) / 1100);
     grow = 1 - Math.pow(1 - grow, 3);
+    var forward = prev < 0 || cur < prev, moving = grow < 1 && Math.abs(cur - prev) <= 2;
     for (i = 0; i < arcs.length; i++) {
       var A = arcs[i];
-      if (A.to > upto) continue;
-      var last = follow && A.to === cur && grow < 1;
-      strokeArc(A, last ? grow : 1, last);
+      if (!follow || A.to > cur) strokeArc(A, 1, false);
+      else if (A.to === cur) strokeArc(A, forward && moving ? grow : 1, forward && moving);   // arriving here
+      else if (A.to === prev && !forward && moving) strokeArc(A, 1 - grow, true);              // pulling back
     }
 
     // places
     hits.length = 0;
     for (i = 0; i < S.length; i++) {
-      var s = S[i], seen = !follow || i <= cur, on = follow && i === cur;
+      var s = S[i], seen = !follow || i >= cur, on = follow && i === cur;
       for (var q = 0; q < s.at.length; q++) {
         var p = proj(s.at[q], 1, tmp);
         if (p[2] < 0.04) continue;
@@ -228,8 +231,8 @@
   function frame(time) {
     var dt = Math.min(0.05, last ? (time - last) / 1000 : 0.016); last = time;
     var target = null;
-    if (wide.matches && cur >= 0) {
-      for (var k = cur; k >= 0 && !target; k--) if (S[k].ll) target = S[k].ll;
+    if (wide.matches && cur >= 0) {        // a series with no place (Subway) keeps the last place before it
+      for (var k = cur; k < S.length && !target; k++) if (S[k].ll) target = S[k].ll;
     }
     if (target) {
       var tl = target[1] * D2R, tt = Math.max(-0.2, Math.min(0.62, target[0] * D2R * 0.9));

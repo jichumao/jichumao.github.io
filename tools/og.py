@@ -46,7 +46,7 @@ for proj in sorted(os.listdir(img)):
     cover = os.path.join(img, proj, "cover.webp")
     if os.path.exists(cover):
         card(cover, os.path.join(img, proj, "og.jpg")); n += 1
-card(os.path.join(img, "home", "cornell-1600.webp"), os.path.join(img, "home", "og.jpg"), 0.66, 0.5); n += 1
+card(os.path.join(img, "home", "studio-1600.webp"), os.path.join(img, "home", "og.jpg"), 0.52, 0.5); n += 1
 og = os.path.join(ROOT, "photography", "og")
 card(photo(G.SLIDES[0][0]), os.path.join(og, "index.jpg")); card(photo(G.SLIDES[0][0]), os.path.join(og, "all.jpg")); n += 2
 for s in G.SERIES:

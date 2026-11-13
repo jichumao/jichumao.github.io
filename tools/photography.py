@@ -130,11 +130,15 @@ CHAPTERS = [
 ]
 
 # Opening slideshow of the index page: (photograph for wide screens, photograph for upright phones, series it links to).
-# All from the first chapter, so the page opens in one mood.
+# The strongest pictures of the whole section, chosen at the slideshow's own full-screen crop; one per series,
+# alternating warm and cool, day and night. The upright partner comes from the same series.
 SLIDES = [
-    (12, 13, "above-the-fog"),
-    (54, 57, "salt"),
-    (71, 77, "dry-hills"),
+    (16, 13, "above-the-fog"),
+    (240, 256, "zhuhai"),
+    (58, 57, "salt"),
+    (221, 308, "guangzhou"),
+    (79, 77, "dry-hills"),
+    (120, 120, "fourth-of-july"),
 ]
 
 # Subject pages. A photograph can be listed under more than one subject; every photograph needs at least one.
