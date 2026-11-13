@@ -13,8 +13,6 @@ works/<project>/index.html    one page per project
 index.php/<old-slug>/         redirects from the old WordPress URLs
 404.html
 assets/css/site.css           all styles
-assets/js/hero.js             home opening: runs the Procedural Fireball project's own shaders live (falls back to a still frame)
-assets/shaders/               those shaders, copied unchanged from the project's repository
 assets/js/works.js            category filter on the compact grid ("More work")
 assets/js/previews.js         plays a large card's preview while the card is in the middle of the screen, or hovered
 assets/js/clips.js            plays the short looping clips, and the preview on a project page's cover, while they are on screen
@@ -77,13 +75,15 @@ python3 tools/build.py . tools/manifest.json
 
 A quick text fix can also be made straight in the HTML. Make the same change in `tools/build.py`, otherwise the next rebuild overwrites it.
 
-The stylesheet and scripts are linked as `site.css?v=12`, `hero.js?v=12`, and so on. After changing one of them, raise `ASSET_V` in `tools/build.py` and rebuild, so browsers fetch the new file instead of a cached one.
+The stylesheet and scripts are linked as `site.css?v=13`, `works.js?v=13`, and so on. After changing one of them, raise `ASSET_V` in `tools/build.py` and rebuild, so browsers fetch the new file instead of a cached one.
 
 All links are relative, so the site works both at a domain root and under a sub-path.
 
 ## Home page opening
 
-The fireball on the home page is not a picture: `assets/js/hero.js` loads the two shader files of the Procedural Fireball project and draws them with WebGL 2, with the colours and settings of that project's defaults. If WebGL 2 is missing, or a shader fails to compile, the still frame `assets/img/home/fireball.webp` stays in place; visitors who ask their system for reduced motion get one drawn frame that does not move. `data-distance` on the canvas (in `build_home()`) is the camera distance: smaller is closer.
+The picture across the top of the home page is a frame from the WebGPU project: Sponza lit by 5,000 point lights, a 3840 px screenshot with the two debug overlays cropped off its top edge. It is stored at four widths, `assets/img/home/sponza-1280.webp` to `sponza-3840.webp`, plus a square crop for phones (`sponza-tall.webp`); the browser picks one. The source screenshot is `tools/cover-src/webgpu-4k.jpg`. The page zooms into it very slowly; visitors who ask their system for reduced motion get it still. The caption and the picture's description are in `build_home()` in `tools/build.py`.
+
+To use another picture: export it at the same five sizes under the same names (or change the names in `build_home()`), keep the important part right of centre because the text covers the left, then run `python3 tools/og.py .` so the sharing picture follows.
 
 ## Résumé
 
@@ -102,7 +102,16 @@ Off by default. The site is prepared for GoatCounter, which counts page views wi
 
 ## Covers
 
-Every cover is 1500 x 1000 px. Most use a square main panel on the left and two square tiles on the right. A project with one strong wide image can use it across the whole frame instead: write its entry as `("full", image, crop)`. Mini Minecraft does, with the team's own title art. `tools/covers.py` lists, per project, the three source images and the crop for each. Page images are read from `assets/img/<project>/`; video frames and other screenshots from `tools/cover-src/`.
+Every cover is 1500 x 1000 px, and `tools/covers.py` lists, per project, its source pictures and the crop for each. Page images are read from `assets/img/<project>/`; video frames and other screenshots from `tools/cover-src/`. There are four layouts:
+
+| Entry | Looks like | Used for |
+| --- | --- | --- |
+| `[main, tile, tile]` | a square main panel on the left, two tiles on the right | a project with one picture strong and large enough to lead |
+| `("full", image, crop)` | one image across the whole frame | Mini Minecraft's title art, the drawn covers |
+| `("grid", columns, [pictures])` | equal cells, row by row | a set of variants (GLSL Shaders shows sixteen), or sources too small for a big panel |
+| `("rows", [(share, [pictures]), ...])` | rows of different heights | Physically-Based Shaders: two scenes over a five-step roughness strip |
+
+A cover looks soft when a picture is enlarged beyond its own pixels. The script prints the largest enlargement in each cover: keep it near 1.0 for a main panel, and choose a grid when the sources are small.
 
 ```
 python3 tools/covers.py . tools/manifest.json                 # all covers
@@ -129,7 +138,7 @@ Three covers are not made from screenshots; each has its script next to its sour
 
 ## Adding a project
 
-1. Put images in `assets/img/<project>/`: a full-size WebP (long side up to 2000 px) and a `-thumb` version about 800 px wide.
+1. Put images in `assets/img/<project>/`: a full-size WebP (long side up to about 2500 px) and a `-thumb` version about 800 px wide. Galleries offer both to the browser, which takes the full-size file on sharp screens and in wide slots, so keep the full size genuinely larger than the thumbnail.
 2. Add each image to `tools/manifest.json` with its width and height (`w`, `h` for the full size, `tw`, `th` for the thumbnail). Copy the shape of an existing entry.
 3. Add the project's three cover panels to `COVERS` in `tools/covers.py` and its preview to `PREVIEWS` in `tools/previews.py`, then run both.
 4. Add an entry to `PROJECTS` in `tools/build.py` and rebuild. The card, the project page, the Previous / Next links and `sitemap.xml` are all written for you. Add its slug to `FEATURED` if it should be one of the large cards.
