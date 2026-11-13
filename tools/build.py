@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "18"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "19"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -927,11 +927,12 @@ def links_html(proj):
 
 # ---------------------------------------------------------------- pages
 
-# The opening of the home page: a Cornell box path traced live in the browser (assets/js/cornell.js).
+# The opening of the home page: a small studio scene path traced live in the browser (assets/js/studio.js).
 # Where that cannot run (no WebGL2, "reduce motion", no JavaScript) the still picture is shown instead; it was
 # rendered by the same code, see the README.
-HERO_ALT = ("A Cornell box: red and green walls, a glass sphere, a small gold sphere and a tall white block "
-            "under a warm ceiling light, open towards the viewer on a polished black floor")
+HERO_ALT = ("A red neon ring standing on a wet black floor with a brass lattice sphere floating inside it, "
+            "a glass sphere with rainbow edges to the left, a small chrome sphere to the right and a blue neon tube "
+            "behind, all reflected in the floor and glowing in light haze")
 
 def build_home():
     root = ""
@@ -975,11 +976,11 @@ def build_home():
   <figure class="hero-media">
     <canvas class="hero-live" aria-hidden="true"></canvas>
     <picture class="hero-still" hidden>
-      <source media="(max-aspect-ratio: 1/1)" data-srcset="assets/img/home/cornell-tall-780.webp 780w" sizes="100vw" width="780" height="1200">
-      <img data-srcset="assets/img/home/cornell-1000.webp 1000w, assets/img/home/cornell-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="{E(HERO_ALT)}">
+      <source media="(max-aspect-ratio: 1/1)" data-srcset="assets/img/home/studio-tall-780.webp 780w" sizes="100vw" width="780" height="1200">
+      <img data-srcset="assets/img/home/studio-1000.webp 1000w, assets/img/home/studio-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="{E(HERO_ALT)}">
     </picture>
-    <noscript><img class="hero-still" src="assets/img/home/cornell-1600.webp" width="1600" height="900" alt="{E(HERO_ALT)}"></noscript>
-    <figcaption><span class="cap-live">A Cornell box, path traced live in your browser. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">A Cornell box, path traced by this page’s own renderer.</span></figcaption>
+    <noscript><img class="hero-still" src="assets/img/home/studio-1600.webp" width="1600" height="900" alt="{E(HERO_ALT)}"></noscript>
+    <figcaption><span class="cap-live">Path traced live in your browser: spectral dispersion, volumetric light, GGX microfacets with multiple importance sampling, ray-marched signed distance fields. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer: spectral dispersion, volumetric light, GGX microfacets, signed distance fields.</span></figcaption>
   </figure>
   <div class="wrap hero-text">
     <h1>Jichu Mao</h1>
@@ -1017,7 +1018,7 @@ def build_home():
 </section>"""
     write("index.html", page(root=root, path="", title="Jichu Mao – Graphics Performance Engineer | Jichu · Art",
                              desc="Portfolio of Jichu Mao, Graphics Performance Engineer at TikTok: real-time rendering, GPU path tracing, shaders, graphics tools, games and animation.",
-                             body=body, og_image="assets/img/home/og.jpg", current="", scripts=("works.js", "previews.js", "cornell.js", "home.js"), person=True, cls="home"))
+                             body=body, og_image="assets/img/home/og.jpg", current="", scripts=("works.js", "previews.js", "studio.js", "home.js"), person=True, cls="home"))
 
 def build_projects():
     root = "../../"

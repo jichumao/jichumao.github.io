@@ -146,8 +146,8 @@ img.icon.brand { width: 18px; height: 18px; object-fit: contain; }   /* a brand'
   .site-nav a { font-size: 10px; letter-spacing: .06em; }
 }
 
-/* Home: opening. A Cornell box, path traced live across the whole width (assets/js/cornell.js); on wide screens
-   it stands right of centre, and the name and one line sit on the dark floor to its left. */
+/* Home: opening. A studio scene path traced live across the whole width (assets/js/studio.js); the name and
+   one line sit on the dark floor at the lower left. */
 
 .hero { --foot: clamp(30px, 5vh, 54px); position: relative; display: flex; align-items: flex-end; min-height: clamp(360px, 88vh, 1000px); overflow: hidden; }
 .hero-media { position: absolute; inset: 0; margin: 0; overflow: hidden; }
@@ -162,7 +162,7 @@ img.icon.brand { width: 18px; height: 18px; object-fit: contain; }   /* a brand'
 .spp { font-variant-numeric: tabular-nums; color: #fff; }
 @media (hover: none) { .hint { display: none; } }
 .hero-media figcaption {
-  position: absolute; right: max(var(--gutter), (100% - var(--wrap)) / 2); bottom: var(--foot); z-index: 2; max-width: min(40ch, 40vw);
+  position: absolute; right: max(var(--gutter), (100% - var(--wrap)) / 2); bottom: var(--foot); z-index: 2; max-width: min(46ch, 42vw);
   font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, .82); text-align: right; text-shadow: 0 1px 8px rgba(0, 0, 0, .9);
 }
 .hero-media figcaption a { color: #fff; text-decoration-color: var(--accent); text-underline-offset: 4px; }
