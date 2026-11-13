@@ -554,30 +554,36 @@
   var R = make(canvas);
   if (!R) return still();
   canvas.addEventListener("webglcontextlost", function (e) { e.preventDefault(); onScreen = false; still(); });
-  // Resolution: as sharp as the GPU allows. A few frames at about 0.6 million pixels are timed (synchronously, once),
-  // and the pixel count is set so a frame costs about 10 ms, up to the screen's own resolution (at most ~4.5 million
-  // pixels). If frames still come slowly later on, it steps down. (Frame intervals alone cannot tell a fast GPU from
-  // a slow one: they are tied to the display's refresh rate.)
-  var spp = media.querySelector(".spp"), DONE = 1024, budget = 0, slow = 0, times = [], onScreen = true, running = false, startedAt = 0;
+  // Resolution: as sharp as the GPU allows. A few frames are timed synchronously (readPixels waits for the GPU), and
+  // the pixel count is set so a frame costs about 10 ms, up to the screen's own resolution (at most ~4.5 million
+  // pixels). When frames later arrive slowly, the GPU is timed again before anything changes: browsers also slow
+  // frames down on their own (a window in the background, power saving, a 30 Hz display), and that is no reason to
+  // trace fewer pixels.
+  var spp = media.querySelector(".spp"), DONE = 1024, budget = 0, slow = 0, times = [], onScreen = true, running = false, startedAt = 0, rechecked = false;
 
   function native() {
     var box = media.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
     return { w: box.width * dpr, h: box.height * dpr };
   }
+  function pixels() { return R.gl.drawingBufferWidth * R.gl.drawingBufferHeight; }
   function fit() {
     var n = native(), px = Math.min(n.w * n.h, 4.5e6, budget || 6e5);
     var k = Math.min(1, Math.sqrt(px / (n.w * n.h)));
     R.size(Math.max(2, Math.round(n.w * k)), Math.max(2, Math.round(n.h * k)));
   }
-  function calibrate() {                            // GPU time per frame at the current size, then the budget
-    var gl = R.gl, one = new Uint8Array(4), n = native();
-    R.step(0); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, one);
+  function measure(fade) {                          // GPU time of one frame at the current size, in ms
+    var gl = R.gl, one = new Uint8Array(4);
+    R.step(fade); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, one);
     var t0 = performance.now();
-    for (var i = 0; i < 3; i++) R.step(0);
+    for (var i = 0; i < 3; i++) R.step(fade);
     gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, one);
-    var ms = Math.max(0.5, (performance.now() - t0) / 3), cur = R.gl.drawingBufferWidth * R.gl.drawingBufferHeight;
-    budget = Math.max(1.5e5, cur * 10 / ms);
-    fit();
+    return Math.max(0.5, (performance.now() - t0) / 3);
+  }
+  function rebudget(fade, onlyUp) {                 // returns true if the size changed
+    var before = pixels(), want = Math.max(1.5e5, before * 10 / measure(fade));
+    if (onlyUp ? want < before * 1.3 : Math.abs(want - before) < before * 0.15) return false;
+    budget = want; fit();
+    return pixels() !== before;
   }
   function label() {
     if (spp) spp.textContent = R.frame.toLocaleString("en-US") + (R.frame === 1 ? " sample" : " samples") + " per pixel.";
@@ -585,17 +591,22 @@
   var last = 0;
   function frame(t) {
     if (!onScreen || document.hidden) { running = false; return; }
-    if (last) {                                       // too slow for this screen: trace fewer pixels
+    if (!startedAt) { startedAt = t; media.classList.add("live"); }
+    var fade = Math.min(1, (t - startedAt) / 500);
+    if (last) {                                       // judged on the middle of a dozen frames
       times.push(t - last);
-      if (times.length === 12) {                    // judged on the middle of a dozen frames
+      if (times.length === 12) {
         times.sort(function (a, b) { return a - b; });
-        if (times[6] > 34 && slow < 6) { slow++; budget = R.gl.drawingBufferWidth * R.gl.drawingBufferHeight * 0.55; fit(); }
+        if (times[6] > 34 && slow < 6 && measure(fade) > 20) { slow++; rebudget(fade); }
         times = [];
       }
     }
     last = t;
-    if (!startedAt) { startedAt = t; media.classList.add("live"); }
-    R.step(Math.min(1, (t - startedAt) / 500));
+    if (!rechecked && R.frame >= 40) {                // once warmed up, a fast GPU may take more pixels
+      rechecked = true;
+      if (pixels() < native().w * native().h * 0.9) rebudget(fade, true);
+    }
+    R.step(fade);
     if ((R.frame & 7) === 1 || R.frame >= DONE) label();
     if (R.frame >= DONE) { running = false; media.classList.add("done"); return; }
     requestAnimationFrame(frame);
@@ -605,7 +616,7 @@
     running = true; last = 0; times = []; requestAnimationFrame(frame);
   }
   fit();
-  try { calibrate(); } catch (e) { budget = 6e5; fit(); }
+  try { budget = Math.max(1.5e5, pixels() * 10 / measure(0)); fit(); } catch (e) { budget = 6e5; fit(); }
   window.addEventListener("resize", function () { fit(); go(); });
   document.addEventListener("visibilitychange", go);
   if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; go(); }).observe(media);
