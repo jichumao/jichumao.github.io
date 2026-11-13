@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "20"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "22"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -930,9 +930,9 @@ def links_html(proj):
 # The opening of the home page: a small studio scene path traced live in the browser (assets/js/studio.js).
 # Where that cannot run (no WebGL2, "reduce motion", no JavaScript) the still picture is shown instead; it was
 # rendered by the same code, see the README.
-HERO_ALT = ("A red neon ring standing on a wet black floor with a brass lattice sphere floating inside it, "
-            "a glass sphere with rainbow edges to the left, a small chrome sphere to the right and a blue neon tube "
-            "behind, all reflected in the floor and glowing in light haze")
+HERO_ALT = ("The letters JICHU · ART standing on a wet black floor, each in a different material: a glass J with "
+            "rainbow edges, a chrome I, a gold C, a red neon H, a candy-red U, a glowing blue dot, an A shimmering "
+            "with interference colours, a copper R and a glazed white T, all reflected in the floor")
 
 def build_home():
     root = ""
@@ -976,11 +976,11 @@ def build_home():
   <figure class="hero-media">
     <canvas class="hero-live" aria-hidden="true"></canvas>
     <picture class="hero-still" hidden>
-      <source media="(max-aspect-ratio: 1/1)" data-srcset="assets/img/home/studio-tall-780.webp 780w" sizes="100vw" width="780" height="1200">
+      <source media="(max-aspect-ratio: 1/1)" data-srcset="assets/img/home/studio-tall-720.webp 720w" sizes="100vw" width="720" height="1440">
       <img data-srcset="assets/img/home/studio-1000.webp 1000w, assets/img/home/studio-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="{E(HERO_ALT)}">
     </picture>
     <noscript><img class="hero-still" src="assets/img/home/studio-1600.webp" width="1600" height="900" alt="{E(HERO_ALT)}"></noscript>
-    <figcaption><span class="cap-live">Path traced live in your browser: spectral dispersion, volumetric light, GGX microfacets with multiple importance sampling, ray-marched signed distance fields. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer: spectral dispersion, volumetric light, GGX microfacets, signed distance fields.</span></figcaption>
+    <figcaption><span class="cap-live">Path traced live in your browser, every letter a different material: dispersive glass, chrome, gold, neon, clear-coated paint, a light, thin-film interference, copper and glazed ceramic. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer, every letter a different material: dispersive glass, chrome, gold, neon, clear-coated paint, a light, thin-film interference, copper and glazed ceramic.</span></figcaption>
   </figure>
   <div class="wrap hero-text">
     <h1>Jichu Mao</h1>

@@ -4,6 +4,9 @@
    arc runs from each to the next, and the current one pulses. Moving up the list (forward in time) the newest leg
    draws itself in towards the current place; moving down (back in time) it pulls back into it.
    On narrow screens the globe sits above the list, turns slowly and shows every place.
+   Series made at nearly the same spot (five around the Bay Area, three in Guangdong) would sit on top of each other,
+   so each spot is one anchor and its series are numbered pins fanned out around it. The numbers are the series'
+   order in time (1 is the oldest), the same numbers as in the list.
    The globe's land is a Fibonacci lattice of points; which of them are land comes in #tl-data (tools/footprint.py). */
 (function () {
   var stops = Array.prototype.slice.call(document.querySelectorAll(".stop"));
@@ -64,25 +67,51 @@
 
   // stops in page order (newest first); each place as a vector; arcs between consecutive places, older to newer
   var S = data.stops.map(function (s, k) {
-    return { k: k, n: s.n, at: s.at.map(function (p) { return vec(p[0], p[1]); }), ll: s.at[0] || null };
+    return { k: k, no: s.no, n: s.n, at: s.at.map(function (p) { return vec(p[0], p[1]); }), ll: s.at[0] || null };
   });
   var located = S.filter(function (s) { return s.at.length; });
+  function dot3(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+
+  // spots: series within about 2.5 degrees of each other share one anchor
+  var spots = [];
+  located.forEach(function (s) {
+    var v = s.at[0], sp = null;
+    for (var q = 0; q < spots.length && !sp; q++) if (dot3(spots[q].first, v) > Math.cos(0.045)) sp = spots[q];
+    if (!sp) { sp = { first: v, m: [] }; spots.push(sp); }
+    sp.m.push(s); s.spot = sp;
+  });
+  spots.forEach(function (sp) {
+    var x = 0, y = 0, z = 0;
+    sp.m.forEach(function (s) { x += s.at[0][0]; y += s.at[0][1]; z += s.at[0][2]; });
+    var l = Math.hypot(x, y, z); sp.v = [x / l, y / l, z / l];
+    sp.m.sort(function (a, b) { return a.no - b.no; });
+    sp.m.forEach(function (s, q) { s.slot = q; });
+    sp.p = [0, 0, 0, false];
+  });
+
+  // legs of the journey, from each series to the next one in time: between spots along the globe, within a spot
+  // from pin to pin
   var arcs = [];
   for (var j = 0; j + 1 < located.length; j++) {
-    var A = located[j + 1].at[0], B = located[j].at[0];          // from the older place to the newer one
-    var w = Math.acos(Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2])));
-    if (w > 0.02) arcs.push({ a: A, b: B, w: w, to: located[j].k });
+    var from = located[j + 1], to = located[j];
+    if (from.spot === to.spot) { arcs.push({ pin: true, from: from, to: to.k }); continue; }
+    var A = from.spot.v, B = to.spot.v, w = Math.acos(Math.max(-1, Math.min(1, dot3(A, B))));
+    arcs.push({ a: A, b: B, w: w, to: to.k });
   }
-  var labels = data.labels.map(function (l) { return { t: l[0], v: vec(l[1], l[2]), side: l[3] }; });
+  var labels = data.labels.map(function (l) {
+    var L = { t: l[0], v: vec(l[1], l[2]), side: l[3], spot: null };
+    spots.forEach(function (sp) { if (dot3(sp.v, L.v) > Math.cos(0.07)) L.spot = sp; });
+    return L;
+  });
 
   // view: the point (lat0, lon0) faces the reader
   var lon0 = (S[0].ll ? S[0].ll[1] : 110) * D2R, lat0 = 22 * D2R, cl, sl, ct, st;
-  var size = 0, dpr = 1, R = 0, cx = 0, cy = 0, hits = [];
+  var size = 0, dpr = 1, R = 0, cx = 0, cy = 0, hits = [], Z = 1;   // Z: zoom, eased in where spots crowd together
   function setView() { cl = Math.cos(lon0); sl = Math.sin(lon0); ct = Math.cos(lat0); st = Math.sin(lat0); }
   function proj(v, alt, out) {          // -> [screen x, screen y, depth (z), outside the disc?]
     var x1 = v[0] * cl - v[2] * sl, z1 = v[0] * sl + v[2] * cl;
     var y2 = v[1] * ct - z1 * st, z2 = v[1] * st + z1 * ct;
-    out[0] = cx + x1 * R * alt; out[1] = cy - y2 * R * alt; out[2] = z2;
+    out[0] = cx + x1 * R * Z * alt; out[1] = cy - y2 * R * Z * alt; out[2] = z2;
     out[3] = (x1 * x1 + y2 * y2) * alt * alt > 1;
     return out;
   }
@@ -103,7 +132,35 @@
     var v = [f1 * arc.a[0] + f2 * arc.b[0], f1 * arc.a[1] + f2 * arc.b[1], f1 * arc.a[2] + f2 * arc.b[2]];
     return proj(v, 1 + (0.025 + 0.09 * Math.min(w, 1.2) / Math.PI) * Math.sin(Math.PI * t), out);   // long arcs stay low, so they slip over the horizon instead of standing up from it
   }
+  function fan(sp) {                     // the direction a spot's pins fan out in: away from the spots near it
+    var ax = 0, ay = 0;
+    for (var q = 0; q < spots.length; q++) {
+      var o = spots[q];
+      if (o === sp || o.p[2] < 0.04 || dot3(o.v, sp.v) < Math.cos(0.45)) continue;
+      var dx = sp.p[0] - o.p[0], dy = sp.p[1] - o.p[1], l = Math.hypot(dx, dy) || 1;
+      ax += dx / l / l; ay += dy / l / l;
+    }
+    sp.dir = ax || ay ? Math.atan2(ay, ax) : -Math.PI / 2;
+  }
+  function ring(m) { return (18 + 3.5 * m) * dpr; }
+  function pinXY(s) {                    // where a series' pin sits on screen, around its spot's anchor
+    var sp = s.spot, m = sp.m.length;
+    if (m === 1) return [sp.p[0], sp.p[1]];
+    var span = Math.min(2 * Math.PI * (m - 1) / m, (m - 1) * 0.78), a = sp.dir - span / 2 + span * s.slot / (m - 1);
+    return [sp.p[0] + ring(m) * Math.cos(a), sp.p[1] + ring(m) * Math.sin(a)];
+  }
+  function strokePin(arc, upto, head) {  // a leg within one spot: a short straight line from pin to pin
+    var a = pinXY(arc.from), b = pinXY(S[arc.to]), fade = Math.min(1, arc.from.spot.p[2] * 5);
+    if (arc.from.spot.p[2] < 0.04) return;
+    var x = a[0] + (b[0] - a[0]) * upto, y = a[1] + (b[1] - a[1]) * upto;
+    for (var pass = 0; pass < 2; pass++) {
+      ctx.lineWidth = (pass ? 1.6 : 5) * dpr;
+      ctx.strokeStyle = pass ? "rgba(" + HOT + "," + (0.95 * fade).toFixed(2) + ")" : "rgba(" + ACC + "," + (0.22 * fade).toFixed(2) + ")";
+      ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(x, y); ctx.stroke();
+    }
+  }
   function strokeArc(arc, upto, head) {
+    if (arc.pin) return strokePin(arc, upto, head);
     var steps = Math.max(12, Math.round(56 * arc.w)), pts = [];
     for (var k = 0; k <= steps; k++) {
       var t = k / steps * upto, p = arcPoint(arc, t, [0, 0, 0, false]);
@@ -135,15 +192,15 @@
   }
 
   function draw(time) {
-    var c = ctx, W = cv.width;
+    var c = ctx, W = cv.width, RZ = R * Z;
     c.clearRect(0, 0, W, W);
     // atmosphere and the body of the globe
-    var g = c.createRadialGradient(cx, cy, R * 0.92, cx, cy, R * 1.22);
+    var g = c.createRadialGradient(cx, cy, RZ * 0.92, cx, cy, RZ * 1.22);
     g.addColorStop(0, "rgba(170,180,200,.20)"); g.addColorStop(.3, "rgba(170,180,200,.06)"); g.addColorStop(1, "rgba(170,180,200,0)");
-    c.fillStyle = g; c.beginPath(); c.arc(cx, cy, R * 1.22, 0, 7); c.fill();
-    g = c.createRadialGradient(cx - R * .38, cy - R * .42, R * .05, cx, cy, R);
+    c.fillStyle = g; c.beginPath(); c.arc(cx, cy, RZ * 1.22, 0, 7); c.fill();
+    g = c.createRadialGradient(cx - RZ * .38, cy - RZ * .42, RZ * .05, cx, cy, RZ);
     g.addColorStop(0, "#1b1c1f"); g.addColorStop(1, "#050506");
-    c.fillStyle = g; c.beginPath(); c.arc(cx, cy, R, 0, 7); c.fill();
+    c.fillStyle = g; c.beginPath(); c.arc(cx, cy, RZ, 0, 7); c.fill();
 
     // land: dots get brighter towards the middle of the disc
     for (var b = 0; b < NB; b++) bins[b].length = 0;
@@ -153,9 +210,11 @@
       z2 = land[i + 1] * st + z1 * ct;
       if (z2 <= 0.02) continue;
       y2 = land[i + 1] * ct - z1 * st;
-      bins[Math.min(NB - 1, (z2 * NB) | 0)].push(cx + x1 * R, cy - y2 * R);
+      var sx = cx + x1 * RZ, sy = cy - y2 * RZ;
+      if (sx < -4 || sy < -4 || sx > W + 4 || sy > W + 4) continue;
+      bins[Math.min(NB - 1, (z2 * NB) | 0)].push(sx, sy);
     }
-    var d = Math.max(1.2, 1.55 * dpr * Math.min(1.25, size / 480)), h = d / 2;
+    var d = Math.max(1.2, 1.55 * dpr * Math.min(1.25, size / 480) * Math.sqrt(Z)), h = d / 2;
     for (b = 0; b < NB; b++) {
       var arr = bins[b];
       if (!arr.length) continue;
@@ -165,7 +224,10 @@
       c.fill();
     }
     c.lineWidth = dpr; c.strokeStyle = "rgba(255,255,255,.07)";
-    c.beginPath(); c.arc(cx, cy, R, 0, 7); c.stroke();
+    c.beginPath(); c.arc(cx, cy, RZ, 0, 7); c.stroke();
+
+    for (i = 0; i < spots.length; i++) proj(spots[i].v, 1, spots[i].p);
+    for (i = 0; i < spots.length; i++) if (spots[i].m.length > 1) fan(spots[i]);
 
     // the journey up to the current series: every leg that ends at it or before it (page index >= cur)
     var follow = wide.matches && cur >= 0;
@@ -179,51 +241,81 @@
       else if (A.to === prev && !forward && moving) strokeArc(A, 1 - grow, true);              // pulling back
     }
 
-    // places
+    // spots and their numbered pins
     hits.length = 0;
-    for (i = 0; i < S.length; i++) {
-      var s = S[i], seen = !follow || i >= cur, on = follow && i === cur;
-      for (var q = 0; q < s.at.length; q++) {
-        var p = proj(s.at[q], 1, tmp);
-        if (p[2] < 0.04) continue;
-        var fade = Math.min(1, p[2] * 5), rad = (2.2 + 0.6 * Math.sqrt(s.n)) * dpr;
-        hits.push([p[0], p[1], s.k]);
+    var fs = Math.round(10.5 * dpr);
+    c.textAlign = "center"; c.textBaseline = "middle";
+    for (i = 0; i < spots.length; i++) {
+      var sp = spots[i], p = sp.p;
+      if (p[2] < 0.04) continue;
+      var fade = Math.min(1, p[2] * 5), many = sp.m.length > 1;
+      if (many) {                         // the anchor, with a thin line out to each pin
+        c.lineWidth = dpr; c.strokeStyle = "rgba(255,255,255," + (0.28 * fade).toFixed(3) + ")";
+        c.beginPath();
+        sp.m.forEach(function (s) { var q = pinXY(s); c.moveTo(p[0], p[1]); c.lineTo(q[0], q[1]); });
+        c.stroke();
+        c.fillStyle = "rgba(" + HOT + "," + fade + ")"; c.beginPath(); c.arc(p[0], p[1], 2.4 * dpr, 0, 7); c.fill();
+      }
+      for (var q = 0; q < sp.m.length; q++) {
+        var s = sp.m[q], xy = pinXY(s), seen = !follow || s.k >= cur, on = follow && s.k === cur;
+        var rad = (on ? 11 : 8.5) * dpr;
+        hits.push([xy[0], xy[1], s.k]);
         if (seen) {
-          g = c.createRadialGradient(p[0], p[1], 0, p[0], p[1], rad * 4);
-          g.addColorStop(0, "rgba(" + ACC + "," + (0.45 * fade).toFixed(3) + ")"); g.addColorStop(1, "rgba(" + ACC + ",0)");
-          c.fillStyle = g; c.beginPath(); c.arc(p[0], p[1], rad * 4, 0, 7); c.fill();
-          c.fillStyle = on ? "rgba(255,236,228," + fade + ")" : "rgba(" + HOT + "," + fade + ")";
-          c.beginPath(); c.arc(p[0], p[1], rad, 0, 7); c.fill();
-        } else {
-          c.lineWidth = dpr; c.strokeStyle = "rgba(255,255,255," + (0.55 * fade).toFixed(3) + ")";
-          c.beginPath(); c.arc(p[0], p[1], rad, 0, 7); c.stroke();
+          g = c.createRadialGradient(xy[0], xy[1], 0, xy[0], xy[1], rad * 2.6);
+          g.addColorStop(0, "rgba(" + ACC + "," + ((on ? 0.6 : 0.35) * fade).toFixed(3) + ")"); g.addColorStop(1, "rgba(" + ACC + ",0)");
+          c.fillStyle = g; c.beginPath(); c.arc(xy[0], xy[1], rad * 2.6, 0, 7); c.fill();
         }
+        c.fillStyle = on ? "rgba(255,236,228," + fade + ")" : seen ? "rgba(" + ACC + "," + fade + ")" : "rgba(12,12,14," + (0.85 * fade).toFixed(3) + ")";
+        c.beginPath(); c.arc(xy[0], xy[1], rad, 0, 7); c.fill();
+        c.lineWidth = dpr; c.strokeStyle = seen ? "rgba(" + HOT + "," + fade + ")" : "rgba(255,255,255," + (0.55 * fade).toFixed(3) + ")";
+        c.stroke();
+        c.font = "700 " + (on ? Math.round(12 * dpr) : fs) + "px 'Open Sans', system-ui, sans-serif";
+        c.fillStyle = on ? "rgba(40,14,10," + fade + ")" : "rgba(255,255,255," + (seen ? fade : 0.8 * fade).toFixed(3) + ")";
+        c.fillText(String(s.no), xy[0], xy[1] + 0.5 * dpr);
         if (on && !reduce) {
           var ph = ((time - changedAt) % 1700) / 1700;
           c.lineWidth = 1.4 * dpr; c.strokeStyle = "rgba(" + HOT + "," + ((1 - ph) * 0.9 * fade).toFixed(3) + ")";
-          c.beginPath(); c.arc(p[0], p[1], rad + ph * 18 * dpr, 0, 7); c.stroke();
+          c.beginPath(); c.arc(xy[0], xy[1], rad + ph * 16 * dpr, 0, 7); c.stroke();
         }
       }
     }
 
     // names of the places facing the reader
-    var here = follow && cur >= 0 && S[cur].at.length ? S[cur].at[0] : null;
+    var here = follow && cur >= 0 && S[cur].at.length ? S[cur].spot.v : null;
     c.font = "600 " + Math.round(12 * dpr) + "px 'Open Sans', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif";
+    c.textAlign = "left";
     c.textBaseline = "middle";
     c.shadowColor = "rgba(0,0,0,.95)"; c.shadowBlur = 6 * dpr;
     for (i = 0; i < labels.length; i++) {
-      var L = labels[i], lp = proj(L.v, 1, tmp2);
+      var L = labels[i], sp = L.spot, lp = proj(sp ? sp.v : L.v, 1, tmp2);
       if (lp[2] < 0.18) continue;
-      var near = here && (here[0] * L.v[0] + here[1] * L.v[1] + here[2] * L.v[2]) > 0.9994;
+      var near = here && dot3(here, L.v) > Math.cos(0.07);
       var al = Math.min(1, (lp[2] - 0.18) * 3) * (near ? 1 : 0.7);
       c.fillStyle = near ? "rgba(255,255,255," + al + ")" : "rgba(214,214,218," + al + ")";
-      var tw = c.measureText(L.t).width, left = L.side === "left";
-      if (left && lp[0] - 11 * dpr - tw < 4 * dpr) left = false;          // keep the name inside the picture
-      else if (!left && lp[0] + 11 * dpr + tw > W - 4 * dpr) left = true;
-      c.textAlign = left ? "right" : "left";
-      c.fillText(L.t, lp[0] + (left ? -11 : 11) * dpr, lp[1]);
+      var tw = c.measureText(L.t).width, x, y;
+      if (sp && sp.m.length > 1) {        // beyond the pins, in the direction they fan out
+        var ux = Math.cos(sp.dir), uy = Math.sin(sp.dir), r0 = ring(sp.m.length) + 14 * dpr;
+        x = lp[0] + ux * r0; y = lp[1] + uy * r0;
+        c.textAlign = ux > 0.35 ? "left" : ux < -0.35 ? "right" : "center";
+        y += uy > 0.35 ? 4 * dpr : uy < -0.35 ? -4 * dpr : 0;
+      } else {
+        var left = L.side === "left", off = 16 * dpr;
+        if (left && lp[0] - off - tw < 4 * dpr) left = false;          // keep the name inside the picture
+        else if (!left && lp[0] + off + tw > W - 4 * dpr) left = true;
+        c.textAlign = left ? "right" : "left"; x = lp[0] + (left ? -off : off); y = lp[1];
+      }
+      var x0 = c.textAlign === "right" ? x - tw : c.textAlign === "center" ? x - tw / 2 : x;   // keep it inside
+      if (x0 < 4 * dpr) x += 4 * dpr - x0; else if (x0 + tw > W - 4 * dpr) x -= x0 + tw - (W - 4 * dpr);
+      c.fillText(L.t, x, y);
     }
     c.shadowBlur = 0;
+    if (Z > 1.01) {
+      c.globalCompositeOperation = "destination-in";
+      g = c.createRadialGradient(cx, cy, W * 0.36, cx, cy, W * 0.5);
+      g.addColorStop(0, "rgba(0,0,0,1)"); g.addColorStop(1, "rgba(0,0,0," + Math.max(0, 1 - (Z - 1) * 4).toFixed(3) + ")");
+      c.fillStyle = g; c.fillRect(0, 0, W, W);
+      c.globalCompositeOperation = "source-over";
+    }
   }
 
   // turning: follow the current place on wide screens, otherwise drift slowly
@@ -234,6 +326,13 @@
     if (wide.matches && cur >= 0) {        // a series with no place (Subway) keeps the last place before it
       for (var k = cur; k < S.length && !target; k++) if (S[k].ll) target = S[k].ll;
     }
+    var zt = 1;
+    if (target && wide.matches && cur >= 0) {
+      var here = null;
+      for (k = cur; k < S.length && !here; k++) if (S[k].spot) here = S[k].spot;
+      for (var q = 0; here && q < spots.length; q++) if (spots[q] !== here && dot3(spots[q].v, here.v) > Math.cos(0.3)) zt = 1.6;
+    }
+    Z += (zt - Z) * (reduce ? 1 : 1 - Math.exp(-dt * 2.4));
     if (target) {
       var tl = target[1] * D2R, tt = Math.max(-0.2, Math.min(0.62, target[0] * D2R * 0.9));
       var dl = Math.atan2(Math.sin(tl - lon0), Math.cos(tl - lon0));
@@ -244,7 +343,7 @@
     }
     setView();
     draw(time);
-    var busy = !reduce || (target && Math.abs(Math.atan2(Math.sin(target[1] * D2R - lon0), Math.cos(target[1] * D2R - lon0))) > 0.001);
+    var busy = !reduce || Math.abs(zt - Z) > 0.002 || (target && Math.abs(Math.atan2(Math.sin(target[1] * D2R - lon0), Math.cos(target[1] * D2R - lon0))) > 0.001);
     if (onScreen && !document.hidden && busy) requestAnimationFrame(frame);
     else running = false;
   }
@@ -258,7 +357,7 @@
 
   // a place on the globe leads to its series
   function nearest(ev) {
-    var r = cv.getBoundingClientRect(), x = (ev.clientX - r.left) * dpr, y = (ev.clientY - r.top) * dpr, best = null, bd = 16 * dpr;
+    var r = cv.getBoundingClientRect(), x = (ev.clientX - r.left) * dpr, y = (ev.clientY - r.top) * dpr, best = null, bd = 12 * dpr;
     for (var k = 0; k < hits.length; k++) {
       var dd = Math.hypot(hits[k][0] - x, hits[k][1] - y);
       if (dd < bd) { bd = dd; best = hits[k][2]; }
