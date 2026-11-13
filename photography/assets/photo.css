@@ -214,30 +214,14 @@ a.ph { cursor: zoom-in; }
 .more .tile { aspect-ratio: auto; flex: 1 1 0; height: clamp(220px, 36vh, 380px); }
 
 /* Timeline (timeline/) ------------------------------------------------------
-   The series in the order they were made. On wide screens the two maps stay beside the list;
-   timeline.js fills their points in up to the series in the middle of the screen. */
+   The series newest first. On wide screens a dotted globe stays beside the list and turns to the series in the
+   middle of the screen (timeline.js); on narrow ones it sits above the list. Without JavaScript there is no globe. */
 
-.tl { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; padding: 18px var(--edge) 0; }
+.tl { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 18px var(--edge) 0; }
 .tl-map { min-width: 0; }
-.map { margin: 0 0 22px; }
-.map-box { position: relative; }
-.map svg { display: block; width: 100%; height: auto; overflow: visible; }
-.map.asia { width: 46.66%; }                       /* the same scale as the American map */
-.map figcaption { margin-top: 8px; font-size: 13px; color: var(--muted); }
-.map-dots { fill: none; stroke: #474747; stroke-width: 2.3; stroke-linecap: round; }
-.map-label { position: absolute; z-index: 1; font-size: 12px; line-height: 1; color: var(--body); white-space: nowrap; pointer-events: none; transform: translate(10px, -50%); }
-.map-label.left { transform: translate(calc(-100% - 10px), -50%); }
-.map-label.left-below { transform: translate(calc(-100% - 10px), 30%); }
-.map-label.above { transform: translate(-50%, calc(-100% - 10px)); }
-
-.pin { cursor: pointer; }
-.pin circle { transform-box: fill-box; transform-origin: center; }
-.pin-dot { fill: #d8d8d8; stroke: #d8d8d8; stroke-width: 1.4; transition: fill .45s, stroke .45s; }
-.pin-ring { fill: none; stroke: var(--accent); stroke-width: 1.2; opacity: 0; }
-.tl-js .pin:not(.seen) .pin-dot { fill: #000; stroke: #7a7a7a; }
-.pin.on .pin-dot { fill: var(--accent); stroke: var(--accent); }
-.pin:hover .pin-dot, .pin:focus-visible .pin-dot { stroke: #fff; }
-.pin:focus-visible { outline: none; }
+.globe { display: none; position: relative; width: min(100%, 560px); aspect-ratio: 1; margin: 0 auto; }
+.tl-js .globe { display: block; }
+.globe canvas { display: block; width: 100%; height: 100%; }
 .tl-now { display: none; margin: 4px 0 0; min-height: 1.5em; font-size: 13px; color: var(--muted); }
 .tl-now b { font: 700 18px/1.3 var(--serif); color: var(--text); margin-right: 12px; }
 
@@ -255,13 +239,11 @@ a.ph { cursor: zoom-in; }
 
 @media (min-width: 1000px) {
   .tl { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(40px, 5vw, 96px); align-items: start; }
-  .tl-map { order: 2; position: sticky; top: 28px; width: min(100%, calc((var(--vh) - 150px) * .97)); justify-self: end; }
+  .tl-map { order: 2; position: sticky; top: 20px; width: min(100%, calc(var(--vh) - 120px)); justify-self: center; }
+  .globe { width: 100%; }
+  .tl-now { text-align: center; }
   .tl-now { display: block; }
 }
-@media (prefers-reduced-motion: no-preference) {
-  .pin.on .pin-ring { animation: pin-pulse 1.9s ease-out infinite; }
-}
-@keyframes pin-pulse { from { opacity: .95; transform: scale(1); } to { opacity: 0; transform: scale(3.4); } }
 
 /* Upright screens (tablets, phones): the title block sits above the first row
    instead of beside it, so the row can use the full width. */
@@ -298,7 +280,6 @@ a.ph { cursor: zoom-in; }
   .stop { grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 20px 0 24px; }
   .stop .row { flex-direction: row; }
   .stop .row .ph { flex: var(--ar) 1 0; width: auto; }
-  .map.asia { width: 62%; }
   .top nav .opt2 { display: none; }
   .about { grid-template-columns: minmax(0, 1fr); }
   .more .tile { height: 46vw; flex: none; }

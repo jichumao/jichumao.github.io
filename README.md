@@ -15,7 +15,8 @@ index.php/<old-slug>/         redirects from the old WordPress URLs
 assets/css/site.css           all styles
 assets/js/works.js            category filter on the compact grid ("More work")
 assets/js/previews.js         plays a large card's preview while the card is in the middle of the screen, or hovered
-assets/js/home.js             the home page's motion: the opening's frame sequence, the scroll fade, covers converging into view
+assets/js/cornell.js          the home page's opening: a Cornell box path traced live (WebGL2)
+assets/js/home.js             the home page's scroll fade and covers converging into view
 assets/js/clips.js            plays the short looping clips, and the preview on a project page's cover, while they are on screen
 assets/js/lightbox.js         full-size image viewer for galleries
 assets/img/<project>/         images (WebP): name.webp is full size, name-thumb.webp is the thumbnail
@@ -33,10 +34,10 @@ photography/index.html        photography: opening slideshow, subject links, one
 photography/<series>/         one page per series
 photography/<subject>/        one page per subject (landscape, coast, night ...), plus all/ with every photograph
 photography/zh/               the same pages in Chinese (same photographs, stylesheet and scripts)
-photography/assets/           photo.css (all styles), viewer.js (full-screen viewer), hero.js (opening slideshow), timeline.js (the timeline map); written by hand
+photography/assets/           photo.css (all styles), viewer.js (full-screen viewer), hero.js (opening slideshow), timeline.js (the timeline and its globe); written by hand
 photography/img/              NNN-2400.webp, NNN-1400.webp, NNN-700.webp for each photograph (long side in pixels)
 tools/photography.py          generator for the photography pages: series, order, rows, captions, timeline
-tools/footprint.py, footprint.json   the two dotted maps on the timeline (drawn once from Natural Earth)
+tools/footprint.py, footprint.json   which dots of the timeline's globe are land (made once from Natural Earth)
 tools/photography_zh.py       the Chinese text of the photography section
 tools/photos.py               prepares new photographs (resize, sRGB, strip metadata)
 tools/photos.json             pixel sizes, placeholder colour and camera settings of each photograph
@@ -83,9 +84,11 @@ All links are relative, so the site works both at a domain root and under a sub-
 
 ## Home page opening
 
-The top of the home page shows four frames of the Virtual Subway scene (a subway car built in Unreal Engine and photographed off a 4K monitor), one after another. Each is held for about seven seconds while it moves slowly, then the next fades in over it; the sequence waits while the opening is off screen or the tab is hidden, and frames after the first are only fetched once the page has loaded. The frames are listed in `HERO_FRAMES` in `tools/build.py` (with their descriptions) and are stored as `assets/img/home/subway-<frame>-<width>.webp` at 1280, 1920, 2560 and 3840 px, plus a 3:4 crop for phones (`-tall-800`, `-tall-1200`). They were made by hand from the full-size photographs (`G:\Edited Photos\精选\finalproject`, about 6,300 px wide) without their metadata. How each frame moves is set in `site.css` (`.f-interior` and so on: start and end scale and offset); the film grain over them is `assets/img/home/grain.png`.
+The top of the home page is a Cornell box path traced live in the visitor's browser by `assets/js/cornell.js` (WebGL2, no libraries): one more sample per pixel each frame, averaged in, so the picture starts as noise and converges, stopping at 1,024 samples. The scene (the classic red and green walls, a warm ceiling light, a tall white block, a glass sphere and a small gold sphere, open towards the viewer on a polished black floor) and the lighting (light sampling for matte surfaces, sampled reflection and refraction with caustics, a thin lens) are described at the top of that file; the scene's sizes and materials are the constants at the top of its shader. Dragging sideways turns the box. It traces at most about 1.5 million pixels and fewer if frames come slowly, and stops while off screen or in a hidden tab. On wide screens the box stands right of centre; on tall ones, near the top.
 
-When the page scrolls, the opening falls behind it (darker, slower, the name fading), and each work cover starts as a noisy, unconverged render that settles into the picture as it comes into view (`assets/img/home/speckle.png`). All of this is in `assets/js/home.js`. Visitors who ask for reduced motion get the first frame, still, and no scroll effects. The words on the opening are the name, one line under it (`hero-lead`) and the caption, all in `build_home()`.
+Where it cannot run (no WebGL2 or float render targets, "reduce motion", no JavaScript) the page shows `assets/img/home/cornell-1600.webp` / `cornell-1000.webp` (wide) and `cornell-tall-780.webp` (tall) instead. They were rendered by the same code at 360 samples per pixel in headless Chrome (`Cornell.make(canvas, {preserve: true})`, then `size(w, h)`, then `step()` 360 times and `canvas.toDataURL()`), so they match the live picture; render them again after changing the scene. The home page's sharing picture is cut from the wide one.
+
+When the page scrolls, the opening falls behind it (darker, slower, the name fading), and each work cover starts as a noisy, unconverged render that settles into the picture as it comes into view (`assets/img/home/speckle.png`); both are in `assets/js/home.js`. Visitors who ask for reduced motion get the still picture and no scroll effects. The words on the opening are the name, one line under it (`hero-lead`) and the caption, all in `build_home()`.
 
 To use another picture: export it at the same five sizes under the same names (or change the names in `build_home()`), keep the important part right of centre because the text covers the left, then run `python3 tools/og.py .` so the sharing picture follows.
 
@@ -166,7 +169,7 @@ A project made of photographs that are already in the photography section (Virtu
 - `CHAPTERS`: the index page. Each chapter has a title, one sentence, the series in it, the shape of its tiles (`shape`, for example `"3 / 2"`) and how many sit in a row (`cols`: 2, 3 or 4). Every series belongs to exactly one chapter, and the order here is the order of the whole section. Covers are cropped to the chapter's shape around the series' `focus`.
 - `SLIDES`: the opening slideshow. Each entry is a photograph for wide screens, one for upright phones, and the series it links to. They all come from the first chapter, so the page opens in one mood.
 - `SUBJECTS`: the subject pages. A photograph can sit under several subjects and must sit under at least one; the rows on these pages are packed automatically.
-- `TIMELINE`: the timeline page (`photography/timeline/`, 足迹 in Chinese): for each series the day it was made (orders the page; only the month is shown), where it goes on the map (latitude, longitude; none for Subway) and, if the series has no "where", what to show instead. `MAP_LABELS` are the names written on the maps. The two dotted maps themselves come from `tools/footprint.json`, drawn once by `tools/footprint.py` from Natural Earth's public-domain land outline (instructions at the top of that file); redraw them only to change their edges. On wide screens the maps stay beside the list and `photography/assets/timeline.js` fills their points in up to the series in the middle of the screen.
+- `TIMELINE`: the timeline page (`photography/timeline/`, 足迹 in Chinese), which lists the series newest first: for each series the day it was made (orders the page; only the month is shown), where it was made (latitude, longitude; none for Subway) and, if the series has no "where", what to show instead. `MAP_LABELS` are the names written on the globe beside it. On wide screens the globe stays beside the list and `photography/assets/timeline.js` turns it to the series in the middle of the screen, lighting the places passed so far and drawing an arc from each to the next; on narrow screens it sits above the list and turns slowly. Its dots are an even spread of points over the sphere; which of them are land is in `tools/footprint.json`, made once by `tools/footprint.py` from Natural Earth's public-domain outline (instructions at the top of that file). The page's sharing picture is drawn from the same data by `tools/og.py`.
 - `PLACE`: where a single photograph was taken, when that is more exact than its series' `where`. Shown in the viewer's caption.
 - `ALT`: one plain sentence per photograph. The build stops if one is missing.
 - `ABOUT`: the text at the foot of the index page.

@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "16"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "17"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -927,34 +927,11 @@ def links_html(proj):
 
 # ---------------------------------------------------------------- pages
 
-# The opening of the home page: frames of the Virtual Subway scene, one after another, each moving slowly
-# (assets/js/home.js and site.css). Made from the full-size photographs by hand; see the README.
-HERO_FRAMES = [
-    ("interior", "Inside an empty subway car: worn seats, a transit map and fluorescent lights running down the aisle"),
-    ("floor", "The aisle seen from the floor, every fleck of the terrazzo sharp, the lights fading into the far end"),
-    ("door", "The end of the car: a door between two benches, graffiti on the panels below a framed transit map"),
-    ("8805", "The outside of car 8805: a weathered steel side, the number plate and a flag beside a lit window"),
-]
-HERO_SIZE = {"interior": (3840, 2190), "floor": (3840, 2158), "door": (3840, 2178), "8805": (3840, 2090)}
-
-def hero_frames(root):
-    out = []
-    for i, (name, alt) in enumerate(HERO_FRAMES):
-        base = f"{root}assets/img/home/subway-{name}"
-        wide = ", ".join(f"{base}-{w}.webp {w}w" for w in (1280, 1920, 2560, 3840))
-        tall = f"{base}-tall-800.webp 800w, {base}-tall-1200.webp 1200w"
-        w, h = HERO_SIZE[name]
-        if i == 0:
-            out.append(f"""      <picture class="frame on f-{name}">
-        <source media="(max-width: 700px)" srcset="{tall}" sizes="100vw" width="1200" height="1600">
-        <img src="{base}-1920.webp" srcset="{wide}" sizes="100vw" width="{w}" height="{h}" alt="{E(alt)}" fetchpriority="high">
-      </picture>""")
-        else:
-            out.append(f"""      <picture class="frame f-{name}" aria-hidden="true">
-        <source media="(max-width: 700px)" data-srcset="{tall}" sizes="100vw" width="1200" height="1600">
-        <img data-srcset="{wide}" sizes="100vw" width="{w}" height="{h}" alt="" decoding="async">
-      </picture>""")
-    return "\n".join(out)
+# The opening of the home page: a Cornell box path traced live in the browser (assets/js/cornell.js).
+# Where that cannot run (no WebGL2, "reduce motion", no JavaScript) the still picture is shown instead; it was
+# rendered by the same code, see the README.
+HERO_ALT = ("A Cornell box: red and green walls, a glass sphere, a small gold sphere and a tall white block "
+            "under a warm ceiling light, open towards the viewer on a polished black floor")
 
 def build_home():
     root = ""
@@ -994,13 +971,15 @@ def build_home():
     filters = f'<button type="button" data-cat="all" aria-pressed="true">All <span>{len(rest)}</span></button>' + "".join(
         f'<button type="button" data-cat="{c}" aria-pressed="false">{E(label)} <span>{counts[c]}</span></button>' for c, label in CATEGORIES if counts[c])
     about = "\n".join(f"      <p>{t}</p>" for t in HOME_ABOUT)
-    body = f"""<section class="hero">
+    body = f"""<section class="hero hero-pt">
   <figure class="hero-media">
-    <div class="hero-frames">
-{hero_frames(root)}
-    </div>
-    <div class="hero-grain" aria-hidden="true"></div>
-    <figcaption>Not a real subway. A scene I built in Unreal Engine, photographed off a 4K screen. From <a href="works/virtual-subway/">Virtual Subway</a>.</figcaption>
+    <canvas class="hero-live" aria-hidden="true"></canvas>
+    <picture class="hero-still" hidden>
+      <source media="(max-aspect-ratio: 1/1)" data-srcset="assets/img/home/cornell-tall-780.webp 780w" sizes="100vw" width="780" height="1200">
+      <img data-srcset="assets/img/home/cornell-1000.webp 1000w, assets/img/home/cornell-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="{E(HERO_ALT)}">
+    </picture>
+    <noscript><img class="hero-still" src="assets/img/home/cornell-1600.webp" width="1600" height="900" alt="{E(HERO_ALT)}"></noscript>
+    <figcaption><span class="cap-live">A Cornell box, path traced live in your browser. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">A Cornell box, path traced by this page’s own renderer.</span></figcaption>
   </figure>
   <div class="wrap hero-text">
     <h1>Jichu Mao</h1>
@@ -1038,7 +1017,7 @@ def build_home():
 </section>"""
     write("index.html", page(root=root, path="", title="Jichu Mao – Graphics Performance Engineer | Jichu · Art",
                              desc="Portfolio of Jichu Mao, Graphics Performance Engineer at TikTok: real-time rendering, GPU path tracing, shaders, graphics tools, games and animation.",
-                             body=body, og_image="assets/img/home/og.jpg", current="", scripts=("works.js", "previews.js", "home.js"), person=True, cls="home"))
+                             body=body, og_image="assets/img/home/og.jpg", current="", scripts=("works.js", "previews.js", "cornell.js", "home.js"), person=True, cls="home"))
 
 def build_projects():
     root = "../../"

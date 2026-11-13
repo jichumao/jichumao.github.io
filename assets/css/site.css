@@ -146,32 +146,21 @@ img.icon.brand { width: 18px; height: 18px; object-fit: contain; }   /* a brand'
   .site-nav a { font-size: 10px; letter-spacing: .06em; }
 }
 
-/* Home: opening. Frames of the Virtual Subway scene take turns across the whole width (assets/js/home.js);
-   the name and one line sit on the dark foot. */
+/* Home: opening. A Cornell box, path traced live across the whole width (assets/js/cornell.js); on wide screens
+   it stands right of centre, and the name and one line sit on the dark floor to its left. */
 
 .hero { --foot: clamp(30px, 5vh, 54px); position: relative; display: flex; align-items: flex-end; min-height: clamp(360px, 88vh, 1000px); overflow: hidden; }
 .hero-media { position: absolute; inset: 0; margin: 0; overflow: hidden; }
-.hero-frames { position: absolute; inset: 0; background: #000; }
-.frame { position: absolute; inset: 0; display: block; opacity: 0; transition: opacity 1.9s ease; }
-.frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.frame.on { opacity: 1; z-index: 2; }
-.frame.out { opacity: 1; z-index: 1; }
-/* how each frame moves while it is shown: from (x0, y0, s0) to (x1, y1, s1) */
-.f-interior { --s0: 1.02; --s1: 1.13; transform-origin: 48% 44%; }
-.f-floor    { --s0: 1.12; --s1: 1.02; transform-origin: 50% 38%; }
-.f-door     { --s0: 1.07; --s1: 1.07; --x0: 1.6%; --x1: -1.6%; }
-.f-8805     { --s0: 1.08; --s1: 1.08; --x0: -2%; --x1: 2%; }
-.frame img { transform-origin: inherit; }
-.hero-grain {
-  position: absolute; inset: -40%; z-index: 1; pointer-events: none;
-  background: url(../img/home/grain.png) 0 0 / 160px; opacity: .2; mix-blend-mode: overlay;
-}
-.hero-media::after {
-  content: ""; position: absolute; inset: -1px; pointer-events: none;
-  background:
-    radial-gradient(120% 70% at 0% 100%, rgba(0, 0, 0, .62) 0%, rgba(0, 0, 0, 0) 60%),
-    linear-gradient(180deg, rgba(0, 0, 0, .62) 0%, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, .74) 80%, #000 100%);
-}
+.hero-live, .hero-still, .hero-still img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.hero-still[hidden] { display: none; }
+.hero-live { opacity: 0; touch-action: pan-y; cursor: grab; }   /* the renderer fades its first frames in itself */
+.hero-media.live .hero-live { opacity: 1; }
+.hero-media.dragging .hero-live { cursor: grabbing; }
+.cap-live { display: none; }
+.hero-media.live .cap-live { display: inline; }
+.hero-media.live .cap-still { display: none; }
+.spp { font-variant-numeric: tabular-nums; color: #fff; }
+@media (hover: none) { .hint { display: none; } }
 .hero-media figcaption {
   position: absolute; right: max(var(--gutter), (100% - var(--wrap)) / 2); bottom: var(--foot); z-index: 2; max-width: min(40ch, 40vw);
   font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, .82); text-align: right; text-shadow: 0 1px 8px rgba(0, 0, 0, .9);
@@ -191,28 +180,19 @@ img.icon.brand { width: 18px; height: 18px; object-fit: contain; }   /* a brand'
 .home .site-nav a { text-shadow: 0 1px 10px rgba(0, 0, 0, .85); }
 
 @media (prefers-reduced-motion: no-preference) {
-  .frame.on img, .frame.out img { animation: frame-move 9.2s linear both; }
-  .hero-grain { animation: grain .9s steps(6) infinite; }
   .hero-text > * { animation: hero-rise .8s cubic-bezier(.2, .7, .2, 1) both; }
   .hero-text > .hero-lead { animation-delay: .1s; }
   /* scrolling: the opening falls behind the page (home.js sets --p) */
-  .hero-frames { transform: translate3d(0, calc(var(--p, 0) * 24%), 0); opacity: calc(1 - var(--p, 0) * .65); }
+  .hero-live, .hero-still { transform: translate3d(0, calc(var(--p, 0) * 24%), 0); }
+  .hero-media.live .hero-live { opacity: calc(1 - var(--p, 0) * .65); }
   .hero-text { transform: translate3d(0, calc(var(--p, 0) * -80px), 0); opacity: calc(1 - var(--p, 0) * 1.8); }
   .hero-media figcaption { opacity: calc(1 - var(--p, 0) * 2.4); }
-}
-@keyframes frame-move {
-  from { transform: translate(var(--x0, 0), var(--y0, 0)) scale(var(--s0, 1)); }
-  to { transform: translate(var(--x1, 0), var(--y1, 0)) scale(var(--s1, 1.08)); }
-}
-@keyframes grain {
-  0% { transform: translate(0, 0); } 17% { transform: translate(-6%, 4%); } 33% { transform: translate(5%, -7%); }
-  50% { transform: translate(-3%, 9%); } 67% { transform: translate(8%, 2%); } 83% { transform: translate(-8%, -4%); } 100% { transform: translate(0, 0); }
 }
 @keyframes hero-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 
 @media (max-width: 700px) {
-  /* Upright crop of the same frame; the caption goes under the name. */
-  .hero { min-height: clamp(420px, 66svh, 640px); }
+  /* The box stands in the upper part of the picture; the name and the caption sit on the floor below it. */
+  .hero { min-height: clamp(520px, 80svh, 740px); }
   .hero-media::after { background: linear-gradient(180deg, rgba(0, 0, 0, .6) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, .8) 74%, #000 100%); }
   .hero-media figcaption { left: var(--gutter); right: var(--gutter); bottom: 18px; max-width: none; text-align: left; font-size: 12px; }
   .hero-text { padding-bottom: 88px; }   /* room for three lines of caption */
