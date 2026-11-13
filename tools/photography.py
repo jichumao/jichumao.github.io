@@ -68,7 +68,7 @@ def comma():
 SERIES = [
     dict(slug="above-the-fog", title="Above the Fog", where="Ridge Trailhead, California", when="July 2025",
          note="An evening on a ridge trail while the marine layer filled the valleys below.",
-         rows=[[4], [7, 3], [1, 12], [13, 16]], cover=16),
+         rows=[[4], [7, 3], [1, 12], [13, 16]], cover=12),
     dict(slug="rooftop", title="Rooftop", where="Chongqing", when="June 2026",
          note="LED glasses and two light sticks, high above the city at night.",
          rows=[[18, 20, 25]], cover=20, focus="50% 52%"),
@@ -92,7 +92,7 @@ SERIES = [
          rows=[[43, 38], [46, 49]], cover=38, focus="50% 30%"),
     dict(slug="pacific", title="Pacific", where="Ocean Beach and Sutro Baths, San Francisco", when="July 2025",
          note="The western edge of the city on a clear afternoon.",
-         rows=[[97, 95], [96, 101], [91], [100, 104]], cover=104, focus="50% 42%"),
+         rows=[[97, 95], [96, 101], [91], [100, 104]], cover=101, focus="45% 62%"),
     dict(slug="dry-hills", title="Dry Hills", where="Hills east of San Jose, California", when="July 2025",
          note="Sunset from the grazing land above the valley.",
          rows=[[71], [73, 74], [77, 79], [68, 80]], cover=79),
@@ -115,25 +115,25 @@ SERIES = [
 
 # The index page, in chapters. Every series appears once. The order here is also the order of the whole section:
 # the "All" page, the subject pages and the "More series" links at the foot of a series follow it.
-#   note   one sentence under the chapter's title
-#   shape  the proportions of this chapter's tiles (CSS aspect-ratio); a cover is cropped to it around the series' `focus`
-#   cols   tiles in a row on a wide screen: 2, 3 or 4
+#   note     one sentence under the chapter's title
+#   per_row  covers in a row on a wide screen. Covers are shown whole, in their own proportions: the covers of a row
+#            share one height and divide the width between them, as the photographs on a series page do.
 CHAPTERS = [
     dict(title="Landscape", note="California at the end of the day: fog over the ridges, salt ponds, dry hills and the Pacific.",
-         series=["above-the-fog", "salt", "dry-hills", "pacific"], shape="3 / 2", cols=2),
+         series=["above-the-fog", "salt", "dry-hills", "pacific"], per_row=2),
     dict(title="Cities after dark", note="Macau, Zhuhai and Guangzhou in January, and San Francisco on the Fourth of July.",
-         series=["macau", "zhuhai", "guangzhou", "fourth-of-july"], shape="3 / 2", cols=2),
+         series=["macau", "zhuhai", "guangzhou", "fourth-of-july"], per_row=2),
     dict(title="Portraits", note="Three sessions: a café, a park at dusk, a rooftop at night.",
-         series=["rose", "evening-walk", "rooftop"], shape="4 / 5", cols=3),
+         series=["rose", "evening-walk", "rooftop"], per_row=3),
     dict(title="Other work", note="Shorter sets and experiments.",
-         series=["off-season", "pennsylvania", "tea-hills", "subway"], shape="3 / 2", cols=4),
+         series=["off-season", "pennsylvania", "tea-hills", "subway"], per_row=4),
 ]
 
 # Opening slideshow of the index page: (photograph for wide screens, photograph for upright phones, series it links to).
 # The strongest pictures of the whole section, chosen at the slideshow's own full-screen crop; one per series,
 # alternating warm and cool, day and night. The upright partner comes from the same series.
 SLIDES = [
-    (16, 13, "above-the-fog"),
+    (12, 1, "above-the-fog"),
     (240, 256, "zhuhai"),
     (58, 57, "salt"),
     (221, 308, "guangzhou"),
@@ -435,14 +435,17 @@ def tile(s, home, img, total, *, fixed=False):
             f'{img_tag(n, img, sizes, alt="")}{text}</a>')
 
 
-def card(s, home, img, cols):
-    """A series on the index page: its cover cropped to the chapter's shape, with the title and facts under it."""
+def card(s, home, img, total, pair=None):
+    """A series on the index page: its cover, whole and in its own proportions, with the title and facts under it.
+    `total` is the sum of the proportions of the covers in its row, which share one height; `pair`, for a row of
+    four, the sum for the two it is paired with on a narrower screen."""
     n = s["cover"]
     meta = meta_line(s)
-    pos = f';--pos:{s["focus"]}' if s.get("focus") else ""
-    sizes = f"(max-width: 760px) {100 if cols < 4 else 50}vw, {round(100 / cols)}vw"
-    return (f'<a class="card" href="{home}{s["slug"]}/">'
-            f'<span class="card-img" style="--c:{ph(n)["color"]}{pos}">{img_tag(n, img, sizes, alt="")}</span>'
+    share = lambda t: max(12, round(100 * ar(n) / t))
+    narrow = f"(max-width: 1000px) {share(pair)}vw" if pair else "(max-width: 760px) and (orientation: portrait) 100vw"
+    sizes = f"{narrow}, {share(total)}vw"
+    return (f'<a class="card" href="{home}{s["slug"]}/" style="--ar:{ar(n):.4f}">'
+            f'<span class="card-img" style="--c:{ph(n)["color"]}">{img_tag(n, img, sizes, alt="")}</span>'
             f'<span class="card-title">{E(T(s["title"]))}</span>'
             f'<span class="card-meta">{E(meta)}</span><span class="card-count">{count(len(ids(s)))}</span></a>')
 
@@ -554,10 +557,21 @@ def build_home(v):
 """
     chapters = []
     for k, c in enumerate(CHAPTERS):
-        cards = "".join(card(BY_SLUG[x], "", img, c["cols"]) for x in c["series"])
+        rows = []
+        for i in range(0, len(c["series"]), c["per_row"]):
+            row = [BY_SLUG[x] for x in c["series"][i:i + c["per_row"]]]
+            total = sum(ar(x["cover"]) for x in row)
+            if c["per_row"] == 4:     # two pairs: one row of four on a wide screen, two rows of two on a narrower one
+                pairs = [row[:2], row[2:]]
+                inner = "".join(f'<div class="card-pair" style="--sum:{sum(ar(x["cover"]) for x in pr):.4f}">'
+                                + "".join(card(x, "", img, total, sum(ar(y["cover"]) for y in pr)) for x in pr) + "</div>"
+                                for pr in pairs if pr)
+            else:
+                inner = "".join(card(x, "", img, total) for x in row)
+            rows.append(f'<div class="card-row r{c["per_row"]}" style="--sum:{total:.4f};--n:{len(row)}">{inner}</div>')
         chapters.append(f"""<section class="chapter"{' id="series"' if k == 0 else ""}>
   <header class="chapter-head"><h2>{E(T(c["title"]))}</h2><p>{E(T(c["note"]))}</p></header>
-  <div class="cards c{c["cols"]}" style="--shape:{c["shape"]}">{cards}</div>
+  <div class="cards">{"".join(rows)}</div>
 </section>""")
     about = "".join(f"<p>{E(T(x))}</p>" for x in ABOUT)
     body = hero + chr(10).join(chapters) + f"""
