@@ -4,7 +4,7 @@ Run through tools/build.py, or on its own from the repo root:
     python3 tools/photography.py .
 
 Everything editable is in this file: SERIES (titles, rows), CHAPTERS (the index page and the order of everything),
-SLIDES, SUBJECTS, TIMELINE and MAP_LABELS (the timeline page and its map), PLACE and ALT (one description per photograph). tools/photos.json holds what was measured
+SLIDES, SUBJECTS, TIMELINE and MAP_LABELS (the timeline page and its globe), PLACE and ALT (one description per photograph). tools/photos.json holds what was measured
 from the files (pixel sizes, placeholder colour, camera settings).
 The stylesheet and the viewer are hand-written: photography/assets/.
 
@@ -68,22 +68,22 @@ def comma():
 SERIES = [
     dict(slug="above-the-fog", title="Above the Fog", where="Ridge Trailhead, California", when="July 2025",
          note="An evening on a ridge trail while the marine layer filled the valleys below.",
-         rows=[[4], [7, 3], [1, 12], [13, 16]], cover=12),
+         rows=[[4], [7, 3], [1, 12], [13, 16]], cover=16),
     dict(slug="rooftop", title="Rooftop", where="Chongqing", when="June 2026",
          note="LED glasses and two light sticks, high above the city at night.",
          rows=[[18, 20, 25]], cover=20, focus="50% 52%"),
     dict(slug="macau", title="Macau", where="Macau Peninsula and Cotai", when="January 2026",
          note="An afternoon in the old town, then the casinos after dark.",
-         rows=[[242, 241], [246, 247, 249, 255], [251, 252]], cover=252),
+         rows=[[242, 241], [246, 247, 249, 255], [251, 252]], cover=246, focus="50% 40%"),
     dict(slug="salt", title="Salt", where="Alviso Marina County Park, San Jose", when="June 2025",
          note="Salt ponds at the southern end of San Francisco Bay.",
-         rows=[[58], [57, 54], [52, 64, 63], [61, 62]], cover=62, focus="50% 58%"),
+         rows=[[58], [57, 54], [52, 64, 63], [61, 62]], cover=58),
     dict(slug="rose", title="Rose", where="Quzhou, Zhejiang", when="May 2025",
          note="A portrait session in a café.",
          rows=[[127, 136], [129, 132, 138], [142, 146]], cover=132, focus="50% 30%"),
     dict(slug="fourth-of-july", title="Fourth of July", where="Yerba Buena Island, San Francisco", when="July 2025",
          note="From dusk to the fireworks, seen from the middle of the bay.",
-         rows=[[114, 118], [117], [116], [120, 122]], cover=117),
+         rows=[[114, 118], [117], [116], [120, 122]], cover=120, focus="50% 38%"),
     dict(slug="guangzhou", title="Guangzhou", where="", when="January 2026",
          note="Museum halls by day, the Pearl River after dark.",
          rows=[[214, 216], [213, 215], [308, 220, 221]], cover=221, focus="50% 45%"),
@@ -95,22 +95,22 @@ SERIES = [
          rows=[[97, 95], [96, 101], [91], [100, 104]], cover=104, focus="50% 42%"),
     dict(slug="dry-hills", title="Dry Hills", where="Hills east of San Jose, California", when="July 2025",
          note="Sunset from the grazing land above the valley.",
-         rows=[[71], [73, 74], [77, 79], [68, 80]], cover=80),
+         rows=[[71], [73, 74], [77, 79], [68, 80]], cover=79),
     dict(slug="subway", title="Subway", where="", when="April 2025",
          note="A subway car I built in Unreal Engine, photographed off a 4K monitor with a Canon 5D Mark IV, a 50 mm lens and a polarising filter, then finished to take the digital edge off.",
          rows=[[398], [399, 397], [391], [393, 396], [394, 392], [395, 400]], cover=398, link=("How it was made", "works/virtual-subway/")),
     dict(slug="zhuhai", title="Zhuhai", where="", when="January 2026",
          note="The opera house on the water, from late afternoon into the night.",
-         rows=[[228, 226, 232], [240, 256]], cover=232),
+         rows=[[228, 226, 232], [240, 256]], cover=240),
     dict(slug="tea-hills", title="Tea Hills", where="Wuyi, Jinhua, Zhejiang", when="December 2025",
          note="A tea estate built around a château-style hotel.",
-         rows=[[200, 197, 202], [206, 205]], cover=200, focus="50% 40%"),
+         rows=[[200, 197, 202], [206, 205]], cover=206),
     dict(slug="off-season", title="Off-season", where="Atlantic City and Cape May, New Jersey", when="March 2025",
          note="The Jersey Shore before the summer crowds.",
-         rows=[[261], [390, 363], [267, 368], [373, 374], [284, 289], [288]], cover=288),
+         rows=[[261], [390, 363], [267, 368], [373, 374], [284, 289], [288]], cover=374),
     dict(slug="pennsylvania", title="Pennsylvania", where="Near Allentown", when="October 2025",
          note="A gorge overlook, an orchard and a small town in autumn.",
-         rows=[[187], [181, 174], [182, 193], [188, 194, 189]], cover=187),
+         rows=[[187], [181, 174], [182, 193], [188, 194, 189]], cover=174),
 ]
 
 # The index page, in chapters. Every series appears once. The order here is also the order of the whole section:
@@ -132,8 +132,8 @@ CHAPTERS = [
 # Opening slideshow of the index page: (photograph for wide screens, photograph for upright phones, series it links to).
 # All from the first chapter, so the page opens in one mood.
 SLIDES = [
-    (16, 13, "above-the-fog"),
-    (58, 57, "salt"),
+    (12, 13, "above-the-fog"),
+    (54, 57, "salt"),
     (71, 77, "dry-hills"),
 ]
 
@@ -178,18 +178,18 @@ TIMELINE = {
     "macau":          dict(date="2026-01-05", at=[(22.19, 113.54)]),
     "rooftop":        dict(date="2026-06-06", at=[(29.56, 106.55)]),
 }
-# Names on the maps, one per group of nearby places: (map, name, latitude, longitude, side).
-# side: where the name sits relative to the point: "right", "left" or "above".
+# Names written on the globe, one per group of nearby places: (name, latitude, longitude, side).
+# side: "right" or "left" of the point.
 MAP_LABELS = [
-    ("america", "Bay Area", 37.55, -122.1, "right"),
-    ("america", "Pennsylvania", 40.75, -75.6, "left"),
-    ("america", "Jersey Shore", 39.15, -74.65, "left-below"),
-    ("asia", "Chongqing", 29.56, 106.55, "right"),
-    ("asia", "Zhejiang", 28.93, 119.3, "above"),
-    ("asia", "Guangzhou, Zhuhai, Macau", 22.6, 113.45, "right"),
+    ("Bay Area", 37.55, -122.1, "left"),
+    ("Pennsylvania", 40.75, -75.6, "left"),
+    ("Jersey Shore", 39.15, -74.65, "right"),
+    ("Chongqing", 29.56, 106.55, "left"),
+    ("Zhejiang", 28.93, 119.3, "right"),
+    ("Guangzhou, Zhuhai, Macau", 22.6, 113.45, "left"),
 ]
-# The two maps, drawn by tools/footprint.py; their edges are in that file.
-MAPS = json.load(open(os.path.join(HERE, "footprint.json")))
+# Which dots of the globe are land; made by tools/footprint.py.
+LAND = json.load(open(os.path.join(HERE, "footprint.json")))
 
 # Where a single photograph was taken, when that is more exact than its series' "where".
 PLACE = {
@@ -633,54 +633,25 @@ def month_name(m):
     return MONTHS[m - 1] if LANG == "en" else f"{m} 月"
 
 
-def spot(key, lat, lon):
-    """A place on one of the two maps, in the map's own units (see tools/footprint.py)."""
-    west, east, south, north = MAPS[key]["bounds"]
-    return (lon - west) * MAPS["squeeze"] * MAPS["unit"], (north - lat) * MAPS["unit"]
-
-
 def build_timeline(v):
-    """Every series in the order it was made, beside a map that fills in as the reader moves down the years."""
+    """Every series, newest first, beside a globe that turns to each place as the reader moves down the years."""
     rel = "timeline/"
     img, home = base(rel) + "img/", "../"
-    series = sorted(SERIES, key=lambda s: TIMELINE[s["slug"]]["date"])
-    first, last = series[0], series[-1]
-    span_en = f'{when(first)} to {when(last)}'
-    span = span_en if LANG == "en" else f"{when(first)}到 {when(last)}"
+    series = sorted(SERIES, key=lambda s: TIMELINE[s["slug"]]["date"], reverse=True)
+    newest, oldest = series[0], series[-1]
+    span = f"{when(oldest)} to {when(newest)}" if LANG == "en" else f"{when(oldest)}到 {when(newest)}"
 
-    # maps
-    maps = []
-    for key, name in (("america", "United States"), ("asia", "China")):
-        m = MAPS[key]
-        pins, labels = [], []
-        for s in series:
-            n = len(ids(s))
-            for lat, lon in TIMELINE[s["slug"]]["at"]:
-                west, east, south, north = m["bounds"]
-                if not (west <= lon <= east and south <= lat <= north):
-                    continue
-                x, y = spot(key, lat, lon)
-                r = 2.6 + 0.9 * n ** 0.5
-                pins.append(f'<a class="pin" href="#t-{s["slug"]}" data-s="{s["slug"]}" aria-label="{E(T(s["title"]))}{comma()}{E(when(s))}">'
-                            f'<circle class="pin-ring" cx="{x:.1f}" cy="{y:.1f}" r="{r:.1f}"/><circle class="pin-dot" cx="{x:.1f}" cy="{y:.1f}" r="{r:.1f}"/></a>')
-        for k, label, lat, lon, side in MAP_LABELS:
-            if k != key:
-                continue
-            x, y = spot(key, lat, lon)
-            labels.append(f'<span class="map-label {side}" style="left:{100 * x / m["w"]:.2f}%;top:{100 * y / m["h"]:.2f}%">{E(T(label))}</span>')
-        maps.append(f"""<figure class="map {key}">
-      <div class="map-box">
-        <svg viewBox="0 0 {m["w"]} {m["h"]}" role="group" aria-label="{E(T(name))}">
-          <path class="map-dots" d="{m["dots"]}"/>
-          {"".join(pins)}
-        </svg>
-        {"".join(labels)}
-      </div>
-      <figcaption>{E(T(name))}</figcaption>
-    </figure>""")
+    # what the globe draws (photography/assets/timeline.js)
+    data = {
+        "stops": [{"s": s["slug"], "n": len(ids(s)), "at": TIMELINE[s["slug"]]["at"]} for s in series],
+        "labels": [[T(name), lat, lon, side] for name, lat, lon, side in MAP_LABELS],
+        "n": LAND["n"], "land": LAND["land"],
+    }
+    globe = (f'<div class="globe" aria-hidden="true"><canvas></canvas></div>\n'
+             f'    <script type="application/json" id="tl-data">{json.dumps(data, ensure_ascii=False, separators=(",", ":"))}</script>')
 
     # the list, by year
-    years, stops = [], {}
+    years, stops = [], {}  # newest year first
     for s in series:
         y = TIMELINE[s["slug"]]["date"][:4]
         if y not in stops:
@@ -711,16 +682,16 @@ def build_timeline(v):
     places = sum(1 for s in series if TIMELINE[s["slug"]]["at"])
     if LANG == "zh":
         sub = f"{len(SERIES)} 个系列、{len(ORDER)} 张照片，{span}，在美国和中国。"
-        desc = f"Jichu Mao 的摄影足迹：{len(SERIES)} 个系列按时间排列，{span}，附拍摄地点地图。"
+        desc = f"Jichu Mao 的摄影足迹：{len(SERIES)} 个系列由近到远排列，{span}，附拍摄地点的地球图。"
         full = "足迹 – Jichu Mao 摄影"
     else:
         sub = f"{len(SERIES)} series and {len(ORDER)} photographs, {span}, in the United States and China."
-        desc = f"Photographs by Jichu Mao in the order they were made, {span}, with a map of where: {places} places in the United States and China."
+        desc = f"Photographs by Jichu Mao, newest first, {span}, on a globe of where they were made: {places} places in the United States and China."
         full = "Timeline – Photographs by Jichu Mao"
     body = f"""<div class="head"><h1>{T("Timeline")}</h1><p class="count">{E(sub)}</p></div>
 <div class="tl">
   <div class="tl-map">
-    {chr(10).join(maps)}
+    {globe}
     <p class="tl-now" aria-hidden="true" data-idle="{E(span)}"><b></b><span>{E(span)}</span></p>
   </div>
   <div class="tl-list">

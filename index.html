@@ -20,7 +20,7 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=16">
+<link rel="stylesheet" href="assets/css/site.css?v=17">
 <script data-goatcounter="https://jichu.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body class="home">
@@ -38,28 +38,15 @@
 </header>
 
 <main id="main">
-<section class="hero">
+<section class="hero hero-pt">
   <figure class="hero-media">
-    <div class="hero-frames">
-      <picture class="frame on f-interior">
-        <source media="(max-width: 700px)" srcset="assets/img/home/subway-interior-tall-800.webp 800w, assets/img/home/subway-interior-tall-1200.webp 1200w" sizes="100vw" width="1200" height="1600">
-        <img src="assets/img/home/subway-interior-1920.webp" srcset="assets/img/home/subway-interior-1280.webp 1280w, assets/img/home/subway-interior-1920.webp 1920w, assets/img/home/subway-interior-2560.webp 2560w, assets/img/home/subway-interior-3840.webp 3840w" sizes="100vw" width="3840" height="2190" alt="Inside an empty subway car: worn seats, a transit map and fluorescent lights running down the aisle" fetchpriority="high">
-      </picture>
-      <picture class="frame f-floor" aria-hidden="true">
-        <source media="(max-width: 700px)" data-srcset="assets/img/home/subway-floor-tall-800.webp 800w, assets/img/home/subway-floor-tall-1200.webp 1200w" sizes="100vw" width="1200" height="1600">
-        <img data-srcset="assets/img/home/subway-floor-1280.webp 1280w, assets/img/home/subway-floor-1920.webp 1920w, assets/img/home/subway-floor-2560.webp 2560w, assets/img/home/subway-floor-3840.webp 3840w" sizes="100vw" width="3840" height="2158" alt="" decoding="async">
-      </picture>
-      <picture class="frame f-door" aria-hidden="true">
-        <source media="(max-width: 700px)" data-srcset="assets/img/home/subway-door-tall-800.webp 800w, assets/img/home/subway-door-tall-1200.webp 1200w" sizes="100vw" width="1200" height="1600">
-        <img data-srcset="assets/img/home/subway-door-1280.webp 1280w, assets/img/home/subway-door-1920.webp 1920w, assets/img/home/subway-door-2560.webp 2560w, assets/img/home/subway-door-3840.webp 3840w" sizes="100vw" width="3840" height="2178" alt="" decoding="async">
-      </picture>
-      <picture class="frame f-8805" aria-hidden="true">
-        <source media="(max-width: 700px)" data-srcset="assets/img/home/subway-8805-tall-800.webp 800w, assets/img/home/subway-8805-tall-1200.webp 1200w" sizes="100vw" width="1200" height="1600">
-        <img data-srcset="assets/img/home/subway-8805-1280.webp 1280w, assets/img/home/subway-8805-1920.webp 1920w, assets/img/home/subway-8805-2560.webp 2560w, assets/img/home/subway-8805-3840.webp 3840w" sizes="100vw" width="3840" height="2090" alt="" decoding="async">
-      </picture>
-    </div>
-    <div class="hero-grain" aria-hidden="true"></div>
-    <figcaption>Not a real subway. A scene I built in Unreal Engine, photographed off a 4K screen. From <a href="works/virtual-subway/">Virtual Subway</a>.</figcaption>
+    <canvas class="hero-live" aria-hidden="true"></canvas>
+    <picture class="hero-still" hidden>
+      <source media="(max-aspect-ratio: 1/1)" data-srcset="assets/img/home/cornell-tall-780.webp 780w" sizes="100vw" width="780" height="1200">
+      <img data-srcset="assets/img/home/cornell-1000.webp 1000w, assets/img/home/cornell-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="A Cornell box: red and green walls, a glass sphere, a small gold sphere and a tall white block under a warm ceiling light, open towards the viewer on a polished black floor">
+    </picture>
+    <noscript><img class="hero-still" src="assets/img/home/cornell-1600.webp" width="1600" height="900" alt="A Cornell box: red and green walls, a glass sphere, a small gold sphere and a tall white block under a warm ceiling light, open towards the viewer on a polished black floor"></noscript>
+    <figcaption><span class="cap-live">A Cornell box, path traced live in your browser. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">A Cornell box, path traced by this page’s own renderer.</span></figcaption>
   </figure>
   <div class="wrap hero-text">
     <h1>Jichu Mao</h1>
@@ -238,8 +225,9 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="assets/js/works.js?v=16" defer></script>
-<script src="assets/js/previews.js?v=16" defer></script>
-<script src="assets/js/home.js?v=16" defer></script>
+<script src="assets/js/works.js?v=17" defer></script>
+<script src="assets/js/previews.js?v=17" defer></script>
+<script src="assets/js/cornell.js?v=17" defer></script>
+<script src="assets/js/home.js?v=17" defer></script>
 </body>
 </html>

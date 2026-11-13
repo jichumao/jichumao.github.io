@@ -46,7 +46,7 @@ for proj in sorted(os.listdir(img)):
     cover = os.path.join(img, proj, "cover.webp")
     if os.path.exists(cover):
         card(cover, os.path.join(img, proj, "og.jpg")); n += 1
-card(os.path.join(img, "home", "subway-interior-1920.webp"), os.path.join(img, "home", "og.jpg"), 0.5, 0.5); n += 1
+card(os.path.join(img, "home", "cornell-1600.webp"), os.path.join(img, "home", "og.jpg"), 0.66, 0.5); n += 1
 og = os.path.join(ROOT, "photography", "og")
 card(photo(G.SLIDES[0][0]), os.path.join(og, "index.jpg")); card(photo(G.SLIDES[0][0]), os.path.join(og, "all.jpg")); n += 2
 for s in G.SERIES:
@@ -57,35 +57,64 @@ for g in G.SUBJECTS:
 
 
 def footprint(dst):
-    """The timeline's picture: both dotted maps side by side, a red point wherever a series was made."""
-    import re
-    from PIL import ImageDraw
+    """The timeline's picture: the dotted globe seen over the Pacific, a red point where each series was made and
+    arcs from one to the next, as on the page (photography/assets/timeline.js)."""
+    import base64, math
+    from PIL import ImageDraw, ImageFilter
     S = 3                                                     # drawn at three times the size, then reduced
-    gap, pad = 40, 70
-    maps = [("asia", G.MAPS["asia"]), ("america", G.MAPS["america"])]
-    k = (W - 2 * pad - gap) / sum(m["w"] for _, m in maps)
-    k = min(k, (H - 2 * pad) / max(m["h"] for _, m in maps))
     big = Image.new("RGB", (W * S, H * S), (0, 0, 0))
+    R = 270 * S; cx, cy = W * S / 2, H * S / 2 + 12 * S
+    lat0, lon0 = math.radians(28), math.radians(-172)
+
+    def proj(lat, lon, alt=1.0):
+        la, lo = math.radians(lat), math.radians(lon) - lon0
+        x, y, z = math.cos(la) * math.sin(lo), math.sin(la), math.cos(la) * math.cos(lo)
+        y2, z2 = y * math.cos(lat0) - z * math.sin(lat0), y * math.sin(lat0) + z * math.cos(lat0)
+        return cx + x * R * alt, cy - y2 * R * alt, z2, (x * x + y2 * y2) * alt * alt
+
+    glow = Image.new("RGB", big.size, (0, 0, 0))              # atmosphere
+    ImageDraw.Draw(glow).ellipse([cx - R * 1.04, cy - R * 1.04, cx + R * 1.04, cy + R * 1.04], fill=(70, 74, 82))
+    big = Image.blend(big, glow.filter(ImageFilter.GaussianBlur(28 * S)), 1.0)
     d = ImageDraw.Draw(big)
-    x0 = (W - (sum(m["w"] for _, m in maps) * k + gap)) / 2
-    y0 = (H - max(m["h"] for _, m in maps) * k) / 2
-    for key, m in maps:
-        x = y = 0.0
-        for mm in re.finditer(r"([Mm])(-?[\d.]+) (-?[\d.]+)h0", m["dots"]):
-            if mm.group(1) == "M":
-                x, y = float(mm.group(2)), float(mm.group(3))
-            else:
-                x += float(mm.group(2)); y += float(mm.group(3))
-            cx, cy, r = (x0 + x * k) * S, (y0 + y * k) * S, 1.15 * k * S
-            d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(70, 70, 70))
-        for s in G.SERIES:
-            for lat, lon in G.TIMELINE[s["slug"]]["at"]:
-                west, east, south, north = m["bounds"]
-                if west <= lon <= east and south <= lat <= north:
-                    px, py = G.spot(key, lat, lon)
-                    cx, cy, r = (x0 + px * k) * S, (y0 + py * k) * S, (2.6 + 0.9 * len(G.ids(s)) ** 0.5) * k * S
-                    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(219, 79, 61))
-        x0 += m["w"] * k + gap
+    d.ellipse([cx - R, cy - R, cx + R, cy + R], fill=(9, 9, 10))
+    bits = base64.b64decode(G.LAND["land"]); N = G.LAND["n"]; g = math.pi * (3 - math.sqrt(5))
+    for i in range(N):
+        if not bits[i >> 3] & (0x80 >> (i & 7)):
+            continue
+        y = 1 - (i + 0.5) * 2 / N; r = math.sqrt(1 - y * y); a = i * g
+        x, yy, z, _ = proj(math.degrees(math.asin(y)), math.degrees(math.atan2(math.sin(a) * r, math.cos(a) * r)))
+        if z <= 0:
+            continue
+        v = int(30 + 190 * z ** 0.8); rr = 1.25 * S
+        d.ellipse([x - rr, yy - rr, x + rr, yy + rr], fill=(v, v, v))
+
+    def vec(lat, lon):
+        la, lo = math.radians(lat), math.radians(lon)
+        return (math.cos(la) * math.cos(lo), math.cos(la) * math.sin(lo), math.sin(la))
+    stops = sorted(G.SERIES, key=lambda s: G.TIMELINE[s["slug"]]["date"])
+    places = [G.TIMELINE[s["slug"]]["at"][0] for s in stops if G.TIMELINE[s["slug"]]["at"]]
+    for (la1, lo1), (la2, lo2) in zip(places, places[1:]):
+        a, b = vec(la1, lo1), vec(la2, lo2)
+        w = math.acos(max(-1, min(1, sum(p * q for p, q in zip(a, b)))))
+        if w < 0.01:
+            continue
+        pts = []
+        for k in range(65):
+            t = k / 64
+            f1, f2 = math.sin((1 - t) * w) / math.sin(w), math.sin(t * w) / math.sin(w)
+            v = [f1 * p + f2 * q for p, q in zip(a, b)]
+            lat = math.degrees(math.asin(max(-1, min(1, v[2])))); lon = math.degrees(math.atan2(v[1], v[0]))
+            x, yy, z, rad = proj(lat, lon, 1 + (0.025 + 0.09 * min(w, 1.2) / math.pi) * math.sin(math.pi * t))
+            pts.append((x, yy, z > 0))
+        for (x1, y1, v1), (x2, y2, v2) in zip(pts, pts[1:]):
+            if v1 and v2:
+                d.line([x1, y1, x2, y2], fill=(235, 100, 80), width=int(2.2 * S))
+    for s in stops:
+        for lat, lon in G.TIMELINE[s["slug"]]["at"]:
+            x, yy, z, _ = proj(lat, lon)
+            if z > 0:
+                rr = (3.2 + 0.8 * len(G.ids(s)) ** 0.5) * S
+                d.ellipse([x - rr, yy - rr, x + rr, yy + rr], fill=(235, 92, 72))
     big.resize((W, H), Image.LANCZOS).save(dst, "JPEG", quality=86, optimize=True, progressive=True)
 
 
