@@ -81,7 +81,7 @@ All links are relative, so the site works both at a domain root and under a sub-
 
 ## Home page opening
 
-The picture across the top of the home page is a frame from the WebGPU project: Sponza lit by 5,000 point lights, a 3840 px screenshot with the two debug overlays cropped off its top edge. It is stored at four widths, `assets/img/home/sponza-1280.webp` to `sponza-3840.webp`, plus a square crop for phones (`sponza-tall.webp`); the browser picks one. The source screenshot is `tools/cover-src/webgpu-4k.jpg`. The page zooms into it very slowly; visitors who ask their system for reduced motion get it still. The caption and the picture's description are in `build_home()` in `tools/build.py`.
+The picture across the top of the home page is a frame from the WebGPU project: Sponza lit by 5,000 point lights, a 3840 px screenshot with the two debug overlays cropped off its top edge. It is stored at four widths, `assets/img/home/sponza-1280.webp` to `sponza-3840.webp`, plus an upright crop for phones at two widths (`sponza-tall-800.webp`, `sponza-tall.webp`); the browser picks one. The source screenshot is `tools/cover-src/webgpu-4k.jpg`. The page zooms into it very slowly; visitors who ask their system for reduced motion get it still. The picture is shown whole; the only words on it are the name, one line under it (`hero-lead`) and the caption. All three, and the picture's description, are in `build_home()` in `tools/build.py`.
 
 To use another picture: export it at the same five sizes under the same names (or change the names in `build_home()`), keep the important part right of centre because the text covers the left, then run `python3 tools/og.py .` so the sharing picture follows.
 
