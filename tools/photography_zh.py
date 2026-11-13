@@ -28,6 +28,15 @@ ZH = {
     "How it was made": "制作过程",
     "© Jichu Mao. All rights reserved. Please ask before using a photograph.": "© Jichu Mao 版权所有。如需使用照片，请先与我联系。",
 
+    # chapters of the index page
+    "Cities after dark": "入夜的城市",
+    "Portraits": "人像",
+    "Other work": "其他作品",
+    "California at the end of the day: fog over the ridges, salt ponds, dry hills and the Pacific.": "一天将尽时的加州：山脊上的雾、盐池、干草山丘和太平洋。",
+    "Macau, Zhuhai and Guangzhou in January, and San Francisco on the Fourth of July.": "一月的澳门、珠海和广州，以及七月四日的旧金山。",
+    "Three sessions: a café, a park at dusk, a rooftop at night.": "三组拍摄：咖啡馆、黄昏的公园、夜晚的天台。",
+    "Shorter sets and experiments.": "篇幅较短的几组，和一些尝试。",
+
     # series titles
     "Above the Fog": "雾上",
     "Rooftop": "天台",

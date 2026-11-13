@@ -67,7 +67,7 @@ a { color: inherit; }
 :lang(zh) body { line-height: 1.85; }
 :lang(zh) .top nav a, :lang(zh) .more h2 { letter-spacing: .08em; font-size: 14px; }
 :lang(zh) .top nav .lang { letter-spacing: .06em; font-size: 13px; }
-:lang(zh) .hero h1, :lang(zh) .panel h1, :lang(zh) .head h1, :lang(zh) .tile-title, :lang(zh) .subjects a, :lang(zh) .about h2 { letter-spacing: .04em; }
+:lang(zh) .hero h1, :lang(zh) .panel h1, :lang(zh) .head h1, :lang(zh) .tile-title, :lang(zh) .subjects a, :lang(zh) .about h2, :lang(zh) .chapter-head h2, :lang(zh) .card-title { letter-spacing: .04em; }
 
 /* Rows: every photograph keeps its own aspect ratio. A row is as wide as the
    screen unless that would make it taller than the screen; then it is as tall
@@ -105,7 +105,7 @@ a.ph { cursor: zoom-in; }
 .slide-cap span { color: rgba(255,255,255,.84); font-size: 14px; }
 .slide:hover .slide-cap b, .slide:focus-visible .slide-cap b { color: var(--accent); }
 .hero-text { position: absolute; z-index: 2; left: var(--edge); bottom: clamp(60px, 9vh, 92px); pointer-events: none; }
-.hero h1 { font: 700 clamp(52px, 8.4vw, 132px)/1 var(--serif); color: var(--text); margin: 0 0 16px; }
+.hero h1 { font: 700 clamp(32px, 3.4vw, 54px)/1.05 var(--serif); color: var(--text); margin: 0 0 10px; }
 .hero-text p { margin: 0; color: rgba(255,255,255,.84); }
 .hero-ctl { position: absolute; z-index: 3; left: var(--edge); bottom: 16px; display: flex; align-items: center; gap: 8px; }
 .dot { position: relative; flex: 0 0 40px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; }
@@ -134,7 +134,35 @@ a.ph { cursor: zoom-in; }
 .head + .subjects a { font-size: clamp(17px, 1.5vw, 22px); }
 .head + .subjects sup { font-size: 12px; }
 
-/* Home: series tiles ----------------------------------------------------- */
+/* On the index page the subjects are a quiet line after the chapters. */
+.subjects.quiet { margin-top: clamp(56px, 9vh, 104px); padding-top: 22px; padding-bottom: 0; border-top: 1px solid rgba(255, 255, 255, .14); margin-left: var(--edge); margin-right: var(--edge); padding-left: 0; padding-right: 0; }
+.subjects.quiet a { font: 600 clamp(15px, 1.25vw, 18px)/1.5 var(--sans); }
+.subjects.quiet sup { font-size: 11px; }
+
+/* Home: chapters. Each is a title, one sentence, and its series as tiles of one shape. */
+
+.chapter { padding: clamp(56px, 9vh, 104px) var(--edge) 0; }
+.chapter-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 28px; margin-bottom: clamp(18px, 3vh, 30px); }
+.chapter-head h2 { font: 700 clamp(28px, 3vw, 44px)/1.1 var(--serif); color: var(--text); margin: 0; }
+.chapter-head p { margin: 0; flex: 1 1 22em; max-width: 84ch; color: var(--body); }
+.cards { display: grid; gap: clamp(26px, 4vh, 42px) clamp(12px, 1.4vw, 20px); }
+.cards.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cards.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cards.c4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.card { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; align-content: start; color: var(--text); text-decoration: none; }
+.card-img { grid-column: 1 / -1; display: block; aspect-ratio: var(--shape); overflow: hidden; background: var(--c); }
+.card-img img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); transition: transform .7s ease; }
+.card:hover .card-img img, .card:focus-visible .card-img img { transform: scale(1.03); }
+.card-title { grid-column: 1 / -1; margin-top: 14px; font: 700 clamp(20px, 1.7vw, 26px)/1.2 var(--serif); }
+.c4 .card-title { font-size: clamp(17px, 1.3vw, 20px); margin-top: 12px; }
+.card:hover .card-title, .card:focus-visible .card-title { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.card-meta, .card-count { margin-top: 4px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.card-count { white-space: nowrap; }
+.c4 .card-count { grid-column: 1 / -1; margin-top: 0; }
+@media (prefers-reduced-motion: reduce) { .card-img img { transition: none; } }
+@media (max-width: 1000px) { .cards.c4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Series tiles at the foot of a series page ------------------------------- */
 
 .tile { text-decoration: none; color: var(--text); }
 .tile::after {
@@ -220,6 +248,9 @@ a.ph { cursor: zoom-in; }
   .rows.grid .ph { aspect-ratio: 1; }
   .about { grid-template-columns: minmax(0, 1fr); }
   .more .tile { height: 46vw; flex: none; }
+  .cards.c2, .cards.c3 { grid-template-columns: minmax(0, 1fr); }
+  .chapter-head { display: block; }
+  .chapter-head p { margin-top: 8px; }
 }
 
 /* Viewer ----------------------------------------------------------------- */

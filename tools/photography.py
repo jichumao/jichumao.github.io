@@ -3,7 +3,7 @@
 Run through tools/build.py, or on its own from the repo root:
     python3 tools/photography.py .
 
-Everything editable is in this file: SERIES (order, titles, rows), HOME_ROWS,
+Everything editable is in this file: SERIES (titles, rows), CHAPTERS (the index page and the order of everything),
 SLIDES, SUBJECTS, PLACE and ALT (one description per photograph). tools/photos.json holds what was measured
 from the files (pixel sizes, placeholder colour, camera settings).
 The stylesheet and the viewer are hand-written: photography/assets/.
@@ -58,7 +58,7 @@ def when(s):
 def comma():
     return ", " if LANG == "en" else "，"
 
-# One entry per series, in the order they appear on the index page.
+# One entry per series. Their order on the site is set by CHAPTERS, further down.
 #   rows   the sequence. Each inner list is one row on a wide screen; on a
 #          phone held upright the same order runs top to bottom.
 #   cover  the photograph used for the tile on the index page.
@@ -122,27 +122,28 @@ SERIES = [
          rows=[[324], [320, 323], [337, 321]], cover=324),
 ]
 
-# Rows of series tiles on the index page, by slug. Every series appears once.
-HOME_ROWS = [
-    ["above-the-fog", "rooftop"],
-    ["macau", "salt"],
-    ["rose", "fourth-of-july"],
-    ["guangzhou", "evening-walk"],
-    ["pacific", "dry-hills"],
-    ["subway", "cherry-blossom"],
-    ["zhuhai", "tea-hills"],
-    ["off-season", "pennsylvania"],
-    ["elliot", "february"],
+# The index page, in chapters. Every series appears once. The order here is also the order of the whole section:
+# the "All" page, the subject pages and the "More series" links at the foot of a series follow it.
+#   note   one sentence under the chapter's title
+#   shape  the proportions of this chapter's tiles (CSS aspect-ratio); a cover is cropped to it around the series' `focus`
+#   cols   tiles in a row on a wide screen: 2, 3 or 4
+CHAPTERS = [
+    dict(title="Landscape", note="California at the end of the day: fog over the ridges, salt ponds, dry hills and the Pacific.",
+         series=["above-the-fog", "salt", "dry-hills", "pacific"], shape="3 / 2", cols=2),
+    dict(title="Cities after dark", note="Macau, Zhuhai and Guangzhou in January, and San Francisco on the Fourth of July.",
+         series=["macau", "zhuhai", "guangzhou", "fourth-of-july"], shape="3 / 2", cols=2),
+    dict(title="Portraits", note="Three sessions: a café, a park at dusk, a rooftop at night.",
+         series=["rose", "evening-walk", "rooftop"], shape="4 / 5", cols=3),
+    dict(title="Other work", note="Shorter sets and experiments.",
+         series=["off-season", "pennsylvania", "tea-hills", "subway", "cherry-blossom", "elliot", "february"], shape="3 / 2", cols=4),
 ]
 
 # Opening slideshow of the index page: (photograph for wide screens, photograph for upright phones, series it links to).
+# All from the first chapter, so the page opens in one mood.
 SLIDES = [
     (16, 13, "above-the-fog"),
-    (252, 247, "macau"),
     (58, 57, "salt"),
-    (117, 114, "fourth-of-july"),
-    (221, 308, "guangzhou"),
-    (232, 228, "zhuhai"),
+    (71, 77, "dry-hills"),
 ]
 
 # Subject pages. A photograph can be listed under more than one subject; every photograph needs at least one.
@@ -372,6 +373,9 @@ ABOUT = [
 ]
 
 BY_SLUG = {s["slug"]: s for s in SERIES}
+_order = [x for c in CHAPTERS for x in c["series"]]
+assert sorted(_order) == sorted(BY_SLUG), "CHAPTERS must list every series once"
+SERIES.sort(key=lambda s: _order.index(s["slug"]))
 
 
 def ph(n):
@@ -465,11 +469,23 @@ def tile(s, home, img, total, *, fixed=False):
             f'{img_tag(n, img, sizes, alt="")}{text}</a>')
 
 
-def subjects_nav(home, current=""):
+def card(s, home, img, cols):
+    """A series on the index page: its cover cropped to the chapter's shape, with the title and facts under it."""
+    n = s["cover"]
+    meta = meta_line(s)
+    pos = f';--pos:{s["focus"]}' if s.get("focus") else ""
+    sizes = f"(max-width: 760px) {100 if cols < 4 else 50}vw, {round(100 / cols)}vw"
+    return (f'<a class="card" href="{home}{s["slug"]}/">'
+            f'<span class="card-img" style="--c:{ph(n)["color"]}{pos}">{img_tag(n, img, sizes, alt="")}</span>'
+            f'<span class="card-title">{E(T(s["title"]))}</span>'
+            f'<span class="card-meta">{E(meta)}</span><span class="card-count">{count(len(ids(s)))}</span></a>')
+
+
+def subjects_nav(home, current="", quiet=False):
     cur = ' aria-current="page"'
     links = [f'<a href="{home}all/"{cur if current == "all" else ""}>{T("All")}<sup>{len(ORDER)}</sup></a>']
     links += [f'<a href="{home}{g["slug"]}/"{cur if current == g["slug"] else ""}>{E(T(g["title"]))}<sup>{len(g["photos"])}</sup></a>' for g in SUBJECTS]
-    return f'<nav class="subjects" id="subjects" aria-label="{T("Subjects")}"><span class="subjects-label">{T("By subject")}</span>{"".join(links)}</nav>'
+    return f'<nav class="subjects{" quiet" if quiet else ""}" id="subjects" aria-label="{T("Subjects")}"><span class="subjects-label">{T("By subject")}</span>{"".join(links)}</nav>'
 
 
 def base(rel):
@@ -569,19 +585,16 @@ def build_home(v):
   </div>
 </section>
 """
-    seen = [x for row in HOME_ROWS for x in row]
-    assert sorted(seen) == sorted(BY_SLUG), "HOME_ROWS must list every series once"
-    rows = []
-    for row in HOME_ROWS:
-        ss = [BY_SLUG[x] for x in row]
-        total = sum(ar(s["cover"]) for s in ss)
-        rows.append(f'<div class="row" style="--sum:{total:.4f};--n:{len(ss)}">' + "".join(tile(s, "", img, total) for s in ss) + "</div>")
+    chapters = []
+    for k, c in enumerate(CHAPTERS):
+        cards = "".join(card(BY_SLUG[x], "", img, c["cols"]) for x in c["series"])
+        chapters.append(f"""<section class="chapter"{' id="series"' if k == 0 else ""}>
+  <header class="chapter-head"><h2>{E(T(c["title"]))}</h2><p>{E(T(c["note"]))}</p></header>
+  <div class="cards c{c["cols"]}" style="--shape:{c["shape"]}">{cards}</div>
+</section>""")
     about = "".join(f"<p>{E(T(x))}</p>" for x in ABOUT)
-    body = hero + f"""{subjects_nav("")}
-<section class="series-index rows" id="series" aria-label="{T("Series")}">
-<h2 class="hide">{T("Series")}</h2>
-{chr(10).join(rows)}
-</section>
+    body = hero + chr(10).join(chapters) + f"""
+{subjects_nav("", quiet=True)}
 <section class="about" id="about">
   <h2>{T("About")}</h2>
   <div>{about}<p><a href="mailto:{EMAIL}">{EMAIL}</a><br><a href="{site}">{T("Rendering and graphics work")}</a></p></div>

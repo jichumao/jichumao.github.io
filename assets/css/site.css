@@ -112,6 +112,7 @@ a.button-fill:hover { background: transparent; color: var(--text); }
 
 .social { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; }
 .icon { flex: none; }
+img.icon.brand { width: 18px; height: 18px; object-fit: contain; }   /* a brand's own file from assets/icons/, shown as it is */
 .social a {
   display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px;
   border: 1px solid var(--line); border-radius: 999px;
