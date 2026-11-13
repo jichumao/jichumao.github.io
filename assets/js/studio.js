@@ -43,14 +43,14 @@
     "uniform vec2 uRes; uniform int uFrame, uSeed; uniform sampler2D uPrev, uPrevGeo, uPrev1, uPrev2, uPrev3;",
     "uniform vec3 uEye, uFwd, uRight, uUp; uniform float uTanY, uAspect, uFocus, uLens; uniform vec2 uShift;",
     "uniform vec4 uL[9];              // each letter: x, z, cos and sin of its turn about the vertical",
-    "uniform float uBX[8]; uniform float uBZ, uWZ;   // the light bars along the back: x each, their z; the wall's z",
+    "uniform vec2 uB[8]; uniform float uWZ;          // the light columns, x and z of each; the back wall's z",
     // light transport is linear in what the lights emit, so each group of lights gets its own running average, traced
     // with white light; their colours are mixed in afterwards, every frame, and can change without tracing again
     "layout(location = 0) out vec4 oColor;    // the white lights (softbox, strip, dome); alpha: luminance squared of it all",
     "layout(location = 1) out vec4 oGeo;      // running average of what the camera ray hit first: normal, distance",
-    "layout(location = 2) out vec4 oG1;       // the coloured groups, left to right: bars and the neon H",
-    "layout(location = 3) out vec4 oG2;       // the middle bars and the dot",
-    "layout(location = 4) out vec4 oG3;       // the bars on the right",
+    "layout(location = 2) out vec4 oG1;       // the coloured groups, left to right: the columns on the left,",
+    "layout(location = 3) out vec4 oG2;       // the neon H and the dot,",
+    "layout(location = 4) out vec4 oG3;       // the columns on the right",
     "#define PI 3.14159265",
     "const float EPS = 1e-4;",
     // the letters: strokes HW wide either side of their centre lines, cap height 1, extruded 2 * DEPTH, edges rounded
@@ -76,7 +76,7 @@
     "uint rs; float gLam, gFilm; vec3 gN; float gZ; int gBar;",
     "vec3 L0, L1, L2, L3;                                              // what each group of lights has given this sample",
     "void addL(int g, vec3 v) { if (g == 0) L0 += v; else if (g == 1) L1 += v; else if (g == 2) L2 += v; else L3 += v; }",
-    "int barGroup(int i) { return i < 3 ? 1 : i < 5 ? 2 : 3; }",
+    "int barGroup(int i) { return i < 4 ? 1 : 3; }                    // left columns, right columns",
     "uint hash(uint x){ x ^= x >> 16; x *= 0x7feb352du; x ^= x >> 15; x *= 0x846ca68bu; x ^= x >> 16; return x; }",
     "float rnd(){ rs = rs * 747796405u + 2891336453u; uint w = ((rs >> ((rs >> 28u) + 4u)) ^ rs) * 277803737u; w = (w >> 22u) ^ w; return float(w) * (1.0 / 4294967296.0); }",
     "vec3 specw(float l) { float x = clamp((l - 400.) / 10., 0., 29.999); int i = int(x); return mix(WL[i], WL[i + 1], x - float(i)); }",
@@ -132,7 +132,7 @@
     "  if (h < 0.) return vec2(1e9, -1e9); h = sqrt(h); return vec2(-b - h, -b + h);",
     "}",
     "bool bar(vec3 ro, vec3 rd, int i, float tmax, out float s) {      // an upright tube of light, standing on the floor",
-    "  vec2 o = ro.xz - vec2(uBX[i], uBZ), d = rd.xz; float a = dot(d, d); s = 0.;",
+    "  vec2 o = ro.xz - uB[i], d = rd.xz; float a = dot(d, d); s = 0.;",
     "  if (a < 1e-10) return false;",
     "  float b = dot(o, d), h = b * b - a * (dot(o, o) - BAR_R * BAR_R);",
     "  if (h < 0.) return false;",
@@ -175,14 +175,14 @@
     "    else if (u < 2.) { a = vec3(.31, u - 1., 0.); r = vec3(cos(ph), 0., sin(ph)); }",
     "    else { a = vec3(-.31 + (u - 2.), .5, 0.); r = vec3(0., cos(ph), sin(ph)); }",
     "    lp = toWorld(a + r * TUBE + vec3(0., LIFT, 0.), L) + vec3(L.x, 0., L.y); ln = toWorld(r, L);",
-    "    area = 2. * PI * TUBE * NEON_L; Le = vec3(NEON_W); sel = P_NEON; grp = 1;",
+    "    area = 2. * PI * TUBE * NEON_L; Le = vec3(NEON_W); sel = P_NEON; grp = 2;",
     "  } else if (x < P_NEON + P_DOT) {",
     "    vec4 L = uL[5]; float z = 2. * rnd() - 1., ph = 2. * PI * rnd(), sn = sqrt(1. - z * z);",
     "    ln = vec3(sn * cos(ph), z, sn * sin(ph)); lp = vec3(L.x, DOT_Y, L.y) + ln * DOT_R;",
     "    area = 4. * PI * DOT_R * DOT_R; Le = vec3(DOT_W); sel = P_DOT; grp = 2;",
     "  } else if (x < P_NEON + P_DOT + P_BAR) {",
     "    int i = min(int(rnd() * 8.), 7); float ph = 2. * PI * rnd();",
-    "    ln = vec3(cos(ph), 0., sin(ph)); lp = vec3(uBX[i], rnd() * BAR_H, uBZ) + ln * BAR_R;",
+    "    ln = vec3(cos(ph), 0., sin(ph)); lp = vec3(uB[i].x, rnd() * BAR_H, uB[i].y) + ln * BAR_R;",
     "    area = 2. * PI * BAR_R * BAR_H; Le = vec3(BAR_W); sel = P_BAR / 8.; grp = barGroup(i);",
     "  } else if (x < P_NEON + P_DOT + P_BAR + P_RIM) {",
     "    lp = RIM_C + RIM_U * (rnd() * 2. - 1.) + RIM_V * (rnd() * 2. - 1.); ln = normalize(cross(RIM_U, RIM_V));",
@@ -233,7 +233,7 @@
     "  if (m == LETTER + 2) { kind = 1; c = vec3(.91, .92, .93); a = .2; }             // C: brushed silver",
     "  else if (m == LETTER + 7) { c = vec3(.004); a = .012; }                          // R: black glass, a dark mirror",
     "  else if (m == LETTER + 8) { c = vec3(.86, .85, .83); a = .03; }                 // T: glazed porcelain",
-    "  else if (m == WALL) { c = vec3(.055, .055, .06); a = .3; }                      // the back wall: dark satin plaster",
+    "  else if (m == WALL) { c = vec3(.016, .016, .018); a = .25; }                    // the back wall, far off: dark satin",
     "  else { c = vec3(.018, .018, .02); a = .022; }                                     // the wet black floor",
     "}",
     "vec3 bsdf(int m, vec3 n, vec3 wo, vec3 wi, out float pdf) {",
@@ -274,7 +274,7 @@
     "      gZ = m == NONE ? 1e3 : t;",
     "      vec3 hp = ro + rd * t;",
     "      vec3 g = m == NONE || m == KEY || m == RIM ? -rd : m == FLOOR ? vec3(0., 1., 0.) : m == WALL ? vec3(0., 0., 1.)",
-    "             : m == BAR ? normalize(vec3(hp.x - uBX[gBar], 0., hp.z - uBZ)) : letterNormal(m - LETTER, hp);",
+    "             : m == BAR ? normalize(vec3(hp.x - uB[gBar].x, 0., hp.z - uB[gBar].y)) : letterNormal(m - LETTER, hp);",
     "      gN = dot(g, rd) > 0. ? -g : g;",
     "    }",
     // light scattered towards the camera by the haze. On the camera ray it is estimated once per sample, at a point
@@ -293,11 +293,11 @@
     "    }",
     "    if (m == NONE) { if (mode != 1) L0 += T * env(rd); break; }  // found only by BSDF rays, never sampled directly",
     "    vec3 p = ro + rd * t, n = m == FLOOR ? vec3(0., 1., 0.) : m == WALL ? vec3(0., 0., 1.) : m == KEY ? normalize(cross(KEY_U, KEY_V))",
-    "         : m == RIM ? normalize(cross(RIM_U, RIM_V)) : m == BAR ? normalize(vec3(p.x - uBX[gBar], 0., p.z - uBZ)) : letterNormal(m - LETTER, p);",
+    "         : m == RIM ? normalize(cross(RIM_U, RIM_V)) : m == BAR ? normalize(vec3(p.x - uB[gBar].x, 0., p.z - uB[gBar].y)) : letterNormal(m - LETTER, p);",
     "    bool inside = dot(n, rd) > 0.; if (inside) n = -n;          // n now faces the ray",
     "    if (m == KEY || m == RIM || m == BAR || m == LETTER + 3 || m == LETTER + 5) {   // a light",
     "      vec3 Le = m == KEY ? KEY_E : m == RIM ? RIM_E : vec3(m == BAR ? BAR_W : m == LETTER + 3 ? NEON_W : DOT_W);",
-    "      int g = m == BAR ? barGroup(gBar) : m == LETTER + 3 ? 1 : m == LETTER + 5 ? 2 : 0;",
+    "      int g = m == BAR ? barGroup(gBar) : m == LETTER + 3 || m == LETTER + 5 ? 2 : 0;",
     "      if ((m == KEY || m == RIM) && inside || m == RIM && fromFloor) break;   // the panels shine one way",
     "      if (mode == 0) addL(g, T * Le);",
     "      else if (mode == 2) { float pl = lightPdf(m, rd, t, n); addL(g, T * Le * lastPdf * lastPdf / (lastPdf * lastPdf + pl * pl)); }",
@@ -375,10 +375,11 @@
 
   // where the letters stand: one gently curved row on a wide screen; on a tall one JICHU behind and ·ART in front
   var WIDTH = [0.61, 0.17, 0.97, 0.72, 0.77, 0.2, 0.93, 0.79, 0.89], CENTRE = [-0.03, 0, 0.001, 0, 0, 0, 0, 0.01, 0];
-  function bars(wide) {             // the light bars along the back wall: x of each, their z, the wall's z
-    var x = [], step = wide ? 1.6 : 0.7;
-    for (var i = 0; i < 8; i++) x.push((i - 3.5) * step);
-    return { x: new Float32Array(x), z: wide ? -3.3 : -3.5, wall: wide ? -4.0 : -4.2 };
+  function bars(wide) {             // light columns down both sides, receding into the haze; the back wall far behind
+    var P = wide ? [[4.3, -1.0], [4.9, -2.6], [5.5, -4.2], [6.1, -5.8]] : [[1.25, -2.4], [1.55, -3.6], [1.85, -4.8], [2.15, -6.0]];
+    var b = new Float32Array(16);
+    P.forEach(function (q, i) { b[i * 2] = -q[0]; b[i * 2 + 1] = q[1]; b[(7 - i) * 2] = q[0]; b[(7 - i) * 2 + 1] = q[1]; });
+    return { b: b, wall: wide ? -7.5 : -7.5 };
   }
   // the colours the lights flow through: amber, coral, rose, violet, indigo, and back again, each group a little behind
   // the one on its left, so the colour travels across the picture
@@ -576,7 +577,7 @@
       gl.uniform3fv(u.uEye, c.eye); gl.uniform3fv(u.uFwd, c.f); gl.uniform3fv(u.uRight, c.r); gl.uniform3fv(u.uUp, c.u);
       gl.uniform1f(u.uTanY, c.tanY); gl.uniform1f(u.uAspect, c.aspect); gl.uniform2fv(u.uShift, c.shift);
       gl.uniform1f(u.uFocus, c.focus); gl.uniform1f(u.uLens, c.lens); gl.uniform4fv(u.uL, lay);
-      gl.uniform1fv(u.uBX, bar.x); gl.uniform1f(u.uBZ, bar.z); gl.uniform1f(u.uWZ, bar.wall);
+      gl.uniform2fv(u.uB, bar.b); gl.uniform1f(u.uWZ, bar.wall);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       cur = 1 - cur; frame++;
       present(fade);
