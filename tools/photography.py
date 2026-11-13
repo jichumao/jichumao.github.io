@@ -65,14 +65,16 @@ def comma():
 #   focus  optional. Where to hold the cover when a tile has to crop it
 #          ("More series" at the foot of a series page), as a CSS position.
 #   link   optional. (text, page on the main site) shown under the note.
+#   title_zh  optional. The series' own title in the Chinese edition, when it is not a translation of `title`
+#          (Jichu's titles for his city sets); otherwise the Chinese edition translates `title` through ZH.
 SERIES = [
     dict(slug="above-the-fog", title="Above the Fog", where="Ridge Trailhead, California", when="July 2025",
          note="An evening on a ridge trail while the marine layer filled the valleys below.",
          rows=[[4], [7, 3], [1, 12], [13, 16]], cover=12),
-    dict(slug="rooftop", title="Rooftop", where="Chongqing", when="June 2026",
+    dict(slug="rooftop", title="CYBER CHONGQING 2026", where="Chongqing", when="June 2026",
          note="LED glasses and two light sticks, high above the city at night.",
          rows=[[18, 20, 25]], cover=20, focus="50% 52%"),
-    dict(slug="macau", title="Macau", where="Macau Peninsula and Cotai", when="January 2026",
+    dict(slug="macau", title="Macau", title_zh="镜海流金，浮世绘梦", where="Macau Peninsula and Cotai", when="January 2026",
          note="An afternoon in the old town, then the casinos after dark.",
          rows=[[242, 241], [246, 247, 249, 255], [251, 252]], cover=246, focus="50% 40%"),
     dict(slug="salt", title="Salt", where="Alviso Marina County Park, San Jose", when="June 2025",
@@ -81,10 +83,10 @@ SERIES = [
     dict(slug="rose", title="Rose", where="Quzhou, Zhejiang", when="May 2025",
          note="A portrait session in a café.",
          rows=[[127, 136], [129, 132, 138], [142, 146]], cover=132, focus="50% 30%"),
-    dict(slug="fourth-of-july", title="Fourth of July", where="Yerba Buena Island, San Francisco", when="July 2025",
+    dict(slug="fourth-of-july", title="Fourth of July", title_zh="独立日", where="Yerba Buena Island, San Francisco", when="July 2025",
          note="From dusk to the fireworks, seen from the middle of the bay.",
          rows=[[114, 118], [117], [116], [120, 122]], cover=120, focus="50% 38%"),
-    dict(slug="guangzhou", title="Guangzhou", where="", when="January 2026",
+    dict(slug="guangzhou", title="Guangzhou", title_zh="花城光影，霓虹成河", where="", when="January 2026",
          note="Museum halls by day, the Pearl River after dark.",
          rows=[[214, 216], [213, 215], [308, 220, 221]], cover=221, focus="50% 45%"),
     dict(slug="evening-walk", title="Evening Walk", where="Fushan Park, Quzhou, Zhejiang", when="May 2025",
@@ -99,7 +101,7 @@ SERIES = [
     dict(slug="subway", title="Subway", where="", when="April 2025",
          note="A subway car I built in Unreal Engine, photographed off a 4K monitor with a Canon 5D Mark IV, a 50 mm lens and a polarising filter, then finished to take the digital edge off.",
          rows=[[398], [399, 397], [391], [393, 396], [394, 392], [395, 400]], cover=398, link=("How it was made", "works/virtual-subway/")),
-    dict(slug="zhuhai", title="Zhuhai", where="", when="January 2026",
+    dict(slug="zhuhai", title="Zhuhai", title_zh="珠落夜色，海照贝影", where="", when="January 2026",
          note="The opera house on the water, from late afternoon into the night.",
          rows=[[228, 226, 232], [240, 256]], cover=240),
     dict(slug="tea-hills", title="Tea Hills", where="Wuyi, Jinhua, Zhejiang", when="December 2025",
@@ -186,8 +188,7 @@ TIMELINE = {
 # side: "right" or "left" of the point.
 MAP_LABELS = [
     ("Bay Area", 37.55, -122.1, "left"),
-    ("Pennsylvania", 40.75, -75.6, "left"),
-    ("Jersey Shore", 39.15, -74.65, "right"),
+    ("Pennsylvania and New Jersey", 40.0, -75.1, "right"),   # one spot on the globe: Allentown and the Jersey Shore
     ("Chongqing", 29.56, 106.55, "left"),
     ("Zhejiang", 28.93, 119.3, "right"),
     ("Guangzhou, Zhuhai, Macau", 22.6, 113.45, "left"),
@@ -398,7 +399,7 @@ def row_html(row, img, *, eager=False, with_series=False):
         st = f' data-settings="{E(p["settings"])}"' if p["settings"] else ""
         cap = place(n)
         if with_series:
-            title = T(SERIES_OF[n]["title"])
+            title = ST(SERIES_OF[n])
             cap = title if not cap or cap == title else f"{title}{comma()}{cap}"
         cp = f' data-cap="{E(cap)}"' if cap else ""
         cells.append(f'<a class="ph" href="{img}{n:03d}-{big}.webp" style="--ar:{ar(n):.4f};--c:{p["color"]}" '
@@ -427,12 +428,17 @@ def auto_rows(photos, target=2.7, most=4.3):
 def tile(s, home, img, total, *, fixed=False):
     n = s["cover"]
     meta = meta_line(s)
-    text = (f'<span class="tile-text"><span class="tile-title">{E(T(s["title"]))}</span>'
+    text = (f'<span class="tile-text"><span class="tile-title">{E(ST(s))}</span>'
             f'<span class="tile-meta">{E(meta) + "<br>" if meta else ""}{count(len(ids(s)))}</span></span>')
     sizes = "(max-width: 760px) and (orientation: portrait) 100vw, 50vw" if fixed else share(ar(n), total)
     pos = f';--pos:{s["focus"]}' if fixed and s.get("focus") else ""
     return (f'<a class="ph tile" href="{home}{s["slug"]}/" style="--ar:{ar(n):.4f};--c:{ph(n)["color"]}{pos}">'
             f'{img_tag(n, img, sizes, alt="")}{text}</a>')
+
+
+def ST(s):
+    """A series' title in the edition being built."""
+    return s["title_zh"] if LANG == "zh" and s.get("title_zh") else T(s["title"])
 
 
 def card(s, home, img, total, pair=None):
@@ -446,7 +452,7 @@ def card(s, home, img, total, pair=None):
     sizes = f"{narrow}, {share(total)}vw"
     return (f'<a class="card" href="{home}{s["slug"]}/" style="--ar:{ar(n):.4f}">'
             f'<span class="card-img" style="--c:{ph(n)["color"]}">{img_tag(n, img, sizes, alt="")}</span>'
-            f'<span class="card-title">{E(T(s["title"]))}</span>'
+            f'<span class="card-title">{E(ST(s))}</span>'
             f'<span class="card-meta">{E(meta)}</span><span class="card-count">{count(len(ids(s)))}</span></a>')
 
 
@@ -541,9 +547,9 @@ def build_home(v):
         <source media="(max-aspect-ratio: 4/5)" {a}="{srcset(tall, img)}" sizes="118vw" width="{t["w"]}" height="{t["h"]}">
         <img {src}{a}="{srcset(wide, img)}" sizes="100vw" width="{w["w"]}" height="{w["h"]}" alt="{E(alt_text(wide))}"{' fetchpriority="high"' if first else ""}>
       </picture>
-      <span class="slide-cap"><b>{E(T(s["title"]))}</b><span>{E(meta_line(s))}<br>{count(len(ids(s)))}</span></span>
+      <span class="slide-cap"><b>{E(ST(s))}</b><span>{E(meta_line(s))}<br>{count(len(ids(s)))}</span></span>
     </a>""")
-        dots.append(f'<button class="dot" type="button" aria-label="{E(("Show " + s["title"]) if LANG == "en" else ("显示" + T(s["title"])))}"{" aria-current=" + chr(34) + "true" + chr(34) if first else ""}></button>')
+        dots.append(f'<button class="dot" type="button" aria-label="{E(("Show " + s["title"]) if LANG == "en" else ("显示" + ST(s)))}"{" aria-current=" + chr(34) + "true" + chr(34) if first else ""}></button>')
     hero = f"""<section class="hero" aria-roledescription="carousel" aria-label="{T("Selected photographs")}">
   <div class="slides">
 {chr(10).join(slides)}
@@ -594,7 +600,7 @@ def build_series(i, v):
     rel = s["slug"] + "/"
     img, home, site = base(rel) + "img/", "../", base(rel) + "../"
     meta = meta_line(s)
-    title, note = T(s["title"]), T(s["note"])
+    title, note = ST(s), T(s["note"])
     link = f'<p class="how"><a href="{site}{s["link"][1]}">{E(T(s["link"][0]))}</a></p>' if s.get("link") else ""
     panel = (f'<div class="panel"><h1>{E(title)}</h1>'
              + (f'<p class="where">{E(meta)}</p>' if meta else "")
@@ -631,7 +637,7 @@ def build_subject(slug, title, photos, v):
     rows = auto_rows(photos)
     names = []
     for n in photos:
-        t = T(SERIES_OF[n]["title"])
+        t = ST(SERIES_OF[n])
         if t not in names:
             names.append(t)
     if LANG == "zh":
@@ -657,11 +663,12 @@ def build_timeline(v):
     img, home = base(rel) + "img/", "../"
     series = sorted(SERIES, key=lambda s: TIMELINE[s["slug"]]["date"], reverse=True)
     newest, oldest = series[0], series[-1]
+    no = {x["slug"]: len(series) - k for k, x in enumerate(series)}   # 1 is the oldest; pins on the globe carry the same number
     span = f"{when(oldest)} to {when(newest)}" if LANG == "en" else f"{when(oldest)}到 {when(newest)}"
 
     # what the globe draws (photography/assets/timeline.js)
     data = {
-        "stops": [{"s": s["slug"], "n": len(ids(s)), "at": TIMELINE[s["slug"]]["at"]} for s in series],
+        "stops": [{"s": s["slug"], "no": no[s["slug"]], "n": len(ids(s)), "at": TIMELINE[s["slug"]]["at"]} for s in series],
         "labels": [[T(name), lat, lon, side] for name, lat, lon, side in MAP_LABELS],
         "n": LAND["n"], "land": LAND["land"],
     }
@@ -686,9 +693,9 @@ def build_timeline(v):
             for n in ids(s):
                 if n != s["cover"] and total < 4.0 and len(strip) < 5:
                     strip.append(n); total += ar(n)
-            title = T(s["title"])
+            title = ST(s)
             items.append(f"""      <article class="stop" id="t-{s["slug"]}" data-s="{s["slug"]}" data-title="{E(title)}" data-meta="{E(comma().join(x for x in (where, when(s)) if x))}">
-        <p class="stop-when"><time datetime="{t["date"][:7]}">{month_name(mon)}</time></p>
+        <p class="stop-when"><span class="stop-no" aria-hidden="true">{no[s["slug"]]}</span><time datetime="{t["date"][:7]}">{month_name(mon)}</time></p>
         <div class="stop-main">
           <h3><a href="../{s["slug"]}/">{E(title)}</a></h3>
           <p class="stop-where"><span>{E(where)}</span><span>{count(len(ids(s)))}</span></p>
