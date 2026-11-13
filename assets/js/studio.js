@@ -16,8 +16,9 @@
      (CIE 1931). The glass's index of refraction follows Cauchy's law, so it splits light into colours; the film's
      reflectance comes from the interference of light reflected at its two faces (Airy's formula), and its thickness
      changes up the letter, so the colours do too.
-   - Participating media: homogeneous haze with free-flight distance sampling, a Henyey-Greenstein phase function
-     and light sampling at every scattering event.
+   - Participating media: homogeneous haze with free-flight distance sampling and a Henyey-Greenstein phase
+     function. Light scattered towards the camera is estimated on every camera ray at a point drawn along it
+     (proportionally to transmittance), and at each scattering event further along the path.
    - Geometry: each letter a signed distance field (strokes extruded, edges rounded; the H's tubes are capsules),
      ray-marched inside its bounding box; the floor and the softbox analytic.
    - Display: ACES tone mapping, a soft glow around bright light, a slight vignette.
@@ -221,11 +222,18 @@
     "    float t;",
     "    vec2 med = sphereSpan(ro, rd, MED_C, MED_R);",
     "    int m = trace(ro, rd, max(med.y, EPS), t);",
-    "    float tf = -log(1. - rnd()) / SIG;                      // free flight through the haze",
-    "    if (tf < t && tf < med.y) {",
+    // light scattered towards the camera by the haze. On the camera ray it is estimated once per sample, at a point
+    // drawn along the whole ray (so every pixel gets some, instead of a few getting a lot); further along the path,
+    // where a free flight happens to stop in the haze
+    "    float tseg = min(t, med.y), tf = -log(1. - rnd()) / SIG; bool along = b == 0 && tseg > 0.;",
+    "    if (along) {",
+    "      float a = 1. - exp(-SIG * tseg), ts = -log(1. - rnd() * a) / SIG, dist, pdf; vec3 wi;",
+    "      vec3 Le = sampleLight(ro + rd * ts, wi, dist, pdf);",
+    "      if (pdf > 0.) L += T * a * Le * hgPhase(dot(rd, wi)) / pdf;",
+    "    }",
+    "    if (tf < tseg) {                                         // the free flight ends in the haze: scatter",
     "      vec3 p = ro + rd * tf, wi; float dist, pdf;",
-    "      vec3 Le = sampleLight(p, wi, dist, pdf);",
-    "      if (pdf > 0.) L += T * Le * hgPhase(dot(rd, wi)) / pdf;",
+    "      if (!along) { vec3 Le = sampleLight(p, wi, dist, pdf); if (pdf > 0.) L += T * Le * hgPhase(dot(rd, wi)) / pdf; }",
     "      ro = p; rd = hgSample(rd); mode = 1; continue;",
     "    }",
     "    if (m == NONE) { if (mode != 1) L += T * env(rd); break; }   // found only by BSDF rays, never sampled directly",
