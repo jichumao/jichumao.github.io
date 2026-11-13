@@ -4,7 +4,7 @@ Run through tools/build.py, or on its own from the repo root:
     python3 tools/photography.py .
 
 Everything editable is in this file: SERIES (titles, rows), CHAPTERS (the index page and the order of everything),
-SLIDES, SUBJECTS, PLACE and ALT (one description per photograph). tools/photos.json holds what was measured
+SLIDES, SUBJECTS, TIMELINE and MAP_LABELS (the timeline page and its map), PLACE and ALT (one description per photograph). tools/photos.json holds what was measured
 from the files (pixel sizes, placeholder colour, camera settings).
 The stylesheet and the viewer are hand-written: photography/assets/.
 
@@ -156,6 +156,40 @@ SUBJECTS = [
     dict(slug="details", title="Details",
          photos=[1, 54, 61, 215, 255, 395, 181, 182, 174, 193]),
 ]
+
+# The timeline page (timeline/): when and where each series was made.
+#   date   the day it was made (ISO). Orders the timeline; the page itself shows only the month.
+#   at     where it goes on the map: one or more (latitude, longitude). Empty for a series made inside a computer.
+#   place  what the timeline shows under the title when the series has no "where" of its own.
+TIMELINE = {
+    "off-season":     dict(date="2025-03-09", at=[(39.36, -74.42), (38.93, -74.91)]),
+    "subway":         dict(date="2025-04-15", at=[], place="Inside Unreal Engine"),
+    "evening-walk":   dict(date="2025-05-20", at=[(28.96, 118.86)]),
+    "rose":           dict(date="2025-05-22", at=[(28.97, 118.87)]),
+    "salt":           dict(date="2025-06-29", at=[(37.43, -121.97)]),
+    "above-the-fog":  dict(date="2025-07-02", at=[(37.33, -122.19)]),
+    "fourth-of-july": dict(date="2025-07-04", at=[(37.81, -122.37)]),
+    "pacific":        dict(date="2025-07-05", at=[(37.76, -122.51)]),
+    "dry-hills":      dict(date="2025-07-20", at=[(37.37, -121.76)]),
+    "pennsylvania":   dict(date="2025-10-18", at=[(40.75, -75.60)]),
+    "tea-hills":      dict(date="2025-12-20", at=[(28.89, 119.81)]),
+    "guangzhou":      dict(date="2026-01-02", at=[(23.13, 113.26)], place="Guangdong"),
+    "zhuhai":         dict(date="2026-01-04", at=[(22.27, 113.58)], place="Guangdong"),
+    "macau":          dict(date="2026-01-05", at=[(22.19, 113.54)]),
+    "rooftop":        dict(date="2026-06-06", at=[(29.56, 106.55)]),
+}
+# Names on the maps, one per group of nearby places: (map, name, latitude, longitude, side).
+# side: where the name sits relative to the point: "right", "left" or "above".
+MAP_LABELS = [
+    ("america", "Bay Area", 37.55, -122.1, "right"),
+    ("america", "Pennsylvania", 40.75, -75.6, "left"),
+    ("america", "Jersey Shore", 39.15, -74.65, "left-below"),
+    ("asia", "Chongqing", 29.56, 106.55, "right"),
+    ("asia", "Zhejiang", 28.93, 119.3, "above"),
+    ("asia", "Guangzhou, Zhuhai, Macau", 22.6, 113.45, "right"),
+]
+# The two maps, drawn by tools/footprint.py; their edges are in that file.
+MAPS = json.load(open(os.path.join(HERE, "footprint.json")))
 
 # Where a single photograph was taken, when that is more exact than its series' "where".
 PLACE = {
@@ -421,7 +455,7 @@ def base(rel):
     return ("../" if rel else "") + ("../" if LANG == "zh" else "")
 
 
-def page(*, title, desc, rel, body, og, v, series="", scripts=()):
+def page(*, title, desc, rel, body, og, v, series="", scripts=(), current=""):
     home = "../" if rel else ""            # the index page of this edition
     root = base(rel)                       # photography/
     site = root + "../"                    # the main site
@@ -465,6 +499,7 @@ def page(*, title, desc, rel, body, og, v, series="", scripts=()):
   <a class="name" href="{home or "./"}">Jichu Mao</a>
   <nav aria-label="Main">
     <a href="{home}#series">{T("Series")}</a>
+    <a href="{home}timeline/"{' aria-current="page"' if current == "timeline" else ""}>{T("Timeline")}</a>
     <a class="opt2" href="{home}#subjects">{T("Subjects")}</a>
     <a class="opt" href="{home}#about">{T("About")}</a>
     <a href="{site}">{T("Graphics")}<span class="wide">{T(" work")}</span></a>
@@ -594,6 +629,107 @@ def build_subject(slug, title, photos, v):
     return page(title=full, rel=rel, body=body, og=slug, v=v, series=title, scripts=("viewer.js",), desc=desc)
 
 
+def month_name(m):
+    return MONTHS[m - 1] if LANG == "en" else f"{m} 月"
+
+
+def spot(key, lat, lon):
+    """A place on one of the two maps, in the map's own units (see tools/footprint.py)."""
+    west, east, south, north = MAPS[key]["bounds"]
+    return (lon - west) * MAPS["squeeze"] * MAPS["unit"], (north - lat) * MAPS["unit"]
+
+
+def build_timeline(v):
+    """Every series in the order it was made, beside a map that fills in as the reader moves down the years."""
+    rel = "timeline/"
+    img, home = base(rel) + "img/", "../"
+    series = sorted(SERIES, key=lambda s: TIMELINE[s["slug"]]["date"])
+    first, last = series[0], series[-1]
+    span_en = f'{when(first)} to {when(last)}'
+    span = span_en if LANG == "en" else f"{when(first)}到 {when(last)}"
+
+    # maps
+    maps = []
+    for key, name in (("america", "United States"), ("asia", "China")):
+        m = MAPS[key]
+        pins, labels = [], []
+        for s in series:
+            n = len(ids(s))
+            for lat, lon in TIMELINE[s["slug"]]["at"]:
+                west, east, south, north = m["bounds"]
+                if not (west <= lon <= east and south <= lat <= north):
+                    continue
+                x, y = spot(key, lat, lon)
+                r = 2.6 + 0.9 * n ** 0.5
+                pins.append(f'<a class="pin" href="#t-{s["slug"]}" data-s="{s["slug"]}" aria-label="{E(T(s["title"]))}{comma()}{E(when(s))}">'
+                            f'<circle class="pin-ring" cx="{x:.1f}" cy="{y:.1f}" r="{r:.1f}"/><circle class="pin-dot" cx="{x:.1f}" cy="{y:.1f}" r="{r:.1f}"/></a>')
+        for k, label, lat, lon, side in MAP_LABELS:
+            if k != key:
+                continue
+            x, y = spot(key, lat, lon)
+            labels.append(f'<span class="map-label {side}" style="left:{100 * x / m["w"]:.2f}%;top:{100 * y / m["h"]:.2f}%">{E(T(label))}</span>')
+        maps.append(f"""<figure class="map {key}">
+      <div class="map-box">
+        <svg viewBox="0 0 {m["w"]} {m["h"]}" role="group" aria-label="{E(T(name))}">
+          <path class="map-dots" d="{m["dots"]}"/>
+          {"".join(pins)}
+        </svg>
+        {"".join(labels)}
+      </div>
+      <figcaption>{E(T(name))}</figcaption>
+    </figure>""")
+
+    # the list, by year
+    years, stops = [], {}
+    for s in series:
+        y = TIMELINE[s["slug"]]["date"][:4]
+        if y not in stops:
+            years.append(y); stops[y] = []
+        stops[y].append(s)
+    groups = []
+    for y in years:
+        items = []
+        for s in stops[y]:
+            t = TIMELINE[s["slug"]]
+            mon = int(t["date"][5:7])
+            where = T(s["where"] or t.get("place", ""))
+            strip, total = [s["cover"]], ar(s["cover"])
+            for n in ids(s):
+                if n != s["cover"] and total < 4.0 and len(strip) < 5:
+                    strip.append(n); total += ar(n)
+            title = T(s["title"])
+            items.append(f"""      <article class="stop" id="t-{s["slug"]}" data-s="{s["slug"]}" data-title="{E(title)}" data-meta="{E(comma().join(x for x in (where, when(s)) if x))}">
+        <p class="stop-when"><time datetime="{t["date"][:7]}">{month_name(mon)}</time></p>
+        <div class="stop-main">
+          <h3><a href="../{s["slug"]}/">{E(title)}</a></h3>
+          <p class="stop-where"><span>{E(where)}</span><span>{count(len(ids(s)))}</span></p>
+          {row_html(strip, img, with_series=True)}
+        </div>
+      </article>""")
+        groups.append(f'    <section class="tl-year" aria-label="{y}">\n      <h2>{y}</h2>\n' + "\n".join(items) + "\n    </section>")
+
+    places = sum(1 for s in series if TIMELINE[s["slug"]]["at"])
+    if LANG == "zh":
+        sub = f"{len(SERIES)} 个系列、{len(ORDER)} 张照片，{span}，在美国和中国。"
+        desc = f"Jichu Mao 的摄影足迹：{len(SERIES)} 个系列按时间排列，{span}，附拍摄地点地图。"
+        full = "足迹 – Jichu Mao 摄影"
+    else:
+        sub = f"{len(SERIES)} series and {len(ORDER)} photographs, {span}, in the United States and China."
+        desc = f"Photographs by Jichu Mao in the order they were made, {span}, with a map of where: {places} places in the United States and China."
+        full = "Timeline – Photographs by Jichu Mao"
+    body = f"""<div class="head"><h1>{T("Timeline")}</h1><p class="count">{E(sub)}</p></div>
+<div class="tl">
+  <div class="tl-map">
+    {chr(10).join(maps)}
+    <p class="tl-now" aria-hidden="true" data-idle="{E(span)}"><b></b><span>{E(span)}</span></p>
+  </div>
+  <div class="tl-list">
+{chr(10).join(groups)}
+  </div>
+</div>"""
+    return page(title=full, rel=rel, body=body, og="timeline", v=v, series=T("Timeline"), scripts=("viewer.js", "timeline.js"), desc=desc, current="timeline")
+
+
 def build(root, v="1", strict=True, analytics=""):
     """Writes both editions and returns the pages' site-relative paths (for the sitemap)."""
     global LANG, ANALYTICS
@@ -603,7 +739,8 @@ def build(root, v="1", strict=True, analytics=""):
     assert tagged <= set(ORDER), f"SUBJECTS lists photographs that are in no series: {sorted(tagged - set(ORDER))}"
     assert set(ORDER) <= tagged, f"photographs without a subject: {sorted(set(ORDER) - tagged)}"
     assert set(PLACE) <= set(ORDER), f"PLACE names photographs that are in no series: {sorted(set(PLACE) - set(ORDER))}"
-    slugs = [s["slug"] for s in SERIES] + [g["slug"] for g in SUBJECTS] + ["all"]
+    assert sorted(TIMELINE) == sorted(BY_SLUG), "TIMELINE needs a date for every series, and nothing else"
+    slugs = [s["slug"] for s in SERIES] + [g["slug"] for g in SUBJECTS] + ["all", "timeline"]
     assert len(slugs) == len(set(slugs)), "a series and a subject share a slug"
     assert "zh" not in slugs, "'zh' is the address of the Chinese edition"
     if strict:
@@ -615,6 +752,7 @@ def build(root, v="1", strict=True, analytics=""):
         for i, s in enumerate(SERIES):
             out[f'{pre}{s["slug"]}/index.html'] = build_series(i, v)
         out[pre + "all/index.html"] = build_subject("all", "All photographs", ORDER, v)
+        out[pre + "timeline/index.html"] = build_timeline(v)
         for g in SUBJECTS:
             out[f'{pre}{g["slug"]}/index.html'] = build_subject(g["slug"], g["title"], g["photos"], v)
         pages += [pre] + [f"{pre}{x}/" for x in slugs]

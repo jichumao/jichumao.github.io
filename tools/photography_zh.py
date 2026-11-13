@@ -26,6 +26,15 @@ ZH = {
     "More series": "更多系列",
     "Rendering and graphics work": "渲染与图形作品",
     "How it was made": "制作过程",
+    "Timeline": "足迹",
+    "United States": "美国",
+    "China": "中国",
+    "Bay Area": "湾区",
+    "Jersey Shore": "新泽西海岸",
+    "Zhejiang": "浙江",
+    "Guangzhou, Zhuhai, Macau": "广州、珠海、澳门",
+    "Inside Unreal Engine": "虚幻引擎里",
+    "Guangdong": "广东",
     "© Jichu Mao. All rights reserved. Please ask before using a photograph.": "© Jichu Mao 版权所有。如需使用照片，请先与我联系。",
 
     # chapters of the index page

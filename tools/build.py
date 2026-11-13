@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "15"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "16"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -927,6 +927,35 @@ def links_html(proj):
 
 # ---------------------------------------------------------------- pages
 
+# The opening of the home page: frames of the Virtual Subway scene, one after another, each moving slowly
+# (assets/js/home.js and site.css). Made from the full-size photographs by hand; see the README.
+HERO_FRAMES = [
+    ("interior", "Inside an empty subway car: worn seats, a transit map and fluorescent lights running down the aisle"),
+    ("floor", "The aisle seen from the floor, every fleck of the terrazzo sharp, the lights fading into the far end"),
+    ("door", "The end of the car: a door between two benches, graffiti on the panels below a framed transit map"),
+    ("8805", "The outside of car 8805: a weathered steel side, the number plate and a flag beside a lit window"),
+]
+HERO_SIZE = {"interior": (3840, 2190), "floor": (3840, 2158), "door": (3840, 2178), "8805": (3840, 2090)}
+
+def hero_frames(root):
+    out = []
+    for i, (name, alt) in enumerate(HERO_FRAMES):
+        base = f"{root}assets/img/home/subway-{name}"
+        wide = ", ".join(f"{base}-{w}.webp {w}w" for w in (1280, 1920, 2560, 3840))
+        tall = f"{base}-tall-800.webp 800w, {base}-tall-1200.webp 1200w"
+        w, h = HERO_SIZE[name]
+        if i == 0:
+            out.append(f"""      <picture class="frame on f-{name}">
+        <source media="(max-width: 700px)" srcset="{tall}" sizes="100vw" width="1200" height="1600">
+        <img src="{base}-1920.webp" srcset="{wide}" sizes="100vw" width="{w}" height="{h}" alt="{E(alt)}" fetchpriority="high">
+      </picture>""")
+        else:
+            out.append(f"""      <picture class="frame f-{name}" aria-hidden="true">
+        <source media="(max-width: 700px)" data-srcset="{tall}" sizes="100vw" width="1200" height="1600">
+        <img data-srcset="{wide}" sizes="100vw" width="{w}" height="{h}" alt="" decoding="async">
+      </picture>""")
+    return "\n".join(out)
+
 def build_home():
     root = ""
     by = {p["slug"]: p for p in PROJECTS}
@@ -967,11 +996,11 @@ def build_home():
     about = "\n".join(f"      <p>{t}</p>" for t in HOME_ABOUT)
     body = f"""<section class="hero">
   <figure class="hero-media">
-    <picture>
-      <source media="(max-width: 700px)" srcset="assets/img/home/sponza-tall-800.webp 800w, assets/img/home/sponza-tall.webp 1200w" sizes="100vw" width="1200" height="1512">
-      <img class="hero-art" src="assets/img/home/sponza-1920.webp" srcset="assets/img/home/sponza-1280.webp 1280w, assets/img/home/sponza-1920.webp 1920w, assets/img/home/sponza-2560.webp 2560w, assets/img/home/sponza-3840.webp 3840w" sizes="100vw" width="3840" height="1839" alt="The Sponza atrium lit by thousands of coloured point lights: arches, hanging curtains and a lion relief at the end of the hall" fetchpriority="high">
-    </picture>
-    <figcaption>Sponza lit by 5,000 point lights, rendered at 4K in the browser. From <a href="works/webgpu-clustered-shading/">WebGPU Forward+ and Clustered Deferred Shading</a>.</figcaption>
+    <div class="hero-frames">
+{hero_frames(root)}
+    </div>
+    <div class="hero-grain" aria-hidden="true"></div>
+    <figcaption>Not a real subway. A scene I built in Unreal Engine, photographed off a 4K screen. From <a href="works/virtual-subway/">Virtual Subway</a>.</figcaption>
   </figure>
   <div class="wrap hero-text">
     <h1>Jichu Mao</h1>
@@ -1009,7 +1038,7 @@ def build_home():
 </section>"""
     write("index.html", page(root=root, path="", title="Jichu Mao – Graphics Performance Engineer | Jichu · Art",
                              desc="Portfolio of Jichu Mao, Graphics Performance Engineer at TikTok: real-time rendering, GPU path tracing, shaders, graphics tools, games and animation.",
-                             body=body, og_image="assets/img/home/og.jpg", current="", scripts=("works.js", "previews.js"), person=True, cls="home"))
+                             body=body, og_image="assets/img/home/og.jpg", current="", scripts=("works.js", "previews.js", "home.js"), person=True, cls="home"))
 
 def build_projects():
     root = "../../"
