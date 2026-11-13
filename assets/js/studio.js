@@ -400,7 +400,7 @@
   }
   function colours(t) {              // t in seconds; a full sweep there and back takes about 40 s
     var x = t * 0.2;
-    return [].concat(flow(x), flow(x - 0.55), flow(x - 1.1));
+    return [].concat(flow(x), flow(x - 1.0), flow(x - 2.0));
   }
   function layout(wide) {
     var L = new Float32Array(36), rows = wide ? [[0, 1, 2, 3, 4, 5, 6, 7, 8]] : [[0, 1, 2, 3, 4], [5, 6, 7, 8]];
