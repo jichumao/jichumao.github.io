@@ -630,7 +630,7 @@ PROJECTS = [
 ]
 
 HOME_ABOUT = [
-    'I work on the real-time effect rendering engine at <strong>TikTok</strong>. Before that: a master’s in Computer Science &amp; Computer Graphics at the <strong>University of Pennsylvania</strong>, and internships at TikTok, <a href="https://www.infoldgames.com/en/home">Infold Games</a>, <a href="https://www.apple.com/">Apple</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a>.',
+    'I work on real-time rendering and GPU performance, currently on the effect rendering engine at TikTok. Before that: a master’s in Computer Science &amp; Computer Graphics at the University of Pennsylvania, and internships at <a href="https://www.infoldgames.com/en/home">Infold Games</a>, <a href="https://www.apple.com/">Apple</a>, TikTok and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a>.',
     'Away from the GPU I take <a href="photography/">photographs</a>.',
 ]
 
@@ -985,7 +985,7 @@ def build_home():
   </figure>
   <div class="wrap hero-text">
     <h1>Jichu Mao</h1>
-    <p class="hero-lead">Graphics performance engineer at TikTok</p>
+    <p class="hero-lead">Graphics engineer: real-time rendering, path tracing and GPU performance</p>
   </div>
 </section>
 
@@ -1018,7 +1018,7 @@ def build_home():
   </div>
 </section>"""
     write("index.html", page(root=root, path="", title="Jichu Mao – Graphics Performance Engineer | Jichu · Art",
-                             desc="Portfolio of Jichu Mao, Graphics Performance Engineer at TikTok: real-time rendering, GPU path tracing, shaders, graphics tools, games and animation.",
+                             desc="Portfolio of Jichu Mao, graphics engineer: real-time rendering, GPU path tracing, shaders, graphics tools, games and animation.",
                              body=body, og_image="assets/img/home/og.jpg", current="", scripts=("works.js", "previews.js", "studio.js", "home.js"), person=True, cls="home"))
 
 def build_projects():
