@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "23"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "24"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -930,9 +930,10 @@ def links_html(proj):
 # The opening of the home page: a small studio scene path traced live in the browser (assets/js/studio.js).
 # Where that cannot run (no WebGL2, "reduce motion", no JavaScript) the still picture is shown instead; it was
 # rendered by the same code, see the README.
-HERO_ALT = ("The letters JICHU · ART standing on a wet black floor, each in a different material: a glass J with "
-            "rainbow edges, a chrome I, a gold C, a red neon H, a candy-red U, a glowing blue dot, an A shimmering "
-            "with interference colours, a copper R and a glazed white T, all reflected in the floor")
+HERO_ALT = ("The letters JICHU · ART standing on a wet black floor, each in a different material, warm on the left "
+            "and cool on the right: a crystal J with rainbow edges, a chrome I, a gold C, a red neon H, a milky "
+            "translucent U, a glowing blue dot, a sapphire-blue glass A, a titanium R shading from gold to blue and a "
+            "white porcelain T, all reflected in the floor")
 
 def build_home():
     root = ""
@@ -980,7 +981,7 @@ def build_home():
       <img data-srcset="assets/img/home/studio-1000.webp 1000w, assets/img/home/studio-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="{E(HERO_ALT)}">
     </picture>
     <noscript><img class="hero-still" src="assets/img/home/studio-1600.webp" width="1600" height="900" alt="{E(HERO_ALT)}"></noscript>
-    <figcaption><span class="cap-live">Path traced live in your browser, every letter a different material: dispersive glass, chrome, gold, neon, clear-coated paint, a light, thin-film interference, copper and glazed ceramic. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer, every letter a different material: dispersive glass, chrome, gold, neon, clear-coated paint, a light, thin-film interference, copper and glazed ceramic.</span></figcaption>
+    <figcaption><span class="cap-live">Path traced live in your browser, every letter a different material: dispersive crystal, chrome, gold, neon, subsurface scattering, a light, absorbing sapphire glass, thin-film titanium and porcelain, denoised as it converges. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer, every letter a different material: dispersive crystal, chrome, gold, neon, subsurface scattering, a light, absorbing sapphire glass, thin-film titanium and porcelain.</span></figcaption>
   </figure>
   <div class="wrap hero-text">
     <h1>Jichu Mao</h1>

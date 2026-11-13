@@ -326,15 +326,22 @@
     if (wide.matches && cur >= 0) {        // a series with no place (Subway) keeps the last place before it
       for (var k = cur; k < S.length && !target; k++) if (S[k].ll) target = S[k].ll;
     }
-    var zt = 1;
+    // zoom: in close where series crowd together (several at one spot, or spots near each other), so the pins read
+    // clearly while moving among them; out again while the globe turns a long way, then in on arrival
+    var zt = 1, tl = target ? target[1] * D2R : 0, tt = target ? Math.max(-0.2, Math.min(0.62, target[0] * D2R * 0.9)) : 0;
     if (target && wide.matches && cur >= 0) {
       var here = null;
       for (k = cur; k < S.length && !here; k++) if (S[k].spot) here = S[k].spot;
-      for (var q = 0; here && q < spots.length; q++) if (spots[q] !== here && dot3(spots[q].v, here.v) > Math.cos(0.3)) zt = 1.6;
+      if (here) {
+        var crowd = here.m.length >= 3 ? 2.7 : here.m.length === 2 ? 2.1 : 1;
+        for (var q = 0; q < spots.length; q++) if (spots[q] !== here && dot3(spots[q].v, here.v) > Math.cos(0.3)) crowd = Math.max(crowd, 2.1);
+        if (crowd > 1) tt = Math.max(-0.2, Math.min(0.7, target[0] * D2R));   // centred exactly when zoomed in
+        var away = Math.acos(Math.max(-1, Math.min(1, Math.cos(lat0) * Math.cos(tt) * Math.cos(tl - lon0) + Math.sin(lat0) * Math.sin(tt))));
+        zt = 1 + (crowd - 1) * Math.exp(-away * 6);
+      }
     }
-    Z += (zt - Z) * (reduce ? 1 : 1 - Math.exp(-dt * 2.4));
+    Z += (zt - Z) * (reduce ? 1 : 1 - Math.exp(-dt * 3));
     if (target) {
-      var tl = target[1] * D2R, tt = Math.max(-0.2, Math.min(0.62, target[0] * D2R * 0.9));
       var dl = Math.atan2(Math.sin(tl - lon0), Math.cos(tl - lon0));
       var e = reduce ? 1 : 1 - Math.exp(-dt * 3.2);
       lon0 += dl * e; lat0 += (tt - lat0) * e;
