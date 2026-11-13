@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "12"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "13"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -62,7 +62,7 @@ ICONS = {
     "joints": '<circle cx="6" cy="17" r="2"/><circle cx="12" cy="9" r="2"/><circle cx="18.5" cy="14" r="2"/><path d="m7.2 15.4 3.6-4.8M13.8 10.2l3 2.6"/>',
     "particles": '<circle cx="7" cy="8" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="18" cy="13" r="1.4"/><circle cx="10.5" cy="13.5" r="1.4"/><circle cx="6" cy="18" r="1.4"/><circle cx="14.5" cy="18.5" r="1.4"/>',
 }
-FACT_ICONS = {"Year": "calendar", "Team": "users", "Type": "user", "Course": "book", "Built on": "layers", "Built with": "layers",
+FACT_ICONS = {"Year": "calendar", "Team": "users", "Type": "user", "Built on": "layers", "Built with": "layers",
               "Tested on": "chip", "Reference": "paper", "Recorded at": "pin", "Shot with": "camera", "Maya plugin": "layers", "Houdini plugin": "layers"}
 
 def icon(name):
@@ -100,9 +100,8 @@ PROJECTS = [
     "tags": ["C++", "Vulkan", "GLSL", "Ray Tracing", "Global Illumination", "ReSTIR"],
     "excerpt": "World-space global illumination in a Vulkan ray-tracing pipeline. About 40% more accurate than screen-space ReSTIR in large scenes, for roughly 5% more render time.",
     "lead": "A world-space global illumination method in a Vulkan ray-tracing pipeline. Path samples are cached in a spatial hash grid and reused across frames and neighbouring cells.",
-    "cover_alt": "Subway scene split along the diagonal between the rendered image and its hash-grid cells, next to a robot test scene and Sponza",
-    "facts": [("Year", "2024"), ("Team", "Two people, with Zhiyi Zhou"), ("Course", "CIS 5650 GPU Programming and Architecture at UPenn, final project"),
-              ("Built on", "Nvidia’s Vulkan ray-tracing renderer")],
+    "cover_alt": "Two scenes, each shown twice: a subway car and a toy robot as rendered, and the same views coloured by the hash-grid cells the renderer shades from",
+    "facts": [("Year", "2024"), ("Team", "Two people, with Zhiyi Zhou"), ("Built on", "Nvidia’s Vulkan ray-tracing renderer")],
     "stats": [("≈40%", "higher accuracy than screen-space ReSTIR in large scenes"), ("≈5%", "extra render time"),
               ("1.3 M", "triangles in the subway test scene, at 1 sample per pixel")],
     "links": [("Source code", "https://github.com/zhiyi1801/CIS-565-2024Fall-Final", "code"), ("Paper", "https://wangningbei.github.io/2023/ReSTIR.html", "paper")],
@@ -146,9 +145,8 @@ PROJECTS = [
     "tags": ["C++", "CUDA", "GPU Programming", "Path Tracing", "glTF", "Performance Optimization"],
     "excerpt": "A GPU path tracer in CUDA with glTF scenes, physically based materials, depth of field and environment lighting. Stream compaction cuts frame time from 25.7 to 18.2 ms in open scenes.",
     "lead": "A GPU path tracer written in CUDA. It loads glTF meshes and materials and simulates light transport for soft shadows, caustics and depth of field, with stream compaction and bounding-box culling to cut the work per frame.",
-    "cover_alt": "Path-traced renders: a toy dog with two rubber ducks, a glass dragon and a mirror ball in front of a night skyline",
-    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5650 GPU Programming and Architecture at UPenn"),
-              ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
+    "cover_alt": "Path-traced renders: a giant rubber duck in a living room, a toy dog with two rubber ducks, and a golden dragon",
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
     "stats": [("25.7 → 18.2 ms", "per frame with stream compaction, open scene"), ("20–40%", "faster with bounding-box culling on low- to mid-poly models"),
               ("43,200", "samples per pixel in the dragon render")],
     "links": [("Source code", GH + "CUDA-Path-Tracer", "code")],
@@ -170,6 +168,7 @@ PROJECTS = [
           ("zap", "Material sorting", "Measured too, and turned out slower on small scenes"),
       ]),
       ("h2", "Highlights"),
+      ("gallery", [shot("duck-room", "Rubber duck lit by an environment map, 14,496 spp at 1200 × 1200")]),
       ("gallery", [shot("duck-doggy-duck", "Duck-Doggy-Duck, 5,000 spp"), shot("dragon", "The Dragon Beneath Starlit Skies, 43,200 spp"),
                    shot("shanghai-nights", "Shanghai Nights, 5,000 spp"), shot("stone-cat", "Stone Cat Guardian, 5,000 spp")]),
       ("h2", "Material shading"),
@@ -199,9 +198,8 @@ PROJECTS = [
     "tags": ["TypeScript", "WebGPU", "WGSL", "Compute Shaders", "Deferred Shading", "Real-Time Rendering"],
     "excerpt": "Forward+ and clustered deferred shading in the browser. With 5,000 moving lights at 4K, clustered deferred runs above 100 fps where naive forward shading manages 3.",
     "lead": "Three ways to light the Sponza atrium with thousands of moving point lights, in the browser: naive forward, Forward+ and clustered deferred shading, compared at 4K.",
-    "cover_alt": "Sponza atrium lit by thousands of coloured point lights, next to its normal and colour G-buffers",
-    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5650 GPU Programming and Architecture at UPenn"),
-              ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
+    "cover_alt": "Sponza atrium lit by thousands of coloured point lights, with two close views of its curtains",
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
     "stats": [("3 → 100+ fps", "5,000 lights at 4K, naive forward against clustered deferred"), ("550.8 → 15.1 ms", "per frame at 8,192 lights"),
               ("0.5 ms", "per frame at 256 lights with clustered deferred")],
     "links": [("Live demo", "https://jichu.art/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred/", "play"),
@@ -232,9 +230,8 @@ PROJECTS = [
     "tags": ["C++", "Vulkan", "GLSL", "Compute Shaders", "Tessellation", "Real-Time Rendering"],
     "excerpt": "Real-time grass in Vulkan. A compute shader simulates and culls every blade; with 32,768 blades, culling lifts the frame rate from 70 to 228 fps.",
     "lead": "A grass simulator and renderer on the Vulkan API. Every blade is a Bézier curve: a compute shader applies gravity, wind and recovery forces and culls the blades that do not contribute, then tessellation shaders turn the rest into geometry.",
-    "cover_alt": "A field of grass blades rendered in real time, with a close-up and a wireframe view of tessellated blades",
-    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5650 GPU Programming and Architecture at UPenn"),
-              ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
+    "cover_alt": "Six views of real-time grass: a field, dense blades up close, sparse blades on bare ground and tessellated blades in wireframe",
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
     "stats": [("70.2 → 228.2 fps", "with orientation, frustum and distance culling, 32,768 blades"),
               ("219.5 fps", "at 1,048,576 blades with culling, against 74.2 without")],
     "links": [("Source code", GH + "Vulkan-Grass-Rendering", "code"),
@@ -262,8 +259,7 @@ PROJECTS = [
     "excerpt": "Reynolds’ boids simulated on the GPU with CUDA. A coherent uniform grid runs 100,000 boids at 2,677 fps where brute force manages 43.",
     "lead": "A flocking simulation in CUDA after Craig Reynolds’ boids model: cohesion, separation and alignment for up to ten million boids, with three neighbour searches compared.",
     "cover_alt": "Clouds of coloured boids flocking inside a cube",
-    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5650 GPU Programming and Architecture at UPenn"),
-              ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
     "stats": [("43 → 2,677 fps", "100,000 boids, brute force against the coherent uniform grid"),
               ("18 fps", "at 10 million boids on the coherent grid, where brute force shows 0"),
               ("3", "neighbour-search implementations compared")],
@@ -292,8 +288,7 @@ PROJECTS = [
     "excerpt": "Scan and stream compaction on the GPU in CUDA, profiled with Nsight Compute. The work-efficient scan handles 134 million elements in 26 ms; the CPU needs 190.",
     "lead": "Prefix-sum scan and stream compaction in CUDA: a CPU baseline, a naive GPU scan, a work-efficient GPU scan and Thrust, timed against each other and profiled with Nsight Compute.",
     "cover_alt": "Diagram of stream compaction: a row of 32 cells, 16 of them filled, and below it the same 16 packed to the front, each joined to its new position by a curve",
-    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5650 GPU Programming and Architecture at UPenn"),
-              ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Tested on", "RTX 4090, i7-13700K, Windows 11")],
     "stats": [("190.1 → 26.2 ms", "exclusive scan of 134 million elements, CPU against the work-efficient GPU scan"),
               ("251.3 → 31.4 ms", "stream compaction, fastest CPU version against the GPU"),
               ("43.66%", "under-used streaming multiprocessors in the up-sweep, found with Nsight Compute")],
@@ -325,7 +320,7 @@ PROJECTS = [
     "tags": ["C++", "OpenGL", "GLSL", "PBR", "Image-Based Lighting", "Qt"],
     "excerpt": "Physically based shading in OpenGL: a Cook-Torrance BRDF with image-based lighting, plus metallic, roughness, normal-map and displacement controls.",
     "lead": "Physically based shading in OpenGL: the Cook-Torrance model in a PBR pipeline, lit by environment maps, with custom scenes and models.",
-    "cover_alt": "A turquoise skull, a revolver and a displaced obsidian cube rendered with physically based shading",
+    "cover_alt": "A turquoise skull and an engraved revolver rendered with physically based shading, above one red metal sphere shown five times from mirror-smooth to fully rough",
     "facts": [("Year", "2023"), ("Type", "Individual project"), ("Built with", "C++, OpenGL, GLSL, Qt"), ("Reference", "Real Shading in Unreal Engine 4 (Karis, 2013)")],
     "links": [("Source code", GH + "Physically-based-Shader", "code")],
     "blocks": [
@@ -384,10 +379,9 @@ PROJECTS = [
     "lead": "A subway car that exists only in Unreal Engine, photographed with a real camera: a Canon 5D Mark IV pointed at a 4K monitor.",
     "cover_alt": "Black-and-white photograph of an empty subway car interior, benches along both sides",
     "links": [("See it as a photo series", SITE + "/photography/subway/", "external")],
-    "facts": [("Year", "2025"), ("Type", "Individual project"), ("Course", "Photography class, final project"),
-              ("Built with", "Unreal Engine"), ("Shot with", "Canon 5D Mark IV, 50 mm lens, polarising filter")],
+    "facts": [("Year", "2025"), ("Type", "Individual project"), ("Built with", "Unreal Engine"), ("Shot with", "Canon 5D Mark IV, 50 mm lens, polarising filter")],
     "blocks": [
-      ("p", "This was my final project for a photography class. The subject is not a real place: I built the subway scene in Unreal Engine on my own computer, then photographed it the way I would photograph a real one."),
+      ("p", "The subject is not a real place: I built the subway scene in Unreal Engine on my own computer, then photographed it the way I would photograph a real one."),
       ("p", "Each frame is a photograph of my 4K monitor, taken with a Canon 5D Mark IV and a 50 mm lens with a polarising filter on it. Afterwards I edited the photographs to take the digital edge off the image."),
       ("p", "The result is ten black-and-white photographs: the outside of the car, its doors and windows, and the empty interior."),
       ("gallery-wide", [shot("interior", "", "The empty interior of the car, benches along both sides")]),
@@ -408,8 +402,8 @@ PROJECTS = [
     "tags": ["C++", "GLSL", "OpenGL", "Path Tracing", "Multiple Importance Sampling", "BSDF"],
     "excerpt": "A Monte Carlo path tracer in C++ and GLSL with naive, direct-lighting and multiple-importance-sampling integrators, and BRDF / BTDF materials with Fresnel.",
     "lead": "A Monte Carlo path tracer in C++ and GLSL. It solves the light transport equation with naive, direct-lighting and multiple-importance-sampling integrators, across specular, microfacet and dielectric materials.",
-    "cover_alt": "Path-traced Cornell boxes: a glass sphere in front of a rock wall, the Veach test scene and a microfacet material test",
-    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 4610 Advanced Rendering at UPenn"), ("Built with", "C++, GLSL, OpenGL, Qt")],
+    "cover_alt": "Six path-traced test scenes: Cornell boxes under two coloured lights and a spot light, glass spheres in front of a rock wall, a microfacet material test and the Veach scene",
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Built with", "C++, GLSL, OpenGL, Qt")],
     "links": [("Source code", GH + "Monte-Carlo-Path-Tracer", "code")],
     "blocks": [
       ("features", [
@@ -432,7 +426,7 @@ PROJECTS = [
     "tags": ["GLSL", "OpenGL", "C++", "Shader Programming", "Post-Processing"],
     "excerpt": "Vertex and fragment shaders for OpenGL: Blinn-Phong lighting, matcaps, vertex deformation, and post-process effects such as bloom, blur, Sobel edges and Worley noise.",
     "lead": "Portions of OpenGL’s graphics pipeline, programmed by hand: a set of vertex and fragment shaders that apply different coloration effects to the surfaces of 3D models.",
-    "cover_alt": "The same 3D model rendered with a chrome matcap shader, a Sobel edge filter and a surface-normal shader",
+    "cover_alt": "The same 3D model rendered sixteen times, once with each shader: matcaps, Blinn-Phong, surface normals, colour gradient, vertex deformation, bloom, greyscale, Sobel edges, Worley noise and others",
     "facts": [("Year", "2023"), ("Type", "Individual project"), ("Built with", "GLSL, OpenGL, C++, Qt")],
     "links": [("Source code", GH + "GLSL-Shaders", "code")],
     "blocks": [
@@ -460,7 +454,7 @@ PROJECTS = [
     "excerpt": "A WebGL fireball shaped by 3D Perlin noise and FBM, with live controls for colour, amplitude and frequency. It runs in the browser.",
     "lead": "A procedural fireball in WebGL: multi-octave noise pushes the vertices of a sphere along their normals over time, and the size of that offset sets the colour.",
     "cover_alt": "A fireball in three states: spiky, molten and smooth",
-    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5660 Procedural Graphics at UPenn")],
+    "facts": [("Year", "2024"), ("Type", "Individual project")],
     "links": [("Live demo", "https://jichu.art/CIS5660-hw01-fireball/", "play"), ("Source code", GH + "CIS5660-hw01-fireball", "code")],
     "blocks": [
       ("features", [
@@ -480,7 +474,7 @@ PROJECTS = [
     "excerpt": "A stylized real-time scene in Unity after concept art from the game GRIS: rim lighting, textured shadows, animated colours, Sobel outlines and ACES tone mapping.",
     "lead": "A piece of 2D concept art from the game GRIS, rebuilt as a real-time 3D scene in Unity with non-photorealistic shading.",
     "cover_alt": "A small cube-headed character among red plants and butterflies, shown in green, orange and yellow colour themes",
-    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5660 Procedural Graphics at UPenn"), ("Built with", "Unity, Shader Graph, C#")],
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Built with", "Unity, Shader Graph, C#")],
     "links": [("Source code", GH + "CIS5660-hw04-stylization", "code")],
     "blocks": [
       ("features", [
@@ -507,7 +501,7 @@ PROJECTS = [
     "excerpt": "Two plugins, one for Maya and one for Houdini, that grow fractal plants from an L-system grammar the user writes.",
     "lead": "One L-system, two hosts: a plugin for Maya and another for Houdini that create fractal plants from the grammar the user enters.",
     "cover_alt": "Five plants grown by the plugin’s L-system core from its bundled grammars, each labelled with its production rule",
-    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "DCC Tool Development at UPenn"), ("Maya plugin", "C++, Python, MEL"), ("Houdini plugin", "C++ with the HDK")],
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Maya plugin", "C++, Python, MEL"), ("Houdini plugin", "C++ with the HDK")],
     "links": [("Source code", GH + "Tree-Creator", "code")],
     "blocks": [
       ("p", "I developed two separate plugins, each implementing the same functionality in Maya and Houdini, respectively. The plugin lets the user customize:"),
@@ -527,7 +521,7 @@ PROJECTS = [
     "excerpt": "A jellyfish modelled and animated procedurally in Houdini, and a digital asset that generates multi-floor buildings with adjustable windows, doors and balconies.",
     "lead": "Two procedural modeling projects in Houdini: a jellyfish whose bell, arms, veins, organs and tentacles each come out of a node network, and a digital asset that stacks floors into a building.",
     "cover_alt": "A procedurally modelled jellyfish, its network of veins, and a generated multi-floor building",
-    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Course", "CIS 5660 Procedural Graphics at UPenn"), ("Built with", "Houdini, Vellum, SideFX Labs")],
+    "facts": [("Year", "2024"), ("Type", "Individual project"), ("Built with", "Houdini, Vellum, SideFX Labs")],
     "links": [("Jellyfish source", GH + "CIS5660-hw02-jellyfish", "code"), ("Buildings source", GH + "CIS5660-hw03-buildings", "code")],
     "blocks": [
       ("h3", "Jellyfish"),
@@ -555,7 +549,7 @@ PROJECTS = [
     "tags": ["Computer Animation", "Inverse Kinematics", "Particle Systems", "Behavioral Animation", "Spline Curves"],
     "excerpt": "An interactive animation toolkit: curve and rotation editors, forward and inverse kinematics, particle systems with fireworks, and behavioural animation.",
     "lead": "An interactive animation toolkit: curve editing and rotations, forward and inverse kinematics, particle systems and behavioural animation.",
-    "cover_alt": "Animation toolkit screens: agents on a grid in the behaviour editor, a character in the curve editor and a particle system",
+    "cover_alt": "Six views of the toolkit: a spline with its control handles, two models rotating, a character posed by IK targets, an agent among cone obstacles, and two firework bursts",
     "facts": [("Year", "2024"), ("Type", "Individual project")],
     "blocks": [
       ("features", [
@@ -564,7 +558,11 @@ PROJECTS = [
           ("particles", "Particle systems", "Including a firework simulation"),
           ("users", "Behavioural animation", "Groups of agents driven by behaviours"),
       ]),
-      ("gallery", [shot("curve-editor", "Curve editor: rotation"), shot("particle-editor", "Particle editor"), shot("behavior-editor", "Behaviour editor")]),
+      ("gallery", [clip("animation-curve", "Curve editor: a Hermite spline and its control points"),
+                   clip("animation-rotation", "Curve editor: one rotation interpolated with Euler angles (left) and quaternions (right)")]),
+      ("gallery", [clip("animation-ik", "IK editor: the limb-based solver following targets at the hands and feet"),
+                   clip("animation-behavior", "Behaviour editor: an agent avoiding obstacles on the way to its target")]),
+      ("gallery", [clip("animation-fireworks", "Particle editor: fireworks")]),
       ("label", "Demo on YouTube:"),
       ("embed", {"src": "https://www.youtube-nocookie.com/embed/IqU5NDMYwRg", "title": "Animation Toolkit demo on YouTube"}),
       ("label", "On Bilibili:"),
@@ -578,7 +576,7 @@ PROJECTS = [
     "excerpt": "A classic gem puzzle game in C++ with Qt Widgets and the Easy2D engine. I wrote the client logic and the gem animations.",
     "lead": "A classic gem puzzle game written in C++ with Qt Widgets and the Easy2D game engine.",
     "cover_alt": "A grid of colourful animal-shaped gems with the game’s score panel",
-    "facts": [("Year", "2021"), ("Type", "Team project"), ("Course", "Data structures at Beijing Jiaotong University, final project"), ("Built with", "C++, Qt Widgets, Easy2D")],
+    "facts": [("Year", "2021"), ("Type", "Team project"), ("Built with", "C++, Qt Widgets, Easy2D")],
     "links": [("Source code", GH + "Gem-Match", "code")],
     "blocks": [
       ("p", "In this game, I was responsible for creating the game animations, developing the game client logic, and contributing to the game’s art design."),
@@ -704,7 +702,7 @@ PERSON = json.dumps({
     "sameAs": [u for _, u, _ in SOCIAL],
 }, ensure_ascii=False)
 
-def page(*, root, path, title, desc, body, og_image, current="", scripts=(), person=False):
+def page(*, root, path, title, desc, body, og_image, current="", scripts=(), person=False, cls=""):
     canonical = f"{SITE}/{path}"
     nav = [("Works", f"{root}#works", "works"), ("Photography", f"{root}photography/", "photography"), ("About", f"{root}about/", "about")]
     cur = ' aria-current="page"'
@@ -734,7 +732,7 @@ def page(*, root, path, title, desc, body, og_image, current="", scripts=(), per
 <link rel="preload" href="{root}assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{root}assets/css/site.css?v={ASSET_V}">{ANALYTICS}
 </head>
-<body>
+<body{' class="' + cls + '"' if cls else ''}>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="site-header">
@@ -765,18 +763,23 @@ def page(*, root, path, title, desc, body, og_image, current="", scripts=(), per
 </html>
 """
 
-def img_tag(key, root, *, thumb=True, cls="", alt="", lazy=True):
+def img_tag(key, root, *, thumb=True, cls="", alt="", lazy=True, sizes=""):
+    """`sizes`: offer the full-size file next to the thumbnail, for sharp screens and wide slots."""
     m = MAN[key]
     src = f"{root}assets/img/{key}{'-thumb' if thumb else ''}.webp"
     w, h = (m["tw"], m["th"]) if thumb else (m["w"], m["h"])
     c = f' class="{cls}"' if cls else ""
     l = ' loading="lazy" decoding="async"' if lazy else ""
-    return f'<img{c} src="{src}" width="{w}" height="{h}" alt="{E(alt)}"{l}>'
+    ss = (f' srcset="{src} {m["tw"]}w, {root}assets/img/{key}.webp {m["w"]}w" sizes="{sizes}"' if sizes and thumb and m["w"] > m["tw"] else "")
+    return f'<img{c} src="{src}"{ss} width="{w}" height="{h}" alt="{E(alt)}"{l}>'
 
 def gallery(proj, items, root, wide=False):
     n = len(items)
     cols = "one" if n == 1 else "two" if n in (2, 4) else "three" if n in (3, 5, 6, 9) else "many"
     out = [f'<ul class="gallery{" wide" if wide else ""} {cols}">']
+    # how wide one picture is drawn (the media column is at most 880px), so the browser can pick the thumbnail or the full-size file
+    slot = {"one": 880 if wide else 560, "two": 430, "three": 280, "many": 430 if wide else 280}[cols]
+    sizes = f"(max-width: 900px) {'calc(100vw - 40px)' if cols == 'one' or wide else '46vw'}, {slot}px"
     for s in items:
         cap = s["caption"]
         fc = f"\n            <figcaption>{E(cap)}</figcaption>" if cap else ""
@@ -789,7 +792,7 @@ def gallery(proj, items, root, wide=False):
             key = f'{proj["img"]}/{s["key"]}'
             dc = f' data-caption="{E(cap)}"' if cap else ""
             cls = "shot chart" if s["key"].startswith("chart-") else "shot"
-            inner = f'<a class="{cls}" href="{root}assets/img/{key}.webp"{dc}>{img_tag(key, root, alt=s["alt"])}</a>'
+            inner = f'<a class="{cls}" href="{root}assets/img/{key}.webp"{dc}>{img_tag(key, root, alt=s["alt"], sizes=sizes)}</a>'
         out.append(f"""        <li>
           <figure>
             {inner}{fc}
@@ -892,6 +895,20 @@ def pager_link(p, root, cls, label):
     inner = thumb + text if cls == "prev" else text + thumb
     return f'<a class="{cls}" href="../{p["slug"]}/">{inner}</a>'
 
+def card_links(p, indent="          "):
+    """Short links under a featured card: where the code is, a live demo, the paper, a video."""
+    out = []
+    for name, url, ic in p.get("links", []):
+        label = "GitHub" if "github.com" in url else name
+        out.append((label, url, ic))
+    for kind, val in p["blocks"]:
+        if kind == "embed" and "youtube" in val["src"]:
+            out.append(("YouTube", "https://www.youtube.com/watch?v=" + val["src"].rsplit("/", 1)[1], "play"))
+    if not out:
+        return ""
+    items = "".join(f'<li><a href="{E(u)}">{icon(i)}{E(n)}</a></li>' for n, u, i in out[:4])
+    return f'\n{indent}<ul class="feat-links">{items}</ul>'
+
 def links_html(proj):
     if not proj.get("links"):
         return ""
@@ -919,7 +936,7 @@ def build_home():
 {meta_html(p, "          ")}
           <h3><a href="works/{p["slug"]}/">{E(p["title"])}</a></h3>
           <p class="work-excerpt">{E(p["excerpt"])}</p>{stats}
-{tags_html(p, "          ", limit=3)}
+{tags_html(p, "          ", limit=3)}{card_links(p)}
         </div>
       </li>""")
     rest = [p for p in PROJECTS if p["slug"] not in FEATURED]
@@ -939,19 +956,17 @@ def build_home():
         f'<button type="button" data-cat="{c}" aria-pressed="false">{E(label)} <span>{counts[c]}</span></button>' for c, label in CATEGORIES if counts[c])
     about = "\n".join(f"      <p>{t}</p>" for t in HOME_ABOUT)
     body = f"""<section class="hero">
-  <div class="wrap hero-grid">
-    <div class="hero-text">
-      <h1>Graphics performance engineer at TikTok</h1>
-      <p class="hero-lead">I work on real-time rendering and GPU performance. These are the renderers, shaders, tools and games I’ve built along the way.</p>
-      <p class="hero-actions"><a class="button-fill" href="#works">See the work</a><a class="button" href="about/">About me</a></p>
-    </div>
-    <figure class="hero-stage">
-      <div class="hero-media">
-        <img class="hero-art" src="assets/img/home/fireball.webp" srcset="assets/img/home/fireball-thumb.webp 600w, assets/img/home/fireball.webp 1200w" sizes="(max-width: 900px) 72vw, 600px" width="1200" height="1200" alt="A ball of orange, yellow and red flame-like spikes" fetchpriority="high">
-        <canvas class="hero-canvas" data-shaders="assets/shaders/" data-distance="2.9" aria-hidden="true"></canvas>
-      </div>
-      <figcaption><a href="works/procedural-fireball/">Procedural Fireball</a>, running live in your browser: about 240 lines of GLSL</figcaption>
-    </figure>
+  <figure class="hero-media">
+    <picture>
+      <source media="(max-width: 700px)" srcset="assets/img/home/sponza-tall.webp" width="1100" height="1100">
+      <img class="hero-art" src="assets/img/home/sponza-1920.webp" srcset="assets/img/home/sponza-1280.webp 1280w, assets/img/home/sponza-1920.webp 1920w, assets/img/home/sponza-2560.webp 2560w, assets/img/home/sponza-3840.webp 3840w" sizes="100vw" width="3840" height="1839" alt="The Sponza atrium lit by thousands of coloured point lights: arches, hanging curtains and a lion relief at the end of the hall" fetchpriority="high">
+    </picture>
+    <figcaption>Sponza lit by 5,000 point lights, rendered at 4K in the browser. From <a href="works/webgpu-clustered-shading/">WebGPU Forward+ and Clustered Deferred Shading</a>.</figcaption>
+  </figure>
+  <div class="wrap hero-text">
+    <h1>Graphics performance engineer at TikTok</h1>
+    <p class="hero-lead">I work on real-time rendering and GPU performance. These are the renderers, shaders, tools and games I’ve built along the way.</p>
+    <p class="hero-actions"><a class="button-fill" href="#works">See the work</a><a class="button" href="about/">About me</a></p>
   </div>
 </section>
 
@@ -986,7 +1001,7 @@ def build_home():
 </section>"""
     write("index.html", page(root=root, path="", title="Jichu Mao – Graphics Performance Engineer | Jichu · Art",
                              desc="Portfolio of Jichu Mao, Graphics Performance Engineer at TikTok: real-time rendering, GPU path tracing, shaders, graphics tools, games and animation.",
-                             body=body, og_image="assets/img/home/og.jpg", current="", scripts=("hero.js", "works.js", "previews.js"), person=True))
+                             body=body, og_image="assets/img/home/og.jpg", current="", scripts=("works.js", "previews.js"), person=True, cls="home"))
 
 def build_projects():
     root = "../../"

@@ -20,9 +20,9 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=12">
+<link rel="stylesheet" href="assets/css/site.css?v=13">
 </head>
-<body>
+<body class="home">
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="site-header">
@@ -38,19 +38,17 @@
 
 <main id="main">
 <section class="hero">
-  <div class="wrap hero-grid">
-    <div class="hero-text">
-      <h1>Graphics performance engineer at TikTok</h1>
-      <p class="hero-lead">I work on real-time rendering and GPU performance. These are the renderers, shaders, tools and games I’ve built along the way.</p>
-      <p class="hero-actions"><a class="button-fill" href="#works">See the work</a><a class="button" href="about/">About me</a></p>
-    </div>
-    <figure class="hero-stage">
-      <div class="hero-media">
-        <img class="hero-art" src="assets/img/home/fireball.webp" srcset="assets/img/home/fireball-thumb.webp 600w, assets/img/home/fireball.webp 1200w" sizes="(max-width: 900px) 72vw, 600px" width="1200" height="1200" alt="A ball of orange, yellow and red flame-like spikes" fetchpriority="high">
-        <canvas class="hero-canvas" data-shaders="assets/shaders/" data-distance="2.9" aria-hidden="true"></canvas>
-      </div>
-      <figcaption><a href="works/procedural-fireball/">Procedural Fireball</a>, running live in your browser: about 240 lines of GLSL</figcaption>
-    </figure>
+  <figure class="hero-media">
+    <picture>
+      <source media="(max-width: 700px)" srcset="assets/img/home/sponza-tall.webp" width="1100" height="1100">
+      <img class="hero-art" src="assets/img/home/sponza-1920.webp" srcset="assets/img/home/sponza-1280.webp 1280w, assets/img/home/sponza-1920.webp 1920w, assets/img/home/sponza-2560.webp 2560w, assets/img/home/sponza-3840.webp 3840w" sizes="100vw" width="3840" height="1839" alt="The Sponza atrium lit by thousands of coloured point lights: arches, hanging curtains and a lion relief at the end of the hall" fetchpriority="high">
+    </picture>
+    <figcaption>Sponza lit by 5,000 point lights, rendered at 4K in the browser. From <a href="works/webgpu-clustered-shading/">WebGPU Forward+ and Clustered Deferred Shading</a>.</figcaption>
+  </figure>
+  <div class="wrap hero-text">
+    <h1>Graphics performance engineer at TikTok</h1>
+    <p class="hero-lead">I work on real-time rendering and GPU performance. These are the renderers, shaders, tools and games I’ve built along the way.</p>
+    <p class="hero-actions"><a class="button-fill" href="#works">See the work</a><a class="button" href="about/">About me</a></p>
   </div>
 </section>
 
@@ -59,13 +57,14 @@
     <h2 class="section-title">Selected work</h2>
     <ul class="feat-grid">
       <li class="work feat lead">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/world-space-restir/cover-thumb.webp" srcset="assets/img/world-space-restir/cover-thumb.webp 900w, assets/img/world-space-restir/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="" fetchpriority="high"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-world-space-restir.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
+        <div class="work-frame full"><img class="work-thumb" src="assets/img/world-space-restir/cover-thumb.webp" srcset="assets/img/world-space-restir/cover-thumb.webp 900w, assets/img/world-space-restir/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="" fetchpriority="high"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-world-space-restir.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
         <div class="feat-text">
           <p class="work-meta"><span>2024</span><span>Team of two</span></p>
           <h3><a href="works/world-space-restir/">World-Space ReSTIR in Vulkan</a></h3>
           <p class="work-excerpt">World-space global illumination in a Vulkan ray-tracing pipeline. About 40% more accurate than screen-space ReSTIR in large scenes, for roughly 5% more render time.</p>
           <ul class="feat-stats"><li><strong>≈40%</strong><span>higher accuracy than screen-space ReSTIR in large scenes</span></li><li><strong>≈5%</strong><span>extra render time</span></li><li><strong>1.3 M</strong><span>triangles in the subway test scene, at 1 sample per pixel</span></li></ul>
           <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>Vulkan</li><li>GLSL</li></ul>
+          <ul class="feat-links"><li><a href="https://github.com/zhiyi1801/CIS-565-2024Fall-Final"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>GitHub</a></li><li><a href="https://wangningbei.github.io/2023/ReSTIR.html"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M10 12.5h5M10 16h5"/></svg>Paper</a></li></ul>
         </div>
       </li>
       <li class="work feat">
@@ -75,6 +74,7 @@
           <h3><a href="works/cuda-path-tracer/">CUDA Path Tracer</a></h3>
           <p class="work-excerpt">A GPU path tracer in CUDA with glTF scenes, physically based materials, depth of field and environment lighting. Stream compaction cuts frame time from 25.7 to 18.2 ms in open scenes.</p>
           <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>CUDA</li><li>GPU Programming</li></ul>
+          <ul class="feat-links"><li><a href="https://github.com/jichumao/CUDA-Path-Tracer"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>GitHub</a></li></ul>
         </div>
       </li>
       <li class="work feat">
@@ -84,15 +84,17 @@
           <h3><a href="works/webgpu-clustered-shading/">WebGPU Forward+ and Clustered Deferred Shading</a></h3>
           <p class="work-excerpt">Forward+ and clustered deferred shading in the browser. With 5,000 moving lights at 4K, clustered deferred runs above 100 fps where naive forward shading manages 3.</p>
           <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>TypeScript</li><li>WebGPU</li><li>WGSL</li></ul>
+          <ul class="feat-links"><li><a href="https://jichu.art/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred/"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Live demo</a></li><li><a href="https://github.com/jichumao/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>GitHub</a></li></ul>
         </div>
       </li>
       <li class="work feat">
-        <div class="work-frame"><img class="work-thumb" src="assets/img/vulkan-grass-rendering/cover-thumb.webp" srcset="assets/img/vulkan-grass-rendering/cover-thumb.webp 900w, assets/img/vulkan-grass-rendering/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-vulkan-grass-rendering.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
+        <div class="work-frame full"><img class="work-thumb" src="assets/img/vulkan-grass-rendering/cover-thumb.webp" srcset="assets/img/vulkan-grass-rendering/cover-thumb.webp 900w, assets/img/vulkan-grass-rendering/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 668px" width="1500" height="1000" alt="" loading="lazy" decoding="async"><video class="work-preview" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="assets/video/preview-vulkan-grass-rendering.mp4"></video><span class="work-live" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.3 6.2 3.7-6.2 3.7z"/></svg>Preview</span></div>
         <div class="feat-text">
           <p class="work-meta"><span>2024</span><span>Individual project</span></p>
           <h3><a href="works/vulkan-grass-rendering/">Vulkan Grass Rendering</a></h3>
           <p class="work-excerpt">Real-time grass in Vulkan. A compute shader simulates and culls every blade; with 32,768 blades, culling lifts the frame rate from 70 to 228 fps.</p>
           <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>Vulkan</li><li>GLSL</li></ul>
+          <ul class="feat-links"><li><a href="https://github.com/jichumao/Vulkan-Grass-Rendering"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>GitHub</a></li><li><a href="https://www.cg.tuwien.ac.at/research/publications/2017/JAHRMANN-2017-RRTG/JAHRMANN-2017-RRTG-draft.pdf"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4v13H7z"/><path d="M14 3.5v4h4"/><path d="M10 12.5h5M10 16h5"/></svg>Paper</a></li></ul>
         </div>
       </li>
       <li class="work feat">
@@ -102,6 +104,7 @@
           <h3><a href="works/cuda-flocking/">CUDA Flocking</a></h3>
           <p class="work-excerpt">Reynolds’ boids simulated on the GPU with CUDA. A coherent uniform grid runs 100,000 boids at 2,677 fps where brute force manages 43.</p>
           <ul class="tags" aria-label="Category and tech stack"><li class="cat">Rendering &amp; GPU</li><li>C++</li><li>CUDA</li><li>GPU Programming</li></ul>
+          <ul class="feat-links"><li><a href="https://github.com/jichumao/CUDA-Flocking"><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.5 8-4.5 4 4.5 4"/><path d="m15.5 8 4.5 4-4.5 4"/><path d="m13.5 5.5-3 13"/></svg>GitHub</a></li></ul>
         </div>
       </li>
     </ul>
@@ -225,8 +228,7 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="assets/js/hero.js?v=12" defer></script>
-<script src="assets/js/works.js?v=12" defer></script>
-<script src="assets/js/previews.js?v=12" defer></script>
+<script src="assets/js/works.js?v=13" defer></script>
+<script src="assets/js/previews.js?v=13" defer></script>
 </body>
 </html>

@@ -139,34 +139,50 @@ a.button-fill:hover { background: transparent; color: var(--text); }
   .site-nav a { font-size: 11px; padding: 10px 0; }
 }
 
-/* Home: opening. The picture is the Procedural Fireball project running live (assets/js/hero.js). */
+/* Home: opening. One of the renderers' own frames across the whole width; the text sits on its darkened left side. */
 
-.hero { padding: clamp(20px, 3.5vw, 48px) 0 clamp(40px, 6vw, 88px); overflow: hidden; }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
-.hero h1 { font-size: clamp(40px, 5.2vw, 80px); line-height: 1.06; max-width: 10.5em; }
-.hero-lead { margin: 24px 0 0; font-size: clamp(17px, 1.3vw, 20px); color: var(--body); max-width: 31em; }
-.hero-actions, .about-actions { margin: 34px 0 0; display: flex; flex-wrap: wrap; gap: 12px; }
-.hero-stage { margin: 0; justify-self: end; width: min(100%, 600px); }
-.hero-media { position: relative; aspect-ratio: 1; }
-.hero-media::before {
-  content: ""; position: absolute; inset: -14%;
-  background: radial-gradient(closest-side, rgba(255, 96, 16, .26), rgba(255, 96, 16, 0) 72%);
+.hero { position: relative; display: flex; align-items: center; min-height: clamp(520px, 80vh, 860px); overflow: hidden; }
+.hero-media { position: absolute; inset: 0; margin: 0; overflow: hidden; }
+.hero-media picture, .hero-art { display: block; width: 100%; height: 100%; }
+.hero-art { object-fit: cover; object-position: 58% 46%; }
+.hero-media::after {
+  content: ""; position: absolute; inset: -1px; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, .92) 0%, rgba(0, 0, 0, .84) 34%, rgba(0, 0, 0, .52) 54%, rgba(0, 0, 0, 0) 78%),
+    linear-gradient(180deg, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0) 78%, #000 100%);
 }
-.hero-art, .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.hero-art { object-fit: contain; mix-blend-mode: screen; }
-.hero-canvas { opacity: 0; transition: opacity .6s ease; }
-.hero-media.live .hero-canvas { opacity: 1; }
-.hero-media.live .hero-art { visibility: hidden; }
-.hero-stage figcaption { position: relative; margin-top: -22px; font-size: 13px; color: var(--muted); text-align: center; }
-.hero-stage figcaption a { color: var(--text); text-decoration-color: var(--accent); text-underline-offset: 4px; }
-.hero-stage figcaption a:hover { color: var(--accent); }
+.hero-media figcaption {
+  position: absolute; right: var(--gutter); bottom: 22px; z-index: 2; max-width: min(46ch, 44vw);
+  font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, .82); text-align: right; text-shadow: 0 1px 8px rgba(0, 0, 0, .9);
+}
+.hero-media figcaption a { color: #fff; text-decoration-color: var(--accent); text-underline-offset: 4px; }
+.hero-media figcaption a:hover { color: var(--accent); }
+.hero-text { position: relative; z-index: 1; padding-top: 24px; padding-bottom: 72px; }
+.hero h1 { font-size: clamp(40px, 5.4vw, 84px); line-height: 1.05; max-width: 9.6em; text-shadow: 0 2px 24px rgba(0, 0, 0, .6); }
+.hero-lead { margin: 24px 0 0; font-size: clamp(17px, 1.3vw, 20px); color: #e6e6e6; max-width: 30em; text-shadow: 0 1px 12px rgba(0, 0, 0, .8); }
+.hero-actions, .about-actions { margin: 34px 0 0; display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-actions .button { background: rgba(0, 0, 0, .45); }
+
+/* The page header lies over the picture on the home page. */
+.home .site-header { position: absolute; top: 0; left: 0; right: 0; z-index: 3; }
 
 @media (prefers-reduced-motion: no-preference) {
+  .hero-art { animation: hero-drift 40s ease-in-out infinite alternate; transform-origin: 62% 48%; }
   .hero-text > * { animation: hero-rise .8s cubic-bezier(.2, .7, .2, 1) both; }
   .hero-text > .hero-lead { animation-delay: .1s; }
   .hero-text > .hero-actions { animation-delay: .2s; }
 }
+@keyframes hero-drift { from { transform: scale(1); } to { transform: scale(1.08); } }
 @keyframes hero-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 700px) {
+  .hero { display: block; min-height: 0; }
+  .hero-media { position: relative; inset: auto; height: 88vw; }
+  .hero-art { object-position: 50% 50%; }
+  .hero-media::after { background: linear-gradient(180deg, rgba(0, 0, 0, .6) 0%, rgba(0, 0, 0, 0) 22%, rgba(0, 0, 0, 0) 62%, #000 100%); }
+  .hero-media figcaption { left: var(--gutter); right: var(--gutter); bottom: 14px; max-width: none; text-align: left; font-size: 12px; }
+  .hero-text { padding-top: 8px; padding-bottom: 40px; }
+}
 
 /* Home: works --------------------------------------------------------- */
 
@@ -223,6 +239,11 @@ a.button-fill:hover { background: transparent; color: var(--text); }
 .feat-stats strong { display: block; font: 700 clamp(24px, 2.2vw, 32px)/1.1 var(--serif); color: var(--text); }
 .feat-stats span { display: block; margin-top: 6px; font-size: 13px; line-height: 1.45; color: var(--muted); }
 .feat.lead .tags { margin-top: 26px; }
+/* Links under a featured card. They sit above the card's own stretched link, so each one is clickable by itself. */
+.feat-links { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 20px; position: relative; }
+.feat-links a { display: inline-flex; align-items: center; gap: 7px; padding: 4px 0; color: var(--text); font-size: 14px; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--line); transition: border-color .2s, color .2s; }
+.feat-links a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.feat-links .icon { width: 16px; height: 16px; color: var(--accent); }
 @media (max-width: 1200px) { .feat-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .more-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 14px 24px; margin: clamp(64px, 7vw, 112px) 0 clamp(24px, 3vw, 36px); }
 .more-head .section-title { margin: 0; }
@@ -446,8 +467,7 @@ tbody td:last-child { color: var(--text); }
 @media (max-width: 900px) {
   body { font-size: 16px; }
   .skills div { grid-template-columns: 1fr; }
-  .hero-grid, .feat-grid, .feat.lead { grid-template-columns: minmax(0, 1fr); }
-  .hero-stage { justify-self: center; width: min(72vw, 420px); }
+  .feat-grid, .feat.lead { grid-template-columns: minmax(0, 1fr); }
   .about-grid, .project-grid, .project-head { grid-template-columns: minmax(0, 1fr); }
   .bars-row { grid-template-columns: minmax(0, 1fr); }
   .project-glow { opacity: .34; }

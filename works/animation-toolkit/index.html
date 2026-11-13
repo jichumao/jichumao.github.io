@@ -19,7 +19,7 @@
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/playfair-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../assets/css/site.css?v=12">
+<link rel="stylesheet" href="../../assets/css/site.css?v=13">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -47,7 +47,7 @@
           <p class="project-lead">An interactive animation toolkit: curve editing and rotations, forward and inverse kinematics, particle systems and behavioural animation.</p>
           <ul class="tags" aria-label="Category and tech stack"><li class="cat">Animation</li><li class="cat">Tools</li><li>Computer Animation</li><li>Inverse Kinematics</li><li>Particle Systems</li><li>Behavioral Animation</li><li>Spline Curves</li></ul>
         </div>
-        <figure class="project-cover"><img class="" src="../../assets/img/animation-toolkit/cover-thumb.webp" srcset="../../assets/img/animation-toolkit/cover-thumb.webp 900w, ../../assets/img/animation-toolkit/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Animation toolkit screens: agents on a grid in the behaviour editor, a character in the curve editor and a particle system" fetchpriority="high"><video class="work-preview" data-autoplay muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../../assets/video/preview-animation-toolkit.mp4" type="video/mp4"></video></figure>
+        <figure class="project-cover full"><img class="" src="../../assets/img/animation-toolkit/cover-thumb.webp" srcset="../../assets/img/animation-toolkit/cover-thumb.webp 900w, ../../assets/img/animation-toolkit/cover.webp 1500w" sizes="(max-width: 900px) calc(100vw - 40px), 780px" width="1500" height="1000" alt="Six views of the toolkit: a spline with its control handles, two models rotating, a character posed by IK targets, an agent among cone obstacles, and two firework bursts" fetchpriority="high"><video class="work-preview" data-autoplay muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../../assets/video/preview-animation-toolkit.mp4" type="video/mp4"></video></figure>
       </div>
       <dl class="facts">
         <div><dt><svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Year</dt><dd>2024</dd></div>
@@ -69,23 +69,39 @@
         </div>
       </div>
       <div class="project-media">
-      <ul class="gallery three">
+      <ul class="gallery two">
         <li>
           <figure>
-            <a class="shot" href="../../assets/img/animation-toolkit/curve-editor.webp" data-caption="Curve editor: rotation"><img src="../../assets/img/animation-toolkit/curve-editor-thumb.webp" width="800" height="451" alt="Curve editor: rotation" loading="lazy" decoding="async"></a>
-            <figcaption>Curve editor: rotation</figcaption>
+            <video class="clip" data-autoplay controls loop muted playsinline preload="none" width="1280" height="720" poster="../../assets/video/animation-curve-poster.webp" aria-label="Curve editor: a Hermite spline and its control points"><source src="../../assets/video/animation-curve.mp4" type="video/mp4"></video>
+            <figcaption>Curve editor: a Hermite spline and its control points</figcaption>
           </figure>
         </li>
         <li>
           <figure>
-            <a class="shot" href="../../assets/img/animation-toolkit/particle-editor.webp" data-caption="Particle editor"><img src="../../assets/img/animation-toolkit/particle-editor-thumb.webp" width="800" height="451" alt="Particle editor" loading="lazy" decoding="async"></a>
-            <figcaption>Particle editor</figcaption>
+            <video class="clip" data-autoplay controls loop muted playsinline preload="none" width="1280" height="720" poster="../../assets/video/animation-rotation-poster.webp" aria-label="Curve editor: one rotation interpolated with Euler angles (left) and quaternions (right)"><source src="../../assets/video/animation-rotation.mp4" type="video/mp4"></video>
+            <figcaption>Curve editor: one rotation interpolated with Euler angles (left) and quaternions (right)</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <ul class="gallery two">
+        <li>
+          <figure>
+            <video class="clip" data-autoplay controls loop muted playsinline preload="none" width="1280" height="720" poster="../../assets/video/animation-ik-poster.webp" aria-label="IK editor: the limb-based solver following targets at the hands and feet"><source src="../../assets/video/animation-ik.mp4" type="video/mp4"></video>
+            <figcaption>IK editor: the limb-based solver following targets at the hands and feet</figcaption>
           </figure>
         </li>
         <li>
           <figure>
-            <a class="shot" href="../../assets/img/animation-toolkit/behavior-editor.webp" data-caption="Behaviour editor"><img src="../../assets/img/animation-toolkit/behavior-editor-thumb.webp" width="800" height="451" alt="Behaviour editor" loading="lazy" decoding="async"></a>
-            <figcaption>Behaviour editor</figcaption>
+            <video class="clip" data-autoplay controls loop muted playsinline preload="none" width="1280" height="720" poster="../../assets/video/animation-behavior-poster.webp" aria-label="Behaviour editor: an agent avoiding obstacles on the way to its target"><source src="../../assets/video/animation-behavior.mp4" type="video/mp4"></video>
+            <figcaption>Behaviour editor: an agent avoiding obstacles on the way to its target</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <ul class="gallery one">
+        <li>
+          <figure>
+            <video class="clip" data-autoplay controls loop muted playsinline preload="none" width="1280" height="720" poster="../../assets/video/animation-fireworks-poster.webp" aria-label="Particle editor: fireworks"><source src="../../assets/video/animation-fireworks.mp4" type="video/mp4"></video>
+            <figcaption>Particle editor: fireworks</figcaption>
           </figure>
         </li>
       </ul>
@@ -123,7 +139,6 @@
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>
-<script src="../../assets/js/clips.js?v=12" defer></script>
-<script src="../../assets/js/lightbox.js?v=12" defer></script>
+<script src="../../assets/js/clips.js?v=13" defer></script>
 </body>
 </html>

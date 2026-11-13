@@ -1,32 +1,31 @@
 {
- "animation-toolkit/behavior-editor": {
-  "alpha": false,
-  "h": 572,
-  "th": 451,
-  "tw": 800,
-  "w": 1015
- },
  "animation-toolkit/cover": {
   "alpha": false,
   "h": 1000,
-  "layout": "panels",
+  "layout": "full",
   "th": 600,
   "tw": 900,
   "w": 1500
  },
- "animation-toolkit/curve-editor": {
-  "alpha": false,
-  "h": 572,
-  "th": 451,
-  "tw": 800,
-  "w": 1015
+ "clip/animation-behavior": {
+  "h": 720,
+  "w": 1280
  },
- "animation-toolkit/particle-editor": {
-  "alpha": false,
-  "h": 572,
-  "th": 451,
-  "tw": 800,
-  "w": 1015
+ "clip/animation-curve": {
+  "h": 720,
+  "w": 1280
+ },
+ "clip/animation-fireworks": {
+  "h": 720,
+  "w": 1280
+ },
+ "clip/animation-ik": {
+  "h": 720,
+  "w": 1280
+ },
+ "clip/animation-rotation": {
+  "h": 720,
+  "w": 1280
  },
  "clip/fireball": {
   "h": 800,
@@ -69,8 +68,8 @@
   "w": 446
  },
  "clip/restir-hash-grid": {
-  "h": 410,
-  "w": 446
+  "h": 828,
+  "w": 960
  },
  "clip/restir-spatiotemporal": {
   "h": 410,
@@ -255,6 +254,13 @@
   "tw": 800,
   "w": 800
  },
+ "cuda-path-tracer/duck-room": {
+  "alpha": false,
+  "h": 1200,
+  "th": 800,
+  "tw": 800,
+  "w": 1200
+ },
  "cuda-path-tracer/env-off": {
   "alpha": false,
   "h": 800,
@@ -357,7 +363,7 @@
  "glsl-shaders/cover": {
   "alpha": false,
   "h": 1000,
-  "layout": "panels",
+  "layout": "full",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -649,7 +655,7 @@
  "monte-carlo-path-tracer/cover": {
   "alpha": false,
   "h": 1000,
-  "layout": "panels",
+  "layout": "full",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -763,7 +769,7 @@
  "physically-based-shaders/cover": {
   "alpha": false,
   "h": 1000,
-  "layout": "panels",
+  "layout": "full",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -1063,7 +1069,7 @@
  "vulkan-grass-rendering/cover": {
   "alpha": false,
   "h": 1000,
-  "layout": "panels",
+  "layout": "full",
   "th": 600,
   "tw": 900,
   "w": 1500
@@ -1113,10 +1119,10 @@
  },
  "webgpu-clustered-shading/sponza-4k-5000-lights": {
   "alpha": false,
-  "h": 1020,
+  "h": 1306,
   "th": 408,
   "tw": 800,
-  "w": 2000
+  "w": 2560
  },
  "world-space-restir/chart-initial-sampling": {
   "alpha": false,
@@ -1135,7 +1141,7 @@
  "world-space-restir/cover": {
   "alpha": false,
   "h": 1000,
-  "layout": "panels",
+  "layout": "full",
   "th": 600,
   "tw": 900,
   "w": 1500

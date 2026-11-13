@@ -97,7 +97,7 @@ SERIES = [
          note="Sunset from the grazing land above the valley.",
          rows=[[71], [73, 74], [72], [77, 79], [76], [68, 81], [80]], cover=80),
     dict(slug="subway", title="Subway", where="", when="April 2025",
-         note="A subway car I built in Unreal Engine, photographed off a 4K monitor with a Canon 5D Mark IV, a 50 mm lens and a polarising filter, then finished to take the digital edge off. Final project for a photography class.",
+         note="A subway car I built in Unreal Engine, photographed off a 4K monitor with a Canon 5D Mark IV, a 50 mm lens and a polarising filter, then finished to take the digital edge off.",
          rows=[[398], [399, 397], [391], [393, 396], [394, 392], [395, 400]], cover=398, link=("How it was made", "works/virtual-subway/")),
     dict(slug="cherry-blossom", title="Cherry Blossom", where="Philadelphia", when="March 2026",
          note="The spring festival: blossom overhead, drums on the stage.",
@@ -118,7 +118,7 @@ SERIES = [
          note="Elliot, a tabby kitten, and a lens held very close.",
          rows=[[299], [300, 302], [303, 301]], cover=300),
     dict(slug="february", title="February", where="Philadelphia", when="2025",
-         note="Homework from my first weeks in a photography class: tail lights, a crescent moon, a squirrel.",
+         note="Early pictures: tail lights, a crescent moon, a squirrel.",
          rows=[[324], [320, 323], [337, 321]], cover=324),
 ]
 

@@ -74,15 +74,15 @@ ZH = {
     "Portraits in a park, from the last daylight until the lamps came on.": "在公园里拍的人像，从最后一点天光拍到路灯亮起。",
     "The western edge of the city on a clear afternoon.": "一个晴朗的下午，城市的最西边。",
     "Sunset from the grazing land above the valley.": "在山谷上方的牧场看日落。",
-    "A subway car I built in Unreal Engine, photographed off a 4K monitor with a Canon 5D Mark IV, a 50 mm lens and a polarising filter, then finished to take the digital edge off. Final project for a photography class.":
-        "我在 Unreal Engine 里搭了一节地铁车厢，用佳能 5D Mark IV、50 mm 镜头加偏振镜对着 4K 显示器拍摄，再通过后期降低数码感。这是我摄影课的期末作品。",
+    "A subway car I built in Unreal Engine, photographed off a 4K monitor with a Canon 5D Mark IV, a 50 mm lens and a polarising filter, then finished to take the digital edge off.":
+        "我在 Unreal Engine 里搭了一节地铁车厢，用佳能 5D Mark IV、50 mm 镜头加偏振镜对着 4K 显示器拍摄，再通过后期降低数码感。",
     "The spring festival: blossom overhead, drums on the stage.": "春天的樱花节：头顶是花，台上是鼓。",
     "The opera house on the water, from late afternoon into the night.": "水边的歌剧院，从傍晚到入夜。",
     "A tea estate built around a château-style hotel.": "围绕一座城堡式酒店建起的茶园。",
     "The Jersey Shore before the summer crowds.": "夏天的人潮到来之前的泽西海岸。",
     "A gorge overlook, an orchard and a small town in autumn.": "秋天的峡谷观景台、果园和小镇。",
     "Elliot, a tabby kitten, and a lens held very close.": "虎斑小猫 Elliot，和一支凑得很近的镜头。",
-    "Homework from my first weeks in a photography class: tail lights, a crescent moon, a squirrel.": "刚开始上摄影课那几周的作业：车尾灯、一弯新月、一只松鼠。",
+    "Early pictures: tail lights, a crescent moon, a squirrel.": "早期的几张照片：车尾灯、一弯新月、一只松鼠。",
 
     # subjects
     "Landscape": "风光",

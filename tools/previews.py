@@ -68,24 +68,24 @@ VPL = (71, 97, 909, 935)      # viewport of the 1356x964 PBR screenshots
 GL = (166, 0, 1292, 1126)     # square crop of the GLSL shader screenshots
 
 PREVIEWS = {
-    "world-space-restir": ("video", V("restir-hash-grid"), (18, 0, 410, 410), 0, 5.0),
-    "cuda-path-tracer": ("stills", [(S("cuda-path-tracer", n), None) for n in ("dragon", "shanghai-nights", "stone-cat")]),
+    "world-space-restir": ("video-full", V("restir-hash-grid"), (0, 94, 960, 640), 3, 7.0),      # the robot as rendered, then its hash-grid cells
+    "cuda-path-tracer": ("stills", [(S("cuda-path-tracer", n), None) for n in ("duck-doggy-duck", "dragon", "shanghai-nights", "stone-cat")]),
     "webgpu-clustered-shading": ("video", V("webgpu-moving-lights"), (67, 0, 488, 488), 12.5, 5.5),
-    "vulkan-grass-rendering": ("video", V("grass-showcase"), (176, 263, 444, 444), 0, 5.4),
-    "cuda-flocking": ("video", V("flocking-swarm"), (40, 40, 560, 560), 0.5, 3.0, 38),
+    "vulkan-grass-rendering": ("video-full", V("grass-showcase"), (0, 236, 796, 530), 0, 5.4),
+    "cuda-flocking": ("video", V("flocking-dense"), (0, 0, 640, 640), 0.3, 4.5, 36),
     "stream-compaction": ("stills-full", [(C("stream-compaction-stage-1.png"), None), (C("stream-compaction-stage-2.png"), None)]),   # the diagram drawing itself
     "unity-stylization": ("video", V("stylization-2"), (215, 0, 470, 470), 0, 6.0),
     "houdini-procedural": ("video", V("jellyfish"), (0, 0, 800, 800), 0, 2.3),
-    "physically-based-shaders": ("stills", [(S("physically-based-shaders", n), VP) for n in
-                                            ("red-metal1-rough0", "red-metal1-rough025", "red-metal1-rough050", "red-metal1-rough075", "red-metal1-rough100")]
-                                 + [(S("physically-based-shaders", "scene-gun"), (20, 97, 858, 935)), (S("physically-based-shaders", "displacement-100"), (61, 97, 899, 935))]),
+    "physically-based-shaders": ("stills-full", [(S("physically-based-shaders", "scene-skull"), (20, 137, 858, 696)), (S("physically-based-shaders", "scene-gun"), (20, 137, 858, 696)),
+                                                 (S("physically-based-shaders", "displacement-100"), (61, 137, 899, 696))]
+                                 + [(S("physically-based-shaders", n), (53, 148, 751, 613)) for n in ("red-metal1-rough0", "red-metal1-rough050", "red-metal1-rough100")]),
     "mini-minecraft": ("stills-full", [(S("mini-minecraft", n), None) for n in ("biome-grassland", "biome-desert", "biome-snow", "biome-mountain")]),
-    "monte-carlo-path-tracer": ("stills", [(S("monte-carlo-path-tracer", n), (4, 4, 972, 972)) for n in
-                                           ("specular-btdfs", "microfacet-brdfs", "veach-naive", "veach-direct", "veach-mis")]),
-    "glsl-shaders": ("stills", [(S("glsl-shaders", n), GL) for n in ("matcap-pearl", "matcap-red-plastic", "surface-normals", "color-gradient", "sobel", "worley-noise")]),
+    "monte-carlo-path-tracer": ("stills-full", [(S("monte-carlo-path-tracer", n), (4, 164, 972, 810)) for n in
+                                                ("direct-lighting-cornell-two-lights", "specular-btdfs", "dielectric-materials", "microfacet-brdfs", "veach-mis")]),
+    "glsl-shaders": ("stills-full", [(S("glsl-shaders", n), (0, 78, 1456, 1048)) for n in ("matcap-chrome", "matcap-orange-green", "surface-normals", "color-gradient", "bloom", "sobel", "worley-noise")]),
     "procedural-fireball": ("video", V("fireball"), (0, 0, 800, 800), 0, 5.9),
     "tree-creator": ("stills-full", [(C(f"tree-grow-{n}.png"), None) for n in range(1, 7)]),   # one plant, iterations 1 to 6
-    "animation-toolkit": ("stills", [(C("animation-curve.jpg"), (560, 150, 1010, 600)), (C("animation-particle.jpg"), (430, 78, 860, 508))]),
+    "animation-toolkit": ("video-full", V("animation-behavior"), (100, 0, 1080, 720), 1, 7.0),
     "gem-match-game": ("video", V("gem-match-game"), (788, 98, 582, 582), 12, 6.0),
     "maya-3d-scene-modeling": ("stills", [(S("maya-3d-scene-modeling", "render-1"), (0, 0, 1080, 1080)), (S("maya-3d-scene-modeling", "render-3"), (380, 0, 1018, 638)),
                                           (S("maya-3d-scene-modeling", "render-4"), None), (S("maya-3d-scene-modeling", "render-5"), None)]),
