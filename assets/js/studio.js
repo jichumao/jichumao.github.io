@@ -371,6 +371,9 @@
     "  vec3 eye = uEye + (uRight * cos(a) + uUp * sin(a)) * r;",
     "  radiance(eye, normalize(focus - eye), lambda);",
     "  float lum = dot(L0 + L1 + L2 + L3, vec3(.2126, .7152, .0722));",
+    // a sample gone wrong (0/0 at a grazing angle) would stay in the average for good, and the denoiser would spread
+    // it into a black square; such a sample is dropped
+    "  if (isnan(lum) || isinf(lum) || !(lum >= 0. && lum < 1e8)) { L0 = L1 = L2 = L3 = vec3(0.); lum = 0.; }",
     "  if (lum > 10.) { float s = 10. / lum; L0 *= s; L1 *= s; L2 *= s; L3 *= s; lum = 10.; }   // tame fireflies",
     "  ivec2 ip = ivec2(px); bool z = uFrame == 0;",
     "  float k = 1. / float(uFrame + 1);",
@@ -425,7 +428,10 @@
     "  ivec2 p = ivec2(gl_FragCoord.xy);",
     "  vec4 s = texelFetch(uS, p, 0); vec3 g1 = texelFetch(uG1, p, 0).rgb, g2 = texelFetch(uG2, p, 0).rgb, g3 = texelFetch(uG3, p, 0).rgb;",
     "  float l = dot(s.rgb + g1 + g2 + g3, vec3(.2126, .7152, .0722));",
-    "  o = vec4(s.rgb + uC1 * g1 + uC2 * g2 + uC3 * g3, max(0., s.a - l * l));   // alpha: how much the samples vary",
+    "  vec4 c = vec4(s.rgb + uC1 * g1 + uC2 * g2 + uC3 * g3, max(0., s.a - l * l));   // alpha: how much the samples vary",
+    "  if (any(isnan(c)) || any(isinf(c))) c = vec4(0.);             // never hand the denoiser a broken pixel",
+    "  c = max(c, vec4(0.));",
+    "  o = c;",
     "}"
   ].join("\n");
 
@@ -435,7 +441,7 @@
     "uniform sampler2D uCol, uGeo; uniform int uStep, uFirst; uniform float uN; uniform vec2 uRes;",
     "out vec4 o;",
     "float lumi(vec3 c) { return dot(c, vec3(.2126, .7152, .0722)); }",
-    "float comp(float l) { return l / (1. + l); }                  // compressed, so the lights do not dominate",
+    "float comp(float l) { l = max(l, 0.); return l / (1. + l); }  // compressed, so the lights do not dominate",
     "void main() {",
     "  ivec2 p = ivec2(gl_FragCoord.xy), mx = ivec2(uRes) - 1;",
     "  vec4 c0 = texelFetch(uCol, p, 0), g0 = texelFetch(uGeo, p, 0); vec3 n0 = g0.xyz / max(length(g0.xyz), 1e-4);",
