@@ -9,12 +9,12 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "13"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "14"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
 # put that code between the quotes and rebuild. Every page of the site, photography included, then reports its views.
-GOATCOUNTER = ""
+GOATCOUNTER = "jichu"
 ANALYTICS = (f'\n<script data-goatcounter="https://{GOATCOUNTER}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'
              if GOATCOUNTER else "")
 
@@ -686,8 +686,18 @@ def write(rel, text):
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
 
-def social(indent="      "):
-    items = "".join(f'\n{indent}  <li><a href="{E(u)}">{icon(i)}{E(n)}</a></li>' for n, u, i in SOCIAL)
+# A link to one of these services shows that service's own icon when its file is in assets/icons/, and a plain line icon otherwise.
+# The folder holds only files the site's owner has put there: the brands' official SVGs, downloaded from their brand pages and not altered.
+BRANDS = {"github.com": "github", "youtube.com": "youtube", "youtu.be": "youtube", "linkedin.com": "linkedin", "bilibili.com": "bilibili"}
+
+def link_icon(url, fallback, root):
+    for host, name in BRANDS.items():
+        if host in url and os.path.exists(os.path.join(OUT, "assets", "icons", name + ".svg")):
+            return f'<img class="icon brand" src="{root}assets/icons/{name}.svg" width="18" height="18" alt="">'
+    return icon(fallback)
+
+def social(root, indent="      "):
+    items = "".join(f'\n{indent}  <li><a href="{E(u)}">{link_icon(u, i, root)}{E(n)}</a></li>' for n, u, i in SOCIAL)
     return f'<ul class="social">{items}\n{indent}</ul>'
 
 def tags_html(p, indent="        ", limit=None):
@@ -755,7 +765,7 @@ def page(*, root, path, title, desc, body, og_image, current="", scripts=(), per
     </div>
   </div>
   <div class="wrap footer-end">
-    {social(indent="    ")}
+    {social(root, indent="    ")}
     <p class="copyright">© Jichu Mao</p>
   </div>
 </footer>{js}
@@ -906,13 +916,13 @@ def card_links(p, indent="          "):
             out.append(("YouTube", "https://www.youtube.com/watch?v=" + val["src"].rsplit("/", 1)[1], "play"))
     if not out:
         return ""
-    items = "".join(f'<li><a href="{E(u)}">{icon(i)}{E(n)}</a></li>' for n, u, i in out[:4])
+    items = "".join(f'<li><a href="{E(u)}">{link_icon(u, i, "")}{E(n)}</a></li>' for n, u, i in out[:4])
     return f'\n{indent}<ul class="feat-links">{items}</ul>'
 
 def links_html(proj):
     if not proj.get("links"):
         return ""
-    items = "".join(f'\n            <li><a class="button" href="{E(u)}">{icon(i)}{E(n)}</a></li>' for n, u, i in proj["links"])
+    items = "".join(f'\n            <li><a class="button" href="{E(u)}">{link_icon(u, i, "../../")}{E(n)}</a></li>' for n, u, i in proj["links"])
     return f'\n          <ul class="project-links">{items}\n          </ul>'
 
 # ---------------------------------------------------------------- pages
@@ -990,7 +1000,7 @@ def build_home():
   <div class="wrap about-grid">
     <div class="about-side">
       {img_tag("home/avatar", root, thumb=False, cls="avatar", alt="Portrait of Jichu Mao")}
-      {social()}
+      {social(root)}
     </div>
     <div class="about-main">
       <h2>About</h2>
@@ -1068,7 +1078,7 @@ def build_about():
   <div class="about-grid">
     <div class="about-side">
       {img_tag("home/avatar", root, thumb=False, cls="avatar", alt="Portrait of Jichu Mao", lazy=False)}
-      {social()}
+      {social(root)}
     </div>
     <div class="about-main">
       <h1>Jichu Mao</h1>

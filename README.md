@@ -98,7 +98,11 @@ To use a résumé written elsewhere, replace `assets/Jichu-Mao-Resume.pdf` with 
 
 ## Visitor statistics
 
-Off by default. The site is prepared for GoatCounter, which counts page views without cookies, so no consent banner is needed, and is free for personal sites. To switch it on: create an account at goatcounter.com, choose a code (the `mysite` in `mysite.goatcounter.com`), set `GOATCOUNTER = "mysite"` near the top of `tools/build.py` and rebuild. Every page, photography included, then loads one small script from `gc.zgo.at`. Set it back to `""` to remove it.
+On. The site reports page views to GoatCounter, which counts without cookies, so no consent banner is needed. The numbers are at https://jichu.goatcounter.com (sign in with the account that owns the code `jichu`). The code is `GOATCOUNTER` near the top of `tools/build.py`; every page, photography included, loads one small script from `gc.zgo.at`. Set it to `""` and rebuild to switch statistics off.
+
+## Brand icons on links
+
+Links to GitHub, YouTube, LinkedIn and Bilibili show plain line icons until that service's own SVG is placed in `assets/icons/`. `assets/icons/README.md` lists the file names and the official pages to download them from.
 
 ## Covers
 
@@ -154,9 +158,9 @@ A project made of photographs that are already in the photography section (Virtu
 
 **Everything editable is in `tools/photography.py`:**
 
-- `SERIES`: one entry per series, in the order they appear. `rows` is the sequence, for example `[[58], [57, 54], [61]]` is one frame, then a pair, then one frame. `cover` is the photograph on the index tile. `focus` (optional) says which part of the cover to keep where a tile has to crop it.
-- `HOME_ROWS`: how the series tiles are paired on the index page.
-- `SLIDES`: the opening slideshow. Each entry is a photograph for wide screens, one for upright phones, and the series it links to.
+- `SERIES`: one entry per series. `rows` is the sequence, for example `[[58], [57, 54], [61]]` is one frame, then a pair, then one frame. `cover` is the photograph on the index tile. `focus` (optional) says which part of the cover to keep where a tile has to crop it.
+- `CHAPTERS`: the index page. Each chapter has a title, one sentence, the series in it, the shape of its tiles (`shape`, for example `"3 / 2"`) and how many sit in a row (`cols`: 2, 3 or 4). Every series belongs to exactly one chapter, and the order here is the order of the whole section. Covers are cropped to the chapter's shape around the series' `focus`.
+- `SLIDES`: the opening slideshow. Each entry is a photograph for wide screens, one for upright phones, and the series it links to. They all come from the first chapter, so the page opens in one mood.
 - `SUBJECTS`: the subject pages. A photograph can sit under several subjects and must sit under at least one; the rows on these pages are packed automatically.
 - `PLACE`: where a single photograph was taken, when that is more exact than its series' `where`. Shown in the viewer's caption.
 - `ALT`: one plain sentence per photograph. The build stops if one is missing.
@@ -168,7 +172,7 @@ A project made of photographs that are already in the photography section (Virtu
 **Adding photographs.**
 
 1. Pick an unused number for each and run `python3 tools/photos.py 401 path/to/a.jpg 402 path/to/b.jpg`. It writes the three sizes into `photography/img/` and records them in `tools/photos.json`. Nothing from the file's metadata is copied (no GPS, serial number or date); only focal length, aperture, shutter speed and ISO are kept for the caption. Each output file is then tagged with the author and a rights statement (XMP, invisible; `AUTHOR`, `RIGHTS` in `tools/photos.py`). Numbers listed in `UNTAGGED` are left without the tag: use it for pictures someone else took. `python3 tools/photos.py --stamp` tags every file again after a change, without touching the picture data.
-2. Put the numbers into a series' `rows` (or add a new series and list it in `HOME_ROWS`), write their `ALT` lines (and the Chinese ones in `tools/photography_zh.py`), and rebuild.
+2. Put the numbers into a series' `rows` (or add a new series and list it in a chapter of `CHAPTERS`), write their `ALT` lines (and the Chinese ones in `tools/photography_zh.py`), and rebuild.
 
 Rows read best when the aspect ratios in a row add up to between 1.5 and 3.5: one landscape; a landscape and a portrait; two squares; three portraits. A portrait on its own leaves most of a wide screen empty.
 
