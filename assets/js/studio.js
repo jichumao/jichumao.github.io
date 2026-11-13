@@ -385,7 +385,7 @@
   // where the letters stand: one gently curved row on a wide screen; on a tall one JICHU behind and ·ART in front
   var WIDTH = [0.61, 0.17, 0.97, 0.72, 0.77, 0.2, 0.93, 0.79, 0.89], CENTRE = [-0.03, 0, 0.001, 0, 0, 0, 0, 0.01, 0];
   function arch(wide) {             // the arch behind the letters (centre x, z, radius, tube) and the back wall's z
-    return { a: wide ? new Float32Array([0, -3.4, 3.05, 0.032]) : new Float32Array([0, -3.6, 1.75, 0.03]), wall: -7.5 };
+    return { a: wide ? new Float32Array([0, -3.4, 3.05, 0.032]) : new Float32Array([0, -3.6, 1.6, 0.03]), wall: -7.5 };
   }
   // the colours the lights flow through: amber, coral, rose, violet, indigo, and back again, each group a little behind
   // the one on its left, so the colour travels across the picture
