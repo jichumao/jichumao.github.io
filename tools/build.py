@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "14"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "15"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -630,8 +630,8 @@ PROJECTS = [
 ]
 
 HOME_ABOUT = [
-    "I’m a <strong>Graphics Performance Engineer</strong> at <strong>TikTok</strong>, working on the real-time effect rendering engine. I hold a master’s in Computer Science &amp; Computer Graphics from the University of Pennsylvania (May 2026).",
-    'Before that I interned at TikTok, <a href="https://www.infoldgames.com/en/home">Infold Games</a>, <a href="https://www.apple.com/">Apple</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a>, and was a teaching assistant for Penn’s computer graphics courses. Away from the GPU I take <a href="photography/">photographs</a>.',
+    'I work on the real-time effect rendering engine at <strong>TikTok</strong>. Before that: a master’s in Computer Science &amp; Computer Graphics at the <strong>University of Pennsylvania</strong>, and internships at TikTok, <a href="https://www.infoldgames.com/en/home">Infold Games</a>, <a href="https://www.apple.com/">Apple</a> and the <a href="https://www.ualberta.ca/en/index.html">University of Alberta</a>.',
+    'Away from the GPU I take <a href="photography/">photographs</a>.',
 ]
 
 ABOUT_INTRO = [
@@ -700,9 +700,9 @@ def social(root, indent="      "):
     items = "".join(f'\n{indent}  <li><a href="{E(u)}">{link_icon(u, i, root)}{E(n)}</a></li>' for n, u, i in SOCIAL)
     return f'<ul class="social">{items}\n{indent}</ul>'
 
-def tags_html(p, indent="        ", limit=None):
-    items = "".join(f'<li class="cat">{E(CAT_LABEL[c])}</li>' for c in p["cats"]) + "".join(f"<li>{E(t)}</li>" for t in p["tags"][:limit])
-    return f'{indent}<ul class="tags" aria-label="Category and tech stack">{items}</ul>'
+def tags_html(p, indent="        ", limit=None, cats=True):
+    items = ("".join(f'<li class="cat">{E(CAT_LABEL[c])}</li>' for c in p["cats"]) if cats else "") + "".join(f"<li>{E(t)}</li>" for t in p["tags"][:limit])
+    return f'{indent}<ul class="tags" aria-label="{"Category and tech stack" if cats else "Tech stack"}">{items}</ul>'
 
 PERSON = json.dumps({
     "@context": "https://schema.org", "@type": "Person", "name": "Jichu Mao", "url": SITE + "/",
@@ -946,7 +946,7 @@ def build_home():
 {meta_html(p, "          ")}
           <h3><a href="works/{p["slug"]}/">{E(p["title"])}</a></h3>
           <p class="work-excerpt">{E(p["excerpt"])}</p>{stats}
-{tags_html(p, "          ", limit=3)}{card_links(p)}
+{tags_html(p, "          ", limit=4, cats=False)}{card_links(p)}
         </div>
       </li>""")
     rest = [p for p in PROJECTS if p["slug"] not in FEATURED]
@@ -968,15 +968,14 @@ def build_home():
     body = f"""<section class="hero">
   <figure class="hero-media">
     <picture>
-      <source media="(max-width: 700px)" srcset="assets/img/home/sponza-tall.webp" width="1100" height="1100">
+      <source media="(max-width: 700px)" srcset="assets/img/home/sponza-tall-800.webp 800w, assets/img/home/sponza-tall.webp 1200w" sizes="100vw" width="1200" height="1512">
       <img class="hero-art" src="assets/img/home/sponza-1920.webp" srcset="assets/img/home/sponza-1280.webp 1280w, assets/img/home/sponza-1920.webp 1920w, assets/img/home/sponza-2560.webp 2560w, assets/img/home/sponza-3840.webp 3840w" sizes="100vw" width="3840" height="1839" alt="The Sponza atrium lit by thousands of coloured point lights: arches, hanging curtains and a lion relief at the end of the hall" fetchpriority="high">
     </picture>
     <figcaption>Sponza lit by 5,000 point lights, rendered at 4K in the browser. From <a href="works/webgpu-clustered-shading/">WebGPU Forward+ and Clustered Deferred Shading</a>.</figcaption>
   </figure>
   <div class="wrap hero-text">
-    <h1>Graphics performance engineer at TikTok</h1>
-    <p class="hero-lead">I work on real-time rendering and GPU performance. These are the renderers, shaders, tools and games I’ve built along the way.</p>
-    <p class="hero-actions"><a class="button-fill" href="#works">See the work</a><a class="button" href="about/">About me</a></p>
+    <h1>Jichu Mao</h1>
+    <p class="hero-lead">Graphics performance engineer at TikTok</p>
   </div>
 </section>
 
@@ -1000,7 +999,6 @@ def build_home():
   <div class="wrap about-grid">
     <div class="about-side">
       {img_tag("home/avatar", root, thumb=False, cls="avatar", alt="Portrait of Jichu Mao")}
-      {social(root)}
     </div>
     <div class="about-main">
       <h2>About</h2>
