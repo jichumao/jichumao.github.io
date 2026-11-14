@@ -451,10 +451,12 @@
     "  vec4 c0 = texelFetch(uCol, p, 0), g0 = texelFetch(uGeo, p, 0); vec3 n0 = g0.xyz / max(length(g0.xyz), 1e-4);",
     "  float lp = comp(lumi(c0.rgb)), sig;",
     "  if (uFirst == 1) {                     // how noisy this pixel's average is: from its samples once there are a few,",
-    "    float l = lumi(c0.rgb), s1 = 0., s2 = 0.;                // before that from its neighbours",
-    "    for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) { float q = comp(lumi(texelFetch(uCol, clamp(p + ivec2(x, y), ivec2(0), mx), 0).rgb)); s1 += q; s2 += q * q; }",
+    "    float l = lumi(c0.rgb), s1 = 0., s2 = 0., va = 0.;       // before that from its neighbours",
+    "    for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) { vec4 t = texelFetch(uCol, clamp(p + ivec2(x, y), ivec2(0), mx), 0); float q = comp(lumi(t.rgb)); s1 += q; s2 += q * q; va += t.a; }",
     "    s1 /= 9.;",
-    "    sig = uN >= 6. ? sqrt(c0.a / uN) / ((1. + l) * (1. + l)) : sqrt(max(0., s2 / 9. - s1 * s1));",
+    // the variance is averaged over the 3 x 3 neighbourhood (as in SVGF): a pixel whose few samples all missed the
+    // light looks certain on its own, and would otherwise stay as a dark speck
+    "    sig = uN >= 6. ? sqrt(max(c0.a, va / 9.) / uN) / ((1. + l) * (1. + l)) : sqrt(max(0., s2 / 9. - s1 * s1));",
     "  } else sig = c0.a;",
     "  const float K[3] = float[3](.375, .25, .0625);",
     "  vec3 acc = vec3(0.); float ws = 0.;",
