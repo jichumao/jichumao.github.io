@@ -1,6 +1,6 @@
 # jichu.art
 
-Static portfolio site (it used to run on WordPress). Plain HTML, CSS and a few small scripts, no framework. GitHub Pages serves the files as they are.
+Static portfolio site (it used to run on WordPress). Plain HTML, CSS and a few small scripts, no framework. GitHub Pages serves the files as they are, behind Tencent Cloud EdgeOne for visitors in China and elsewhere.
 
 ## Layout
 
@@ -195,6 +195,6 @@ Rows read best when the aspect ratios in a row add up to between 1.5 and 3.5: on
 - Short looping clips (converted from GIFs): same command with `-an` instead of the audio options, plus a poster image taken from the first frame.
 - Keep single files well under 50 MB; GitHub rejects files over 100 MB.
 
-## Custom domain and HTTPS
+## Domain, hosting and HTTPS
 
-The `CNAME` file holds the custom domain (`jichu.art`). DNS: `@` A records point at GitHub Pages, `www` is a CNAME to `jichumao.github.io`. HTTPS is enforced in Settings → Pages. GitHub issues the certificate and renews it on its own for as long as the DNS records keep pointing at GitHub.
+The `CNAME` file holds the custom domain (`jichu.art`); GitHub Pages is the origin. In front of it is Tencent Cloud EdgeOne (site `zone-35jv4gv2ke36`, Personal plan, service area global including mainland China), so visitors in China are served from mainland nodes. DNS is hosted on DNSPod: `@` and `www` are CNAMEs to `jichu.art.eo.dnse0.com` and `www.jichu.art.eo.dnse0.com` (the old A records to GitHub are paused, not deleted). Both accelerated domains pull from `jichumao.github.io` over HTTPS with the visitor's host (`jichu.art` / `www.jichu.art`) as the Host header, so GitHub serves the site and redirects `www` to the bare domain. EdgeOne does not verify the origin's certificate by default, so it keeps working if GitHub can no longer renew its own certificate for `jichu.art` (it cannot see the domain's DNS any more). Visitors get EdgeOne's free certificate (TrustAsia, issued and renewed automatically through DNSPod), HTTP is redirected to HTTPS (301), and the node cache follows GitHub's `Cache-Control: max-age=600`, so a deploy is visible everywhere within about ten minutes (or purge the cache in the EdgeOne console). Pages served from mainland China must show the ICP filing number: it is in every footer (京ICP备2024041560号-1, linked to beian.miit.gov.cn). Keeping the domain served through Tencent Cloud is also what keeps the filing's access record alive. To go back to GitHub alone: resume the paused A records and delete the two CNAMEs in DNSPod.
