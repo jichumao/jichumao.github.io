@@ -21,7 +21,7 @@ statement (XMP, invisible, see STAMP below).
 
 Needs Pillow:  pip install pillow
 """
-import glob, io, json, os, shutil, struct, sys
+import hashlib, glob, io, json, os, shutil, struct, sys
 from PIL import Image, ImageCms, ImageOps
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -119,7 +119,10 @@ def add(n, path, photos):
         files.append([size, out.width])
         big = out
     r, g, b = im.resize((1, 1), Image.BOX).getpixel((0, 0))
-    photos[f"{n:03d}"] = {"w": big.width, "h": big.height, "files": files, "settings": caption,
+    # v: a short hash of the largest file. The pages add it to this photograph's URLs (…-2400.webp?v=…), so a photograph
+    # exported again under the same number is fetched anew instead of being served from the CDN's 30-day image cache.
+    v = hashlib.sha1(open(os.path.join(IMG, f"{n:03d}-{max(w for w, _ in files)}.webp"), "rb").read()).hexdigest()[:8]
+    photos[f"{n:03d}"] = {"w": big.width, "h": big.height, "files": files, "settings": caption, "v": v,
                           "color": "#%02x%02x%02x" % (int(r * .55), int(g * .55), int(b * .55))}
     print(f"{n:03d}  {big.width}x{big.height}  {caption or 'no camera settings in the file'}")
 

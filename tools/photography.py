@@ -382,15 +382,21 @@ def place(n):
     return T(PLACE.get(n) or SERIES_OF[n]["where"])
 
 
+def url(n, img, k):
+    """One file of a photograph. A photograph exported again carries a version (photos.json "v"), so the CDN fetches it anew."""
+    v = ph(n).get("v")
+    return f"{img}{n:03d}-{k}.webp" + (f"?v={v}" if v else "")
+
+
 def srcset(n, img):
-    return ", ".join(f"{img}{n:03d}-{k}.webp {w}w" for k, w in ph(n)["files"])
+    return ", ".join(f"{url(n, img, k)} {w}w" for k, w in ph(n)["files"])
 
 
 def img_tag(n, img, sizes, *, eager=False, alt=None):
     p = ph(n)
     k = p["files"][0][0]
     load = ' fetchpriority="high"' if eager else ' loading="lazy" decoding="async"'
-    return (f'<img src="{img}{n:03d}-{k}.webp" srcset="{srcset(n, img)}" sizes="{sizes}" width="{p["w"]}" height="{p["h"]}" '
+    return (f'<img src="{url(n, img, k)}" srcset="{srcset(n, img)}" sizes="{sizes}" width="{p["w"]}" height="{p["h"]}" '
             f'alt="{E(alt_text(n) if alt is None else alt)}"{load}>')
 
 
@@ -415,7 +421,7 @@ def row_html(row, img, *, eager=False, with_series=False, phone=None):
             title = ST(SERIES_OF[n])
             cap = title if not cap or cap == title else f"{title}{comma()}{cap}"
         cp = f' data-cap="{E(cap)}"' if cap else ""
-        cells.append(f'<a class="ph" href="{img}{n:03d}-{big}.webp" style="--ar:{ar(n):.4f};--c:{p["color"]}" '
+        cells.append(f'<a class="ph" href="{url(n, img, big)}" style="--ar:{ar(n):.4f};--c:{p["color"]}" '
                      f'data-w="{p["w"]}" data-h="{p["h"]}" data-srcset="{srcset(n, img)}"{st}{cp}>'
                      f'{img_tag(n, img, share(ar(n), total, 34 if phone == "grid" else max(10, round(100 * ar(n) / total)) if phone == "row" else None), eager=eager)}</a>')
     return f'<div class="row" style="--sum:{total:.4f};--n:{len(row)}">' + "".join(cells) + "</div>"
@@ -553,7 +559,7 @@ def build_home(v):
         w, t = ph(wide), ph(tall)
         first = i == 0
         a = "srcset" if first else "data-srcset"
-        src = f'src="{img}{wide:03d}-1400.webp" ' if first else ""
+        src = f'src="{url(wide, img, 1400)}" ' if first else ""
         hidden = "" if first else ' aria-hidden="true" tabindex="-1"'
         slides.append(f"""    <a class="slide{" on" if first else ""}" href="{slug}/"{hidden}>
       <picture>
