@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "30"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "31"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
