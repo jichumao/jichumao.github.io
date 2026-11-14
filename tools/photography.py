@@ -94,7 +94,7 @@ SERIES = [
          rows=[[43, 38], [46, 49]], cover=38, focus="50% 30%"),
     dict(slug="pacific", title="Pacific", where="Ocean Beach and Sutro Baths, San Francisco", when="July 2025",
          note="The western edge of the city on a clear afternoon.",
-         rows=[[97, 95], [96, 101], [91], [100, 104]], cover=101, focus="45% 62%"),
+         rows=[[94, 97], [95, 96], [101, 103], [102, 100], [98, 104]], cover=101, focus="45% 62%"),
     dict(slug="dry-hills", title="Dry Hills", where="Hills east of San Jose, California", when="July 2025",
          note="Sunset from the grazing land above the valley.",
          rows=[[71], [73, 74], [77, 79], [68, 80]], cover=79),
@@ -102,8 +102,8 @@ SERIES = [
          note="A subway car I built in Unreal Engine, photographed off a 4K monitor with a Canon 5D Mark IV, a 50 mm lens and a polarising filter, then finished to take the digital edge off.",
          rows=[[398], [399, 397], [391], [393, 396], [394, 392], [395, 400]], cover=398, link=("How it was made", "works/virtual-subway/")),
     dict(slug="zhuhai", title="Zhuhai", title_zh="珠落夜色，海照贝影", where="", when="January 2026",
-         note="The opera house on the water, from late afternoon into the night.",
-         rows=[[228, 226, 232], [240, 256]], cover=240),
+         note="The lighthouse and the Fisher Girl by day, the opera house from dusk into the night, and the moon over the sea.",
+         rows=[[222, 225], [230], [232, 240], [238]], cover=240),
     dict(slug="tea-hills", title="Tea Hills", where="Wuyi, Jinhua, Zhejiang", when="December 2025",
          note="A tea estate built around a château-style hotel.",
          rows=[[200, 197, 202], [206, 205]], cover=206),
@@ -136,7 +136,7 @@ CHAPTERS = [
 # alternating warm and cool, day and night. The upright partner comes from the same series.
 SLIDES = [
     (12, 1, "above-the-fog"),
-    (240, 256, "zhuhai"),
+    (240, 238, "zhuhai"),
     (58, 57, "salt"),
     (221, 308, "guangzhou"),
     (79, 77, "dry-hills"),
@@ -148,11 +148,11 @@ SUBJECTS = [
     dict(slug="landscape", title="Landscape",
          photos=[4, 3, 7, 13, 12, 16, 58, 57, 62, 52, 71, 73, 74, 77, 79, 68, 80, 200, 187]),
     dict(slug="coast", title="Coast",
-         photos=[95, 96, 97, 101, 91, 100, 104, 228, 226, 261, 390, 284, 289, 288]),
+         photos=[94, 97, 95, 96, 101, 103, 102, 100, 98, 104, 222, 225, 261, 390, 284, 289, 288]),
     dict(slug="night", title="Night",
-         photos=[251, 252, 255, 308, 220, 221, 114, 117, 116, 118, 120, 122, 206, 205, 240, 256, 18, 20, 25, 80]),
+         photos=[251, 252, 255, 308, 220, 221, 114, 117, 116, 118, 120, 122, 206, 205, 240, 238, 18, 20, 25, 80]),
     dict(slug="architecture", title="Architecture",
-         photos=[242, 241, 249, 251, 252, 64, 63, 214, 216, 213, 215, 197, 202, 206, 232, 240, 363, 267, 373, 374]),
+         photos=[242, 241, 249, 251, 252, 64, 63, 214, 216, 213, 215, 197, 202, 206, 230, 232, 240, 363, 267, 373, 374]),
     dict(slug="street", title="Street",
          photos=[246, 247, 74, 368, 188, 194, 189, 214, 7]),
     dict(slug="portrait", title="Portrait",
@@ -201,8 +201,9 @@ PLACE = {
     242: "Grand Lisboa", 246: "Casino Lisboa", 252: "Wynn Palace, Cotai", 249: "The Venetian Macao, Cotai",
     251: "The Londoner Macao, Cotai", 308: "Canton Tower", 220: "Chigang Pagoda",
     221: "Haixin Bridge and Zhujiang New Town", 232: "Zhuhai Opera House", 240: "Zhuhai Opera House",
-    226: "Fisher Girl statue", 95: "Ocean Beach, San Francisco", 96: "Ocean Beach, San Francisco",
-    97: "Ocean Beach, San Francisco", 91: "Sutro Baths, San Francisco", 101: "Sutro Baths, San Francisco",
+    225: "Fisher Girl statue", 230: "Zhuhai Opera House", 95: "Ocean Beach, San Francisco", 96: "Ocean Beach, San Francisco",
+    97: "Ocean Beach, San Francisco", 94: "Ocean Beach, San Francisco", 101: "Sutro Baths, San Francisco",
+    102: "Sutro Baths, San Francisco", 103: "Sutro Baths, San Francisco",
     100: "Seal Rocks, San Francisco", 104: "Golden Gate Bridge", 116: "Bay Bridge, east span",
     117: "Bay Bridge and San Francisco", 261: "Atlantic City", 390: "Steel Pier, Atlantic City",
     363: "Atlantic City", 267: "Atlantic City", 368: "Atlantic City", 374: "Cape May", 289: "Cape May",
@@ -266,7 +267,10 @@ ALT = {
     96: "A dog running along the wet sand with a ball in its mouth, sea stacks behind.",
     101: "A cormorant perched on a ruined wall while a person walks along it, the sea glittering behind.",
     97: "A lone figure far off on an empty beach.",
-    91: "The ruins of a seaside bath below green bluffs, with the open ocean beyond.",
+    94: "A figure in black standing in the shallows, facing the breaking waves.",
+    103: "The broken concrete edge of an old seawater pool, a strip of green, and rocks in a glittering sea.",
+    102: "Three bands: green grass, a still blue pool, the white surf of the open sea.",
+    98: "A road curving down past a crosswalk and a cypress toward the ocean.",
     104: "The Golden Gate Bridge seen from a sandy beach.",
     # Fourth of July
     114: "A causeway and an island at sunset, the sky fading from orange to blue.",
@@ -289,10 +293,12 @@ ALT = {
     46: "She sits on a wooden bench in profile, one arm resting on her knee.",
     49: "She stands on a path at dusk holding the strap of her bag, looking at the camera.",
     # Zhuhai
-    228: "Two people standing on an empty beach under a wide turquoise sky.",
+    222: "A small white lighthouse at the end of a jetty, seen from a sunlit beach.",
+    225: "A statue of a woman holding a pearl aloft, on a rock in the sea under a deep blue sky.",
+    230: "The opera house and a red pavilion across the water, framed by a carved stone window at sunset.",
     232: "The two shells of the opera house at dusk above a paved plaza.",
     240: "The opera house shells lit amber at night.",
-    256: "Two people walking toward a lit lighthouse at night.",
+    238: "The moon high over the dark sea, its path of light reaching a lit railing.",
     # Off-season
     261: "An empty boardwalk and beach; a kite is caught on a line of string lights.",
     373: "A narrow lane between pastel-painted shopfronts.",
@@ -323,7 +329,6 @@ ALT = {
     138: "She crouches beside the sofa, looking down.",
     142: "Close portrait: she smiles, shelves and warm light behind her.",
     197: "A stone clock tower behind beds of red and yellow flowers.",
-    226: "A statue of a woman holding a pearl aloft, on a rock in the sea.",
     267: "Cloud shadows on a blank white wall behind a row of lamp posts, in black and white.",
     284: "A boardwalk ramp zigzagging toward a distant lighthouse.",
     363: "A pale tower rising behind a curved wall of blue glass.",
@@ -617,7 +622,7 @@ def build_series(i, v):
 </div>
 <section class="more">
   <h2>{T("More series")}</h2>
-  <div class="row">{more}</div>
+  <div class="row" style="--sum:{sum(ar(x["cover"]) for x in nxt):.4f};--n:2">{more}</div>
 </section>"""
     if LANG == "zh":
         desc = note + f"{count(len(ids(s)))}，Jichu Mao 摄" + (f"，{meta}。" if meta else "。")

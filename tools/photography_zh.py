@@ -91,7 +91,7 @@ ZH = {
     "Sunset from the grazing land above the valley.": "在山谷上方的牧场看日落。",
     "A subway car I built in Unreal Engine, photographed off a 4K monitor with a Canon 5D Mark IV, a 50 mm lens and a polarising filter, then finished to take the digital edge off.":
         "我在 Unreal Engine 里搭了一节地铁车厢，用佳能 5D Mark IV、50 mm 镜头加偏振镜对着 4K 显示器拍摄，再通过后期降低数码感。",
-    "The opera house on the water, from late afternoon into the night.": "水边的歌剧院，从傍晚到入夜。",
+    "The lighthouse and the Fisher Girl by day, the opera house from dusk into the night, and the moon over the sea.": "白天的灯塔和渔女，黄昏到入夜的歌剧院，还有海上的月亮。",
     "A tea estate built around a château-style hotel.": "围绕一座城堡式酒店建起的茶园。",
     "The Jersey Shore before the summer crowds.": "夏天的人潮到来之前的泽西海岸。",
     "A gorge overlook, an orchard and a small town in autumn.": "秋天的峡谷观景台、果园和小镇。",
@@ -199,7 +199,10 @@ ALT_ZH = {
     96: "一只狗叼着球在湿沙滩上奔跑，后面是海蚀柱。",
     101: "一只鸬鹚停在残墙上，有人沿着墙走过，身后的海面波光粼粼。",
     97: "空旷的海滩上远处一个孤零零的人影。",
-    91: "绿色崖壁下的海滨浴场遗迹，远处是开阔的大海。",
+    94: "一个穿黑衣的人站在浅水里，面对着破开的浪。",
+    103: "旧海水池残破的混凝土边缘、一道绿草，和闪着光的海里的礁石。",
+    102: "三道色带：绿草、平静的蓝色水池、外海白色的浪花。",
+    98: "一条公路经过斑马线和一棵柏树，弯向大海。",
     104: "从沙滩上看到的金门大桥。",
     100: "一片黄花后面的海蚀柱。",
     # 七月四日
@@ -227,11 +230,12 @@ ALT_ZH = {
     46: "她侧身坐在木长椅上，一只手臂搭在膝盖上。",
     49: "黄昏时她站在小路上，手握包带，看向镜头。",
     # 珠海
-    228: "空旷的海滩上站着两个人，头顶是开阔的青蓝色天空。",
+    222: "从洒满阳光的沙滩望去，栈桥尽头一座白色的小灯塔。",
+    225: "深蓝天空下，海中礁石上一尊高举珍珠的女子雕像。",
+    230: "日落时，透过雕花石窗望见水对面的歌剧院和一座红色楼阁。",
     232: "黄昏时歌剧院的两片贝壳，下面是铺着石板的广场。",
     240: "夜晚被琥珀色灯光照亮的歌剧院贝壳。",
-    256: "夜里两个人朝亮着灯的灯塔走去。",
-    226: "海中礁石上的一尊女子雕像，高举着一颗珍珠。",
+    238: "月亮高悬在漆黑的海面上，月光一路铺到亮着灯的栏杆。",
     # 淡季
     261: "空无一人的木板路和海滩；一只风筝挂在一串灯上。",
     373: "两排粉彩色店面之间的一条窄巷。",
