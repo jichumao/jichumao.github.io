@@ -62,8 +62,8 @@ def comma():
 #   rows   the sequence. Each inner list is one row on a wide screen; on a
 #          phone held upright the same order runs top to bottom.
 #   cover  the photograph used for the tile on the index page.
-#   focus  optional. Where to hold the cover when a tile has to crop it
-#          ("More series" at the foot of a series page), as a CSS position.
+#   focus  optional. Where to hold the cover when it has to be cropped (the share image),
+#          as a CSS position. The "More series" covers are shown whole.
 #   link   optional. (text, page on the main site) shown under the note.
 #   title_zh  optional. The series' own title in the Chinese edition, when it is not a translation of `title`
 #          (Jichu's titles for his city sets); otherwise the Chinese edition translates `title` through ZH.
