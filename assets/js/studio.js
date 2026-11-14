@@ -3,19 +3,20 @@
    The letters stand on a wet black floor in front of a thin arch of light, which the floor reflects into a ring.
    They are light, neutral materials, so that they read against the dark and the coloured light plays over them:
    J frosted glass, I chrome, C brushed silver, H neon tubes (a light), U milky, the dot a glowing sphere (a light),
-   A frosted glass, R satin aluminium, T porcelain. Light haze; a large softbox above and behind the camera and a
-   cool strip above the letters give the white light.
+   A frosted glass, R satin aluminium, T porcelain. Light haze. Two softboxes low at the sides are gelled in the
+   colours of the arch's two feet, so the letters take the flowing colour across their faces; a cool strip above them
+   gives a little white light.
 
    Rendering, per pixel: camera paths through a thin lens, averaged into running averages so the picture starts as
    noise and converges (several samples a frame when the GPU has time to spare).
    - Surfaces: GGX microfacet reflection with Smith shadowing and Schlick Fresnel (coloured for the metals), clear
      coats over matte bases.
-   - Lights: the H's tubes, the dot, the arch and the softbox, each sampled over its surface by next-event
+   - Lights: the H's tubes, the dot, the arch and the two softboxes, each sampled over its surface by next-event
      estimation; light sampling and BSDF sampling are combined with multiple importance sampling (power heuristic).
      A dim studio around the set is found by BSDF rays only. The far wall ends a path after direct light.
    - Flowing colour: light transport is linear in what the lights emit, so the white lights and three coloured
      groups each go into their own running average (five render targets), traced with white light, and are mixed
-     in their colours of the moment every frame. The arch's colour is spread over the three groups by quadratic
+     in their colours of the moment every frame. The two softboxes belong to the first and last coloured groups. The arch's colour is spread over the three groups by quadratic
      Bernstein weights of the position along it, so any three colours blend along it.
    - Participating media: homogeneous haze with free-flight distance sampling and a Henyey-Greenstein phase
      function. Light scattered towards the camera is estimated on every camera ray at a point drawn along it
@@ -59,13 +60,17 @@
     // the letters: strokes HW wide either side of their centre lines, cap height 1, extruded 2 * DEPTH, edges rounded
     "const float HW = 0.085, DEPTH = 0.13, RR = 0.028, TUBE = 0.05, LIFT = 0.085;",
     "const vec2 GX[9] = vec2[9](vec2(-.335, .275), vec2(-.085, .085), vec2(-.485, .487), vec2(-.36, .36), vec2(-.385, .385), vec2(-.1, .1), vec2(-.465, .465), vec2(-.385, .405), vec2(-.445, .445));",
-    "const int NONE = 0, FLOOR = 1, KEY = 2, RIM = 3, WALL = 4, ARCH = 5, LETTER = 10;   // LETTER + 0..8: J I C H U . A R T",
+    "const int NONE = 0, FLOOR = 1, KEY = 2, RIM = 3, WALL = 4, ARCH = 5, KEY2 = 6, LETTER = 10;   // LETTER + 0..8: J I C H U . A R T",
     // lights: the neon H, the glowing dot, and a large softbox above and behind the camera, turned towards the letters
     // (from there its reflection in the floor falls outside the picture), with a faint dome of light overhead
     "const float NEON_W = 9.5, DOT_W = 7.5, ARCH_W = 7.;            // how bright the coloured lights are, before colour",
     "const float DOT_R = 0.1, DOT_Y = 0.565;",
-    "const vec3 KEY_C = vec3(2.5, 9., 14.), KEY_U = vec3(-3.15, 0., .563), KEY_V = vec3(-.197, 1.894, -1.101);   // centre, half-sides",
-    "const vec3 KEY_E = vec3(6.2, 6.0, 5.6), SKY = vec3(.018, .02, .026);",
+    // two softboxes low at the sides, lit in the colours of the arch's two feet (gel lighting): each letter takes a
+    // gradient from one colour to the other across its faces, and it flows with them. A little of their light is white.
+    "const vec3 KEY_C = vec3(-8.5, 5., 4.5), KEY_U = vec3(-.936, 0., -1.768), KEY_V = vec3(.625, 1.546, -.331);   // left: centre, half-sides",
+    "const vec3 KEY2_C = vec3(8.5, 5., 4.5), KEY2_U = vec3(-.936, 0., 1.768), KEY2_V = vec3(-.625, 1.546, -.331);   // right",
+    "const float KEY_W = 4.2; const vec4 KEYL_G = vec4(.12, 1.76, 0., 0.), KEYR_G = vec4(.12, 0., 0., 1.76);",
+    "const vec3 SKY = vec3(.018, .02, .026);",
     // a cool strip above and behind the letters, out of the picture, that draws their top and back edges
     "const vec3 RIM_C = vec3(0., 7.6, -3.2), RIM_U = vec3(4.5, 0., 0.), RIM_V = vec3(0., 0.112, 0.224), RIM_E = vec3(3.4, 3.8, 4.5);",
     "const float P_NEON = 0.2, P_DOT = 0.1, P_ARCH = 0.3, P_RIM = 0.1;   // how often each light is sampled (the softbox: the rest)",
@@ -161,6 +166,7 @@
     "  t = tmax; int m = NONE; float s;",
     "  if (rd.y < 0.) { s = -ro.y / rd.y; if (s > EPS && s < t) { t = s; m = FLOOR; } }",
     "  if (rect(ro, rd, KEY_C, KEY_U, KEY_V, t, s)) { t = s; m = KEY; }",
+    "  if (rect(ro, rd, KEY2_C, KEY2_U, KEY2_V, t, s)) { t = s; m = KEY2; }",
     "  if (rect(ro, rd, RIM_C, RIM_U, RIM_V, t, s)) { t = s; m = RIM; }",
     "  if (rd.z < 0.) { s = (uWZ - ro.z) / rd.z; if (s > EPS && s < t) { t = s; m = WALL; } }",
     "  if (archHit(ro, rd, t, s)) { t = s; m = ARCH; }",
@@ -199,8 +205,9 @@
     "    lp = RIM_C + RIM_U * (rnd() * 2. - 1.) + RIM_V * (rnd() * 2. - 1.); ln = normalize(cross(RIM_U, RIM_V));",
     "    area = 4. * length(RIM_U) * length(RIM_V); Le = noRim ? vec3(0.) : RIM_E; sel = P_RIM;",
     "  } else {",
-    "    lp = KEY_C + KEY_U * (rnd() * 2. - 1.) + KEY_V * (rnd() * 2. - 1.); ln = normalize(cross(KEY_U, KEY_V));",
-    "    area = 4. * length(KEY_U) * length(KEY_V); Le = KEY_E; sel = P_KEY;",
+    "    bool rt = rnd() < .5; vec3 C = rt ? KEY2_C : KEY_C, U = rt ? KEY2_U : KEY_U, V = rt ? KEY2_V : KEY_V;",
+    "    lp = C + U * (rnd() * 2. - 1.) + V * (rnd() * 2. - 1.); ln = normalize(cross(U, V));",
+    "    area = 4. * length(U) * length(V); Le = vec3(KEY_W); sel = P_KEY * .5; gw = rt ? KEYR_G : KEYL_G;",
     "  }",
     "  vec3 d = lp - p; float d2 = dot(d, d); dist = sqrt(d2); wi = d / dist;",
     "  float cl = dot(-wi, ln); if (cl <= 0.) { pdf = 0.; return vec3(0.); }",
@@ -212,7 +219,7 @@
     "  float cl = abs(dot(wi, ln)); if (cl < 1e-4) return 0.;",
     "  float a = m == LETTER + 3 ? P_NEON / (2. * PI * TUBE * NEON_L) : m == LETTER + 5 ? P_DOT / (4. * PI * DOT_R * DOT_R)",
     "          : m == ARCH ? P_ARCH / (2. * PI * uA.w * PI * uA.z)",
-    "          : m == RIM ? P_RIM / (4. * length(RIM_U) * length(RIM_V)) : P_KEY / (4. * length(KEY_U) * length(KEY_V));",
+    "          : m == RIM ? P_RIM / (4. * length(RIM_U) * length(RIM_V)) : P_KEY * .5 / (4. * length(KEY_U) * length(KEY_V));",
     "  return a * dist * dist / cl;",
     "}",
     // thin-film interference (the R): a clear oxide film over metal, its reflectance per wavelength (Airy, unpolarised)
@@ -233,7 +240,7 @@
     "vec3 env(vec3 d) {",
     "  float el = asin(clamp(d.y, -1., 1.));",
     "  vec3 c = SKY * max(d.y, 0.);",
-    "  if (d.z > 0.) c += vec3(1.05, 1.02, .98) * smoothstep(.5, .12, abs(el - .3)) * smoothstep(1., .6, abs(d.x));",
+    "  if (d.z > 0.) c += vec3(1.05, 1.02, .98) * .25 * smoothstep(.5, .12, abs(el - .3)) * smoothstep(1., .6, abs(d.x));",
     "  else c += vec3(.03, .036, .055) * exp(-pow((el - .04) / .12, 2.)) * smoothstep(1., .2, abs(d.x));",
     "  return c;",
     "}",
@@ -284,7 +291,7 @@
     "    if (b == 0) {                                            // for the denoiser: what this camera ray hit first",
     "      gZ = m == NONE ? 1e3 : t;",
     "      vec3 hp = ro + rd * t;",
-    "      vec3 g = m == NONE || m == KEY || m == RIM ? -rd : m == FLOOR ? vec3(0., 1., 0.) : m == WALL ? vec3(0., 0., 1.)",
+    "      vec3 g = m == NONE || m == KEY || m == KEY2 || m == RIM ? -rd : m == FLOOR ? vec3(0., 1., 0.) : m == WALL ? vec3(0., 0., 1.)",
     "             : m == ARCH ? archNormal(hp) : letterNormal(m - LETTER, hp);",
     "      gN = dot(g, rd) > 0. ? -g : g;",
     "    }",
@@ -304,12 +311,14 @@
     "    }",
     "    if (m == NONE) { if (mode != 1) L0 += T * env(rd); break; }  // found only by BSDF rays, never sampled directly",
     "    vec3 p = ro + rd * t, n = m == FLOOR ? vec3(0., 1., 0.) : m == WALL ? vec3(0., 0., 1.) : m == KEY ? normalize(cross(KEY_U, KEY_V))",
+    "         : m == KEY2 ? normalize(cross(KEY2_U, KEY2_V))",
     "         : m == RIM ? normalize(cross(RIM_U, RIM_V)) : m == ARCH ? archNormal(p) : letterNormal(m - LETTER, p);",
     "    bool inside = dot(n, rd) > 0.; if (inside) n = -n;          // n now faces the ray",
-    "    if (m == KEY || m == RIM || m == ARCH || m == LETTER + 3 || m == LETTER + 5) {   // a light",
-    "      vec3 Le = m == KEY ? KEY_E : m == RIM ? RIM_E : vec3(m == ARCH ? ARCH_W : m == LETTER + 3 ? NEON_W : DOT_W);",
-    "      vec4 g = m == ARCH ? vec4(0., archW(archU(p))) : m == LETTER + 3 ? vec4(0., 1., 0., 0.) : m == LETTER + 5 ? vec4(0., 0., 1., 0.) : vec4(1., 0., 0., 0.);",
-    "      if ((m == KEY || m == RIM) && inside || m == RIM && fromFloor) break;   // the panels shine one way",
+    "    if (m == KEY || m == KEY2 || m == RIM || m == ARCH || m == LETTER + 3 || m == LETTER + 5) {   // a light",
+    "      vec3 Le = m == KEY || m == KEY2 ? vec3(KEY_W) : m == RIM ? RIM_E : vec3(m == ARCH ? ARCH_W : m == LETTER + 3 ? NEON_W : DOT_W);",
+    "      vec4 g = m == ARCH ? vec4(0., archW(archU(p))) : m == LETTER + 3 ? vec4(0., 1., 0., 0.) : m == LETTER + 5 ? vec4(0., 0., 1., 0.)",
+    "             : m == KEY ? KEYL_G : m == KEY2 ? KEYR_G : vec4(1., 0., 0., 0.);",
+    "      if ((m == KEY || m == KEY2 || m == RIM) && inside || m == RIM && fromFloor) break;   // the panels shine one way",
     "      if (mode == 0) addW(g, T * Le);",
     "      else if (mode == 2) { float pl = lightPdf(m, rd, t, n); addW(g, T * Le * lastPdf * lastPdf / (lastPdf * lastPdf + pl * pl)); }",
     "      break;",
@@ -398,7 +407,7 @@
   }
   function colours(t) {              // t in seconds; a full sweep there and back takes about 40 s
     var x = t * 0.2;
-    return [].concat(flow(x), flow(x - 1.0), flow(x - 2.0));
+    return [].concat(flow(x), flow(x - 1.6), flow(x - 3.2));
   }
   function layout(wide) {
     var L = new Float32Array(36), rows = wide ? [[0, 1, 2, 3, 4, 5, 6, 7, 8]] : [[0, 1, 2, 3, 4], [5, 6, 7, 8]];
