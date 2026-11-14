@@ -351,7 +351,11 @@
     "    } else {                                                   // light sampling and BSDF sampling, combined by MIS",
     "      vec3 q = p + n * 1e-3, wi; float dist, pl, pb;",
     "      vec3 Le = sampleLight(q, m == FLOOR, wi, dist, pl, gw);   // light linking: the strip is not seen in the floor",
-    "      if (pl > 0.) { vec3 f = bsdf(m, n, wo, wi, pb); if (pb > 0.) addW(gw, T * Le * f * dot(n, wi) / pl * (pl * pl / (pl * pl + pb * pb))); }",
+    // the far wall is nearly black: light that bounces off it again adds nothing visible, so a path ends there, after
+    // the light it receives directly (then without the MIS weight, since no BSDF ray will follow to share it)
+    "      bool last = m == WALL;",
+    "      if (pl > 0.) { vec3 f = bsdf(m, n, wo, wi, pb); if (pb > 0.) addW(gw, T * Le * f * dot(n, wi) / pl * (last ? 1. : pl * pl / (pl * pl + pb * pb))); }",
+    "      if (last) break;",
     "      rd = bsdfDir(m, n, wo);",
     "      vec3 f = bsdf(m, n, wo, rd, pb);",
     "      if (pb <= 0.) break;",
@@ -524,7 +528,7 @@
     var time = opt.time == null ? 1.3 : opt.time, bar = null;
     // GPU time per frame from timer queries, where the browser offers them: read a few frames later, without waiting
     var tq = gl.getExtension("EXT_disjoint_timer_query_webgl2"), pending = [], gpu = [], gen = 0;
-    var DENOISE_UNTIL = 600;          // after this many samples the average is clean enough to show as it is
+    var DENOISE_UNTIL = 1e9;          // always: its weights follow each pixel's remaining noise, so it fades out by itself
     var view = { yaw: 0, pitch: 7 * Math.PI / 180 };
 
     function texture(fmt) {
@@ -577,8 +581,9 @@
     }
     function norm(v) { var l = Math.hypot(v[0], v[1], v[2]); return [v[0] / l, v[1] / l, v[2] / l]; }
 
-    function step(fade) {
+    function step(fade, n) {          // n samples per pixel (default 1), then shown once
       var c = camera(), u = tr.u, q = null;
+      n = Math.max(1, n | 0);
       if (tq && pending.length < 6) { q = gl.createQuery(); gl.beginQuery(tq.TIME_ELAPSED_EXT, q); }
       gl.useProgram(tr.p);
       gl.bindFramebuffer(gl.FRAMEBUFFER, fbo[1 - cur]);
@@ -590,8 +595,15 @@
       gl.uniform1f(u.uTanY, c.tanY); gl.uniform1f(u.uAspect, c.aspect); gl.uniform2fv(u.uShift, c.shift);
       gl.uniform1f(u.uFocus, c.focus); gl.uniform1f(u.uLens, c.lens); gl.uniform4fv(u.uL, lay);
       gl.uniform4fv(u.uA, bar.a); gl.uniform1f(u.uWZ, bar.wall);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      cur = 1 - cur; frame++;
+      for (var s = 0; s < n; s++) {
+        if (s) {
+          gl.bindFramebuffer(gl.FRAMEBUFFER, fbo[1 - cur]);
+          [tex[cur], geo[cur], grp[0][cur], grp[1][cur], grp[2][cur]].forEach(function (t, k) { gl.activeTexture(gl.TEXTURE0 + k); gl.bindTexture(gl.TEXTURE_2D, t); });
+          gl.uniform1i(u.uFrame, frame);
+        }
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        cur = 1 - cur; frame++;
+      }
       present(fade);
       if (q) { gl.endQuery(tq.TIME_ELAPSED_EXT); pending.push({ q: q, gen: gen }); }
       poll();
@@ -652,7 +664,7 @@
       return out;
     }
     return {
-      size: size, step: step, present: present, gl: gl, read: read, sync: sync, gpuMs: gpuMs, timed: !!tq,
+      size: size, step: step, present: present, retime: function () { gen++; gpu = []; }, gl: gl, read: read, sync: sync, gpuMs: gpuMs, timed: !!tq,
       get time() { return time; }, set time(t) { time = t; },
       get frame() { return frame; },
       turn: function (yaw) { view.yaw = yaw; frame = 0; },
@@ -709,17 +721,32 @@
   function label() {
     if (spp) spp.textContent = R.frame.toLocaleString("en-US") + (R.frame === 1 ? " sample" : " samples") + " per pixel.";
   }
-  var last = 0, tick = 0;
+  var last = 0, tick = 0, spf = 1;
+  // samples per frame: once the picture is at the screen's resolution and a sample costs well under the budget, several
+  // are traced each frame (up to ~10 ms of GPU work), so a fast GPU converges in seconds rather than half a minute
+  function pace(ms, early) {
+    var per = ms / spf;
+    if (early && retarget(per, true)) return;          // first the resolution (a new size restarts the timing)
+    if (!early && ms > 20 && slow < 6) {               // too slow: fewer samples per frame first, then fewer pixels
+      slow++;
+      if (spf > 1) { spf = Math.max(1, Math.floor(10 / per)); R.retime(); } else retarget(per);
+      return;
+    }
+    if (pixels() >= native().w * native().h * 0.9 || pixels() >= 4.4e6) {
+      var want = Math.max(1, Math.min(8, Math.floor(10 / per)));
+      if (want !== spf) { spf = want; R.retime(); }
+    }
+  }
   function frame(t) {
     if (!onScreen || document.hidden) { running = false; return; }
     if (!startedAt) { startedAt = t; media.classList.add("live"); }
     var fade = Math.min(1, (t - startedAt) / 500);
     R.time = 1.3 + (t - startedAt) / 1000;               // the lights' colours keep flowing
     if (R.frame < DONE) {
-      R.step(fade);
+      R.step(fade, Math.min(spf, DONE - R.frame));
       if (R.timed) {
-        var ms = R.gpuMs(), early = t - startedAt < 2500;
-        if (ms && (early || (ms > 20 && slow < 6)) && retarget(ms, early) && !early) slow++;
+        var ms = R.gpuMs();
+        if (ms) pace(ms, t - startedAt < 2500);
       } else if (last) {                              // slow frames: time the GPU before tracing fewer pixels
         times.push(t - last);
         if (times.length === 12) {
@@ -728,9 +755,9 @@
           times = [];
         }
       }
-      if ((R.frame & 7) === 1 || R.frame >= DONE) label();
+      label();
       if (R.frame >= DONE) media.classList.add("done");
-    } else if (++tick & 1) R.present(1);              // converged: nothing is traced, only the colours are mixed anew
+    } else if (++tick % 3 === 0) R.present(1);        // converged: nothing is traced; the colours are mixed anew ~20 times a second
     last = t;
     requestAnimationFrame(frame);
   }
