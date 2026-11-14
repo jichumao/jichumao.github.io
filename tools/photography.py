@@ -524,7 +524,7 @@ def page(*, title, desc, rel, body, og, v, series="", scripts=(), current=""):
 </main>
 <footer class="foot">
   <p>{T("© Jichu Mao. All rights reserved. Please ask before using a photograph.")}</p>
-  <p><a href="{site}">jichu.art</a></p>
+  <p><a href="{site}">jichu.art</a> · <a href="https://beian.miit.gov.cn/" rel="noopener">京ICP备2024041560号-1</a></p>
 </footer>{js}
 </body>
 </html>
