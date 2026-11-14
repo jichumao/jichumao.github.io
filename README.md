@@ -52,7 +52,7 @@ The pages are generated, so the text of the whole site sits in one file, `tools/
 - `CATEGORIES`: the filter buttons above "More work".
 - `HOME_ABOUT`: the two paragraphs at the foot of the home page.
 - `ABOUT_INTRO`, `WORK`, `EDU`, `SKILLS`, `HOBBIES`: the about page. `WORK`, `EDU`, `SKILLS` and `FEATURED` also fill the résumé.
-- `EMAIL`, `SOCIAL`: contact links in the footer and on the about page.
+- `SOCIAL`: the links in the footer (the "Contact me" band points to the first, LinkedIn) and on the résumé page. The site shows no email address.
 - `GOATCOUNTER`: visitor statistics, off while it is empty (see below).
 
 Fields of a project:
