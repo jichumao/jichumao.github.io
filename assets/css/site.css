@@ -515,3 +515,5 @@ tbody td:last-child { color: var(--text); }
   html { scroll-behavior: auto; }
   .shot img, .work-preview { transition: none; }
 }
+.copyright .icp { color: inherit; text-decoration: none; }
+.copyright .icp:hover { text-decoration: underline; text-underline-offset: 3px; }
