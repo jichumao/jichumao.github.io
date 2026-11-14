@@ -1,32 +1,34 @@
 /* The home page opening: the site's name, JICHU · ART, path traced live in the browser (WebGL2, no libraries).
 
-   Every letter is a different material, warm on the left and cool on the right: J crystal (dispersive), I chrome,
-   C gold, H neon tubes (a light), U a milky material light travels through (subsurface scattering), the dot a
-   glowing sphere (a light), A sapphire glass (absorbing), R titanium under a thin oxide film (interference colours),
-   T porcelain. They stand on a wet black floor in light haze, lit by the H, the dot, a large softbox above and
-   behind the camera and a cool strip above and behind the letters.
+   The letters stand on a wet black floor in front of a thin arch of light, which the floor reflects into a ring.
+   They are light, neutral materials, so that they read against the dark and the coloured light plays over them:
+   J frosted glass, I chrome, C brushed silver, H neon tubes (a light), U milky, the dot a glowing sphere (a light),
+   A frosted glass, R satin aluminium, T porcelain. Light haze; a large softbox above and behind the camera and a
+   cool strip above the letters give the white light.
 
-   Rendering, per pixel and frame: one camera path through a thin lens, averaged into the image so the picture
-   starts as noise and converges.
+   Rendering, per pixel: camera paths through a thin lens, averaged into running averages so the picture starts as
+   noise and converges (several samples a frame when the GPU has time to spare).
    - Surfaces: GGX microfacet reflection with Smith shadowing and Schlick Fresnel (coloured for the metals), clear
-     coats over matte bases, glass with Fresnel reflection and refraction.
-   - Lights: the H's tubes, the dot and the softbox, each sampled over its surface by next-event estimation;
-     light sampling and BSDF sampling are combined with multiple importance sampling (power heuristic). A dim
-     studio around the set (a strip behind the camera, a glow far behind the letters) is found by BSDF rays only.
-   - Spectral: a path that reaches the crystal or the titanium picks a wavelength and is weighted by its colour
-     (CIE 1931). The crystal's index of refraction follows Cauchy's law, so it splits light into colours; the film's
-     reflectance comes from the interference of light reflected at its two faces (Airy's formula), and its thickness
-     changes up the letter, so the colours do too. The sapphire absorbs by Beer-Lambert along the path inside.
+     coats over matte bases.
+   - Lights: the H's tubes, the dot, the arch and the softbox, each sampled over its surface by next-event
+     estimation; light sampling and BSDF sampling are combined with multiple importance sampling (power heuristic).
+     A dim studio around the set is found by BSDF rays only. The far wall ends a path after direct light.
+   - Flowing colour: light transport is linear in what the lights emit, so the white lights and three coloured
+     groups each go into their own running average (five render targets), traced with white light, and are mixed
+     in their colours of the moment every frame. The arch's colour is spread over the three groups by quadratic
+     Bernstein weights of the position along it, so any three colours blend along it.
    - Participating media: homogeneous haze with free-flight distance sampling and a Henyey-Greenstein phase
      function. Light scattered towards the camera is estimated on every camera ray at a point drawn along it
      (proportionally to transmittance), and at each scattering event further along the path.
    - Geometry: each letter a signed distance field (strokes extruded, edges rounded; the H's tubes are capsules),
-     ray-marched inside its bounding box; the floor and the softbox analytic.
-   - Subsurface scattering (the U): a random walk inside the letter, with Fresnel at its surface.
-   - Light linking: the strip behind the letters lights them but is left out of the floor's reflections.
+     ray-marched inside its bounding box; the arch half a torus, marched only through the slab it lies in; the
+     floor, wall and softbox analytic.
+   - Subsurface scattering (J, U, A): a random walk inside the letter, with Fresnel at its surface; the three
+     differ in how often light scatters inside them.
+   - Light linking: the strip above the letters lights them but is left out of the floor's reflections.
    - Denoising: an edge-aware a-trous wavelet filter (as in SVGF), four passes, guided by first-hit normals and
-     distances and by each pixel's own noise estimate (from its samples' spread), so it lets go as the average
-     converges; after 600 samples the average is shown as it is.
+     distances and by each pixel's noise estimate averaged over its neighbours, so it lets go as the average
+     converges. Samples that come out NaN or infinite are dropped.
    - Display: ACES tone mapping, a soft glow around bright light, a slight vignette.
 
    Dragging sideways turns the camera. Rendering stops once the image has converged (1,024 samples), while the
@@ -240,7 +242,7 @@
     "void material(int m, out int kind, out vec3 c, out float a) {",
     "  kind = 0;",
     "  if (m == LETTER + 2) { kind = 1; c = vec3(.91, .92, .93); a = .2; }             // C: brushed silver",
-    "  else if (m == LETTER + 7) { c = vec3(.004); a = .012; }                          // R: black glass, a dark mirror",
+    "  else if (m == LETTER + 7) { kind = 1; c = vec3(.86, .87, .89); a = .32; }       // R: satin aluminium",
     "  else if (m == LETTER + 8) { c = vec3(.86, .85, .83); a = .03; }                 // T: glazed porcelain",
     "  else if (m == WALL) { c = vec3(.016, .016, .018); a = .25; }                    // the back wall, far off: dark satin",
     "  else { c = vec3(.018, .018, .02); a = .022; }                                     // the wet black floor",
@@ -313,36 +315,25 @@
     "      break;",
     "    }",
     "    vec3 wo = -rd;",
-    "    if (m == LETTER + 0) {                                     // J: glass, dispersive",
-    "      if (!split) { split = true; T *= specw(lambda); }",
-    "      float lu = lambda * 1e-3, ior = 1.47 + .0110 / (lu * lu);",
-    "      float eta = inside ? ior : 1. / ior, c = dot(wo, n); vec3 tr = refract(rd, n, eta);",
-    "      float r0 = (ior - 1.) / (ior + 1.); r0 *= r0;",
-    "      float F = dot(tr, tr) < .5 ? 1. : r0 + (1. - r0) * pow(1. - (inside ? -dot(tr, n) : c), 5.);",
-    "      if (rnd() < F) { rd = reflect(rd, n); ro = p + n * 1e-3; } else { rd = tr; ro = p - n * 1e-3; }",
-    "      mode = 0;",
-    "    } else if (m == LETTER + 1) {                              // I: chrome",
+    "    if (m == LETTER + 1) {                                     // I: chrome",
     "      vec3 r = reflect(rd, ggxHalf(n, .02)); if (dot(r, n) <= 0.) r = reflect(rd, n);",
     "      T *= schlick(vec3(.92, .93, .95), max(0., dot(n, wo))); rd = r; ro = p + n * 1e-3; mode = 0;",
-    "    } else if (m == LETTER + 6) {                              // A: sapphire glass, its colour absorbed on the way through",
-    "      if (inside) T *= exp(-SAPPHIRE * t);                     // Beer-Lambert, over the distance travelled inside",
-    "      float ior = 1.62, eta = inside ? ior : 1. / ior, c = dot(wo, n); vec3 tr = refract(rd, n, eta);",
-    "      float r0 = (ior - 1.) / (ior + 1.); r0 *= r0;",
-    "      float F = dot(tr, tr) < .5 ? 1. : r0 + (1. - r0) * pow(1. - (inside ? -dot(tr, n) : c), 5.);",
-    "      if (rnd() < F) { rd = reflect(rd, n); ro = p + n * 1e-3; } else { rd = tr; ro = p - n * 1e-3; }",
-    "      mode = 0;",
-    "    } else if (m == LETTER + 4) {                              // U: translucent, light wanders inside (random walk)",
+    // translucent letters, light wandering inside them (a random walk): the J frosted glass, faintly cool, light
+    // scattering rarely; the U milky; the A frosted, between the two
+    "    } else if (m == LETTER + 0 || m == LETTER + 4 || m == LETTER + 6) {",
+    "      int li = m - LETTER; float dens = li == 4 ? SSS_T : li == 0 ? 5. : 8.;",
+    "      vec3 alb = li == 4 ? SSS_A : li == 0 ? vec3(.993, .997, 1.) : vec3(.997, .998, .999);",
     "      float ior = 1.4, r0 = (ior - 1.) / (ior + 1.); r0 *= r0;",
     "      if (rnd() < r0 + (1. - r0) * pow(1. - dot(wo, n), 5.)) { rd = reflect(rd, n); ro = p + n * 1e-3; mode = 0; continue; }",
     "      rd = refract(rd, n, 1. / ior); ro = p - n * 1e-3;",
     "      bool gone = false;",
     "      for (int k = 0; k < 64 && !gone; k++) {",
-    "        float d = -log(1. - rnd()) / SSS_T, s;",
-    "        if (!marchLetter(4, ro, rd, d, s)) {               // scattered before reaching the surface",
-    "          ro += rd * d; T *= SSS_A; float z = 2. * rnd() - 1., ph = 2. * PI * rnd(), sn = sqrt(1. - z * z);",
+    "        float d = -log(1. - rnd()) / dens, s;",
+    "        if (!marchLetter(li, ro, rd, d, s)) {              // scattered before reaching the surface",
+    "          ro += rd * d; T *= alb; float z = 2. * rnd() - 1., ph = 2. * PI * rnd(), sn = sqrt(1. - z * z);",
     "          rd = vec3(sn * cos(ph), z, sn * sin(ph)); continue;",
     "        }",
-    "        vec3 q = ro + rd * s, no = letterNormal(4, q), tr = refract(rd, -no, ior);",
+    "        vec3 q = ro + rd * s, no = letterNormal(li, q), tr = refract(rd, -no, ior);",
     "        float F = dot(tr, tr) < .5 ? 1. : r0 + (1. - r0) * pow(1. - dot(tr, no), 5.);",
     "        if (rnd() < F) { rd = reflect(rd, -no); ro = q - no * 1e-3; } else { rd = tr; ro = q + no * 1e-3; gone = true; }",
     "      }",
