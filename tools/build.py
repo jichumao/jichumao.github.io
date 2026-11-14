@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "37"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "38"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -930,10 +930,9 @@ def links_html(proj):
 # The opening of the home page: a small studio scene path traced live in the browser (assets/js/studio.js).
 # Where that cannot run (no WebGL2, "reduce motion", no JavaScript) the still picture is shown instead; it was
 # rendered by the same code, see the README.
-HERO_ALT = ("The letters JICHU · ART standing on a wet black floor in front of a thin arch of light, which the floor "
-            "reflects into a full ring. The letters are frosted glass, chrome, brushed silver, a neon H, a milky U, "
-            "a glowing dot, frosted glass, satin aluminium and white porcelain; the arch, the H and the dot glow amber, coral "
-            "and rose, lighting the letters in the same colours, and in the live version the colours slowly flow")
+HERO_ALT = ("The letters JICHU · ART in slim brushed champagne metal, standing on a wet black floor in front of a thin "
+            "arch of light, which the floor reflects into a full ring. The H is neon tubes and the dot a glowing sphere; "
+            "the arch glows in soft warm and cool tones, which in the live version slowly flow")
 
 def build_home():
     root = ""
@@ -981,7 +980,7 @@ def build_home():
       <img data-srcset="assets/img/home/studio-1000.webp 1000w, assets/img/home/studio-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="{E(HERO_ALT)}">
     </picture>
     <noscript><img class="hero-still" src="assets/img/home/studio-1600.webp" width="1600" height="900" alt="{E(HERO_ALT)}"></noscript>
-    <figcaption><span class="cap-live">Path traced live in your browser<span class="cap-more">: frosted glass, chrome, brushed metal, subsurface scattering and porcelain in coloured light that flows across them. Each light is traced into its own buffer, so their colours flow without tracing again; denoised as it converges</span>. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer<span class="cap-more">: frosted glass, chrome, brushed metal, subsurface scattering and porcelain in coloured light</span>.</span></figcaption>
+    <figcaption><span class="cap-live">Path traced live in your browser<span class="cap-more">: brushed champagne metal, neon and haze, lit by an arch of light whose colours slowly flow. Each light is traced into its own buffer, so their colours flow without tracing again; denoised as it converges</span>. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer<span class="cap-more">: brushed champagne metal, neon and haze, lit by an arch of light</span>.</span></figcaption>
   </figure>
   <div class="wrap hero-text">
     <h1>Jichu Mao</h1>

@@ -1,11 +1,9 @@
 /* The home page opening: the site's name, JICHU · ART, path traced live in the browser (WebGL2, no libraries).
 
    The letters stand on a wet black floor in front of a thin arch of light, which the floor reflects into a ring.
-   They are light, neutral materials, so that they read against the dark and the coloured light plays over them:
-   J frosted glass, I chrome, C brushed silver, H neon tubes (a light), U milky, the dot a glowing sphere (a light),
-   A frosted glass, R satin aluminium, T porcelain. Light haze. Two softboxes low at the sides are gelled in the
-   colours of the arch's two feet, so the letters take the flowing colour across their faces; a cool strip above them
-   gives a little white light.
+   They are slim strokes of brushed champagne metal; the H is neon tubes and the dot a glowing sphere, both lights.
+   Light haze. Two neutral softboxes low at the sides model the letters; the arch, the H and the dot add soft colour
+   that slowly flows (warm white, apricot, blush, lilac, cool white); a cool strip above gives a little white light.
 
    Rendering, per pixel: camera paths through a thin lens, averaged into running averages so the picture starts as
    noise and converges (several samples a frame when the GPU has time to spare).
@@ -16,24 +14,22 @@
      A dim studio around the set is found by BSDF rays only. The far wall ends a path after direct light.
    - Flowing colour: light transport is linear in what the lights emit, so the white lights and three coloured
      groups each go into their own running average (five render targets), traced with white light, and are mixed
-     in their colours of the moment every frame. The two softboxes belong to the first and last coloured groups. The arch's colour is spread over the three groups by quadratic
+     in their colours of the moment every frame. The arch's colour is spread over the three groups by quadratic
      Bernstein weights of the position along it, so any three colours blend along it.
    - Participating media: homogeneous haze with free-flight distance sampling and a Henyey-Greenstein phase
      function. Light scattered towards the camera is estimated on every camera ray at a point drawn along it
      (proportionally to transmittance), and at each scattering event further along the path.
    - Geometry: each letter a signed distance field (strokes extruded, edges rounded; the H's tubes are capsules),
      ray-marched inside its bounding box; the arch half a torus, marched only through the slab it lies in; the
-     floor, wall and softbox analytic.
-   - Subsurface scattering (J, U, A): a random walk inside the letter, with Fresnel at its surface; the three
-     differ in how often light scatters inside them.
+     floor, wall and softboxes analytic.
    - Light linking: the strip above the letters lights them but is left out of the floor's reflections.
    - Denoising: an edge-aware a-trous wavelet filter (as in SVGF), four passes, guided by first-hit normals and
      distances and by each pixel's noise estimate averaged over its neighbours, so it lets go as the average
      converges. Samples that come out NaN or infinite are dropped.
    - Display: ACES tone mapping, a soft glow around bright light, a slight vignette.
 
-   Dragging sideways turns the camera. Rendering stops once the image has converged (1,024 samples), while the
-   opening is off screen and in hidden tabs, and traces fewer pixels when frames come slowly. Without WebGL2 and
+   Dragging sideways turns the camera. Tracing stops once the image has converged (512 samples; the colours keep flowing),
+   while the opening is off screen and in hidden tabs, and traces fewer pixels when frames come slowly. Without WebGL2 and
    float render targets, or with "reduce motion", the still picture (rendered by this same code) is shown instead.
 
    Studio.make(canvas, {preserve}) -> renderer is also how the still pictures were made (see the README). */
@@ -58,18 +54,18 @@
     "#define PI 3.14159265",
     "const float EPS = 1e-4;",
     // the letters: strokes HW wide either side of their centre lines, cap height 1, extruded 2 * DEPTH, edges rounded
-    "const float HW = 0.085, DEPTH = 0.13, RR = 0.028, TUBE = 0.05, LIFT = 0.085;",
+    "const float HW = 0.052, DEPTH = 0.11, RR = 0.012, TUBE = 0.05, LIFT = 0.085;",
     "const vec2 GX[9] = vec2[9](vec2(-.335, .275), vec2(-.085, .085), vec2(-.485, .487), vec2(-.36, .36), vec2(-.385, .385), vec2(-.1, .1), vec2(-.465, .465), vec2(-.385, .405), vec2(-.445, .445));",
     "const int NONE = 0, FLOOR = 1, KEY = 2, RIM = 3, WALL = 4, ARCH = 5, KEY2 = 6, LETTER = 10;   // LETTER + 0..8: J I C H U . A R T",
     // lights: the neon H, the glowing dot, and a large softbox above and behind the camera, turned towards the letters
     // (from there its reflection in the floor falls outside the picture), with a faint dome of light overhead
-    "const float NEON_W = 9.5, DOT_W = 7.5, ARCH_W = 7.;            // how bright the coloured lights are, before colour",
+    "const float NEON_W = 9.5, DOT_W = 7.5, ARCH_W = 9.;            // how bright the coloured lights are, before colour",
     "const float DOT_R = 0.1, DOT_Y = 0.565;",
-    // two softboxes low at the sides, lit in the colours of the arch's two feet (gel lighting): each letter takes a
-    // gradient from one colour to the other across its faces, and it flows with them. A little of their light is white.
+    // two softboxes low at the sides, neutral white, the left one stronger: they model the letters' faces, while the
+    // arch, the H and the dot add their flowing colour from behind and in the reflections
     "const vec3 KEY_C = vec3(-8.5, 5., 4.5), KEY_U = vec3(-.936, 0., -1.768), KEY_V = vec3(.625, 1.546, -.331);   // left: centre, half-sides",
     "const vec3 KEY2_C = vec3(8.5, 5., 4.5), KEY2_U = vec3(-.936, 0., 1.768), KEY2_V = vec3(-.625, 1.546, -.331);   // right",
-    "const float KEY_W = 4.2; const vec4 KEYL_G = vec4(.12, 1.76, 0., 0.), KEYR_G = vec4(.12, 0., 0., 1.76);",
+    "const float KEY_W = 4.2; const vec4 KEYL_G = vec4(2.8, 0., 0., 0.), KEYR_G = vec4(1., 0., 0., 0.);",
     "const vec3 SKY = vec3(.018, .02, .026);",
     // a cool strip above and behind the letters, out of the picture, that draws their top and back edges
     "const vec3 RIM_C = vec3(0., 7.6, -3.2), RIM_U = vec3(4.5, 0., 0.), RIM_V = vec3(0., 0.112, 0.224), RIM_E = vec3(3.4, 3.8, 4.5);",
@@ -77,7 +73,6 @@
     "const float P_KEY = 1. - P_NEON - P_DOT - P_ARCH - P_RIM;",
     "const float NEON_L = 2.62;                                       // total length of the H's tubes",
     "const float SIG = 0.0045, HG = 0.8;                             // haze density, forward scattering",
-    "const float SSS_T = 16.; const vec3 SSS_A = vec3(.998, .997, .995);  // inside the U: how often light scatters, what it keeps",
     "const vec3 SAPPHIRE = vec3(.35, .18, .14);                       // the A's absorption per unit length: clear, faintly cool",
     "const vec3 MED_C = vec3(0., 1., 0.); const float MED_R = 24.;",
     "const vec3 WL[31] = vec3[31](vec3(0.009, 0.000, 0.178), vec3(0.090, 0.000, 0.601), vec3(0.209, 0.000, 1.921), vec3(0.304, 0.000, 4.079), vec3(0.457, 0.000, 5.102), vec3(0.297, 0.000, 5.229), vec3(0.000, 0.000, 4.886), vec3(0.000, 0.094, 3.756), vec3(0.000, 0.512, 2.300), vec3(0.000, 1.007, 1.245), vec3(0.000, 1.621, 0.608), vec3(0.000, 2.415, 0.178), vec3(0.000, 3.281, 0.000), vec3(0.000, 3.841, 0.000), vec3(0.000, 3.945, 0.000), vec3(0.000, 3.760, 0.000), vec3(0.732, 3.318, 0.000), vec3(1.779, 2.690, 0.000), vec3(2.798, 1.937, 0.000), vec3(3.640, 1.149, 0.000), vec3(4.170, 0.434, 0.000), vec3(4.213, 0.000, 0.000), vec3(3.737, 0.000, 0.000), vec3(2.937, 0.000, 0.000), vec3(2.055, 0.000, 0.000), vec3(1.283, 0.000, 0.000), vec3(0.714, 0.000, 0.000), vec3(0.354, 0.000, 0.000), vec3(0.156, 0.000, 0.000), vec3(0.060, 0.007, 0.000), vec3(0.020, 0.007, 0.000));",
@@ -248,9 +243,7 @@
     // 2 a metal under a thin oxide film (its Fresnel term worked out per wavelength)
     "void material(int m, out int kind, out vec3 c, out float a) {",
     "  kind = 0;",
-    "  if (m == LETTER + 2) { kind = 1; c = vec3(.91, .92, .93); a = .2; }             // C: brushed silver",
-    "  else if (m == LETTER + 7) { kind = 1; c = vec3(.86, .87, .89); a = .32; }       // R: satin aluminium",
-    "  else if (m == LETTER + 8) { c = vec3(.86, .85, .83); a = .03; }                 // T: glazed porcelain",
+    "  if (m >= LETTER) { kind = 1; c = vec3(.92, .80, .62); a = .3; }                 // the letters: brushed champagne metal",
     "  else if (m == WALL) { c = vec3(.016, .016, .018); a = .25; }                    // the back wall, far off: dark satin",
     "  else { c = vec3(.018, .018, .02); a = .022; }                                     // the wet black floor",
     "}",
@@ -324,31 +317,7 @@
     "      break;",
     "    }",
     "    vec3 wo = -rd;",
-    "    if (m == LETTER + 1) {                                     // I: chrome",
-    "      vec3 r = reflect(rd, ggxHalf(n, .02)); if (dot(r, n) <= 0.) r = reflect(rd, n);",
-    "      T *= schlick(vec3(.92, .93, .95), max(0., dot(n, wo))); rd = r; ro = p + n * 1e-3; mode = 0;",
-    // translucent letters, light wandering inside them (a random walk): the J frosted glass, faintly cool, light
-    // scattering rarely; the U milky; the A frosted, between the two
-    "    } else if (m == LETTER + 0 || m == LETTER + 4 || m == LETTER + 6) {",
-    "      int li = m - LETTER; float dens = li == 4 ? SSS_T : li == 0 ? 5. : 8.;",
-    "      vec3 alb = li == 4 ? SSS_A : li == 0 ? vec3(.993, .997, 1.) : vec3(.997, .998, .999);",
-    "      float ior = 1.4, r0 = (ior - 1.) / (ior + 1.); r0 *= r0;",
-    "      if (rnd() < r0 + (1. - r0) * pow(1. - dot(wo, n), 5.)) { rd = reflect(rd, n); ro = p + n * 1e-3; mode = 0; continue; }",
-    "      rd = refract(rd, n, 1. / ior); ro = p - n * 1e-3;",
-    "      bool gone = false;",
-    "      for (int k = 0; k < 64 && !gone; k++) {",
-    "        float d = -log(1. - rnd()) / dens, s;",
-    "        if (!marchLetter(li, ro, rd, d, s)) {              // scattered before reaching the surface",
-    "          ro += rd * d; T *= alb; float z = 2. * rnd() - 1., ph = 2. * PI * rnd(), sn = sqrt(1. - z * z);",
-    "          rd = vec3(sn * cos(ph), z, sn * sin(ph)); continue;",
-    "        }",
-    "        vec3 q = ro + rd * s, no = letterNormal(li, q), tr = refract(rd, -no, ior);",
-    "        float F = dot(tr, tr) < .5 ? 1. : r0 + (1. - r0) * pow(1. - dot(tr, no), 5.);",
-    "        if (rnd() < F) { rd = reflect(rd, -no); ro = q - no * 1e-3; } else { rd = tr; ro = q + no * 1e-3; gone = true; }",
-    "      }",
-    "      if (!gone) break;",
-    "      mode = 0;",
-    "    } else {                                                   // light sampling and BSDF sampling, combined by MIS",
+    "    {                                                          // light sampling and BSDF sampling, combined by MIS",
     "      vec3 q = p + n * 1e-3, wi; float dist, pl, pb;",
     "      vec3 Le = sampleLight(q, m == FLOOR, wi, dist, pl, gw);   // light linking: the strip is not seen in the floor",
     // the far wall is nearly black: light that bounces off it again adds nothing visible, so a path ends there, after
@@ -392,11 +361,11 @@
   // where the letters stand: one gently curved row on a wide screen; on a tall one JICHU behind and ·ART in front
   var WIDTH = [0.61, 0.17, 0.97, 0.72, 0.77, 0.2, 0.93, 0.79, 0.89], CENTRE = [-0.03, 0, 0.001, 0, 0, 0, 0, 0.01, 0];
   function arch(wide) {             // the arch behind the letters (centre x, z, radius, tube) and the back wall's z
-    return { a: wide ? new Float32Array([0, -3.4, 3.05, 0.032]) : new Float32Array([0, -3.6, 1.6, 0.03]), wall: -7.5 };
+    return { a: wide ? new Float32Array([0, -3.4, 3.05, 0.018]) : new Float32Array([0, -3.6, 1.6, 0.017]), wall: -7.5 };
   }
-  // the colours the lights flow through: amber, coral, rose, violet, indigo, and back again, each group a little behind
-  // the one on its left, so the colour travels across the picture
-  var FLOW = [[1.0, 0.52, 0.16], [1.0, 0.3, 0.24], [0.92, 0.22, 0.5], [0.56, 0.26, 0.95], [0.22, 0.36, 1.0]];
+  // the colours the lights flow through, kept soft: warm white, apricot, blush, lilac, cool white, and back again, each
+  // group a little behind the one on its left, so the colour travels across the picture
+  var FLOW = [[1.0, 0.80, 0.55], [1.0, 0.66, 0.52], [0.96, 0.60, 0.66], [0.80, 0.66, 0.98], [0.66, 0.76, 1.0]];
   function flow(x) {
     var n = FLOW.length - 1, u = x - Math.floor(x / (2 * n)) * 2 * n;
     if (u > n) u = 2 * n - u;
