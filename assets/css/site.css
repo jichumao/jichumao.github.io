@@ -190,14 +190,15 @@ img.icon.brand { width: 18px; height: 18px; object-fit: contain; }   /* a brand'
 }
 @keyframes hero-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 
-@media (max-width: 700px) {
-  /* The box stands in the upper part of the picture; the name and the caption sit on the floor below it. */
+@media (max-width: 1060px) {
+  /* The letters stand in the upper part of the picture; the name and the caption sit on the floor below them. */
   .hero { min-height: clamp(520px, 80svh, 740px); }
   .hero-media::after { background: linear-gradient(180deg, rgba(0, 0, 0, .6) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, .8) 74%, #000 100%); }
   .hero-media figcaption { left: var(--gutter); right: var(--gutter); bottom: 18px; max-width: none; text-align: left; font-size: 12px; }
   .hero-text { padding-bottom: 88px; }   /* room for three lines of caption */
   .hero-lead { margin-top: 10px; }
 }
+@media (max-width: 600px) { .cap-more { display: none; } }   /* on phones the caption keeps to one short line */
 
 /* Home: works --------------------------------------------------------- */
 
