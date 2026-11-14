@@ -18,7 +18,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from photography_zh import ZH, ALT_ZH
 
 SITE = "https://jichu.art"
-EMAIL = "maojichu@gmail.com"
 E = html.escape
 HERE = os.path.dirname(os.path.abspath(__file__))
 P = json.load(open(os.path.join(HERE, "photos.json")))
@@ -103,14 +102,14 @@ SERIES = [
          rows=[[398], [399, 397], [391], [393, 396], [394, 392], [395, 400]], cover=398, link=("How it was made", "works/virtual-subway/")),
     dict(slug="zhuhai", title="Zhuhai", title_zh="珠落夜色，海照贝影", where="", when="January 2026",
          note="The lighthouse and the Fisher Girl by day, the opera house from dusk into the night, and the moon over the sea.",
-         rows=[[222, 225], [230], [232, 240], [238]], cover=240),
-    dict(slug="tea-hills", title="Tea Hills", where="Wuyi, Jinhua, Zhejiang", when="December 2025",
+         rows=[[223, 225], [230], [232, 240], [238]], cover=240),
+    dict(slug="tea-hills", title="Huatian Meidi", title_zh="花田美地", where="Wuyi, Jinhua, Zhejiang", when="December 2025",
          note="A tea estate built around a château-style hotel.",
          rows=[[200, 197, 202], [206, 205]], cover=206),
     dict(slug="off-season", title="Off-season", where="Atlantic City and Cape May, New Jersey", when="March 2025",
          note="The Jersey Shore before the summer crowds.",
          rows=[[261], [390, 363], [267, 368], [373, 374], [284, 289], [288]], cover=374),
-    dict(slug="pennsylvania", title="Pennsylvania", where="Near Allentown", when="October 2025",
+    dict(slug="pennsylvania", title="Keystone Autumn", title_zh="拱石秋深，枫谷果香", where="Near Allentown", when="October 2025",
          note="A gorge overlook, an orchard and a small town in autumn.",
          rows=[[187], [181, 174], [182, 193], [188, 194, 189]], cover=174),
 ]
@@ -148,7 +147,7 @@ SUBJECTS = [
     dict(slug="landscape", title="Landscape",
          photos=[4, 3, 7, 13, 12, 16, 58, 57, 62, 52, 71, 73, 74, 77, 79, 68, 80, 200, 187]),
     dict(slug="coast", title="Coast",
-         photos=[94, 97, 95, 96, 101, 103, 102, 100, 98, 104, 222, 225, 261, 390, 284, 289, 288]),
+         photos=[94, 97, 95, 96, 101, 103, 102, 100, 98, 104, 223, 225, 261, 390, 284, 289, 288]),
     dict(slug="night", title="Night",
          photos=[251, 252, 255, 308, 220, 221, 114, 117, 116, 118, 120, 122, 206, 205, 240, 238, 18, 20, 25, 80]),
     dict(slug="architecture", title="Architecture",
@@ -293,7 +292,7 @@ ALT = {
     46: "She sits on a wooden bench in profile, one arm resting on her knee.",
     49: "She stands on a path at dusk holding the strap of her bag, looking at the camera.",
     # Zhuhai
-    222: "A small white lighthouse at the end of a jetty, seen from a sunlit beach.",
+    223: "A small white lighthouse at the end of a jetty, seen from a sunlit beach.",
     225: "A statue of a woman holding a pearl aloft, on a rock in the sea under a deep blue sky.",
     230: "The opera house and a red pavilion across the water, framed by a carved stone window at sunset.",
     232: "The two shells of the opera house at dusk above a paved plaza.",
@@ -314,7 +313,7 @@ ALT = {
     194: "A street musician in a red jacket and sunglasses plays guitar on a bench.",
     189: "A street musician in a bandana plays guitar by a wooden fence, his case open beside him.",
     193: "Two white ornamental pumpkins with black metal leaves among warm fairy lights.",
-    # Tea Hills
+    # Huatian Meidi (Wuyi)
     200: "Terraced tea bushes and bare white-trunked trees below a glass dome, mountains behind.",
     202: "A château-style hotel reflected in a pond, framed by a branch of red leaves.",
     206: "The hotel lit at night, mirrored in still water.",
@@ -594,7 +593,7 @@ def build_home(v):
 {subjects_nav("", quiet=True)}
 <section class="about" id="about">
   <h2>{T("About")}</h2>
-  <div>{about}<p><a href="mailto:{EMAIL}">{EMAIL}</a><br><a href="{site}">{T("Rendering and graphics work")}</a></p></div>
+  <div>{about}<p><a href="{site}">{T("Rendering and graphics work")}</a></p></div>
 </section>"""
     if LANG == "zh":
         title = "摄影 – Jichu Mao"
