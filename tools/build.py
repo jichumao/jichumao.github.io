@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "31"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "32"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -931,8 +931,8 @@ def links_html(proj):
 # Where that cannot run (no WebGL2, "reduce motion", no JavaScript) the still picture is shown instead; it was
 # rendered by the same code, see the README.
 HERO_ALT = ("The letters JICHU · ART standing on a wet black floor in front of a thin arch of light, which the floor "
-            "reflects into a full ring. The letters are crystal, chrome, brushed silver, a neon H, a milky translucent U, "
-            "a glowing dot, clear glass, black glass and white porcelain; the arch, the H and the dot glow amber, coral "
+            "reflects into a full ring. The letters are frosted glass, chrome, brushed silver, a neon H, a milky U, "
+            "a glowing dot, frosted glass, satin aluminium and white porcelain; the arch, the H and the dot glow amber, coral "
             "and rose, and in the live version their colours slowly flow")
 
 def build_home():
@@ -981,7 +981,7 @@ def build_home():
       <img data-srcset="assets/img/home/studio-1000.webp 1000w, assets/img/home/studio-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="{E(HERO_ALT)}">
     </picture>
     <noscript><img class="hero-still" src="assets/img/home/studio-1600.webp" width="1600" height="900" alt="{E(HERO_ALT)}"></noscript>
-    <figcaption><span class="cap-live">Path traced live in your browser: crystal, chrome, glass, subsurface scattering and porcelain lit by an arch of light. Each light is traced into its own buffer, so their colours flow without tracing again; denoised as it converges. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer: crystal, chrome, glass, subsurface scattering and porcelain lit by an arch of light.</span></figcaption>
+    <figcaption><span class="cap-live">Path traced live in your browser: frosted glass, chrome, brushed metal, subsurface scattering and porcelain lit by an arch of light. Each light is traced into its own buffer, so their colours flow without tracing again; denoised as it converges. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer: frosted glass, chrome, brushed metal, subsurface scattering and porcelain lit by an arch of light.</span></figcaption>
   </figure>
   <div class="wrap hero-text">
     <h1>Jichu Mao</h1>
