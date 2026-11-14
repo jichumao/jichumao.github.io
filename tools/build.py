@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "39"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "40"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -1154,6 +1154,15 @@ def build_resume():
 <title>Jichu Mao – Résumé</title>
 <meta name="description" content="Résumé of Jichu Mao, Graphics Performance Engineer at TikTok: experience, selected projects, education and skills.">
 <link rel="canonical" href="{SITE}/resume/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Jichu · Art">
+<meta property="og:title" content="Jichu Mao – Résumé">
+<meta property="og:description" content="Résumé of Jichu Mao, graphics engineer: experience, selected projects, education and skills.">
+<meta property="og:url" content="{SITE}/resume/">
+<meta property="og:image" content="{SITE}/assets/img/home/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{root}assets/favicon.svg" type="image/svg+xml">{ANALYTICS}
 <style>
 @font-face {{ font-family: "Playfair Display"; src: url("{root}assets/fonts/playfair-display-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }}
@@ -1165,7 +1174,7 @@ html {{ -webkit-text-size-adjust: 100%; }}
 body {{ margin: 0; background: #1b1b1b; color: #111; font: 400 9pt/1.42 "Open Sans", Arial, sans-serif; }}
 a {{ color: inherit; text-decoration: none; }}
 .bar {{ max-width: 8.5in; margin: 0 auto; padding: 18px 4px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }}
-.bar a {{ color: #fff; }}
+.bar a {{ color: #fff; padding: 10px 0; }}
 .bar .get {{ padding: 9px 18px; background: #db4f3d; font-weight: 600; }}
 .sheet {{ max-width: 8.5in; margin: 0 auto 40px; padding: .42in .6in; background: #fff; }}
 h1 {{ margin: 0; font: 700 24pt/1.05 "Playfair Display", Georgia, serif; }}
