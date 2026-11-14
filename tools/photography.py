@@ -391,11 +391,16 @@ def img_tag(n, img, sizes, *, eager=False, alt=None):
             f'alt="{E(alt_text(n) if alt is None else alt)}"{load}>')
 
 
-def share(a, total):
-    return f"(max-width: 760px) and (orientation: portrait) 100vw, {max(10, round(100 * a / total))}vw"
+def share(a, total, phone=None):
+    """The sizes attribute: the photograph's share of the row's width. On an upright phone it is the full width,
+    unless the page says otherwise (phone: a width in vw, e.g. a column of a three-column grid)."""
+    w = max(10, round(100 * a / total))
+    return f"(max-width: 760px) and (orientation: portrait) {phone if phone is not None else 100}vw, {w}vw"
 
 
-def row_html(row, img, *, eager=False, with_series=False):
+def row_html(row, img, *, eager=False, with_series=False, phone=None):
+    """phone: the width in vw each photograph takes on an upright phone, when it is not the full width:
+    "grid" for the three-column grid of square crops, "row" for a row kept side by side (the timeline)."""
     total = sum(ar(n) for n in row)
     cells = []
     for n in row:
@@ -409,7 +414,7 @@ def row_html(row, img, *, eager=False, with_series=False):
         cp = f' data-cap="{E(cap)}"' if cap else ""
         cells.append(f'<a class="ph" href="{img}{n:03d}-{big}.webp" style="--ar:{ar(n):.4f};--c:{p["color"]}" '
                      f'data-w="{p["w"]}" data-h="{p["h"]}" data-srcset="{srcset(n, img)}"{st}{cp}>'
-                     f'{img_tag(n, img, share(ar(n), total), eager=eager)}</a>')
+                     f'{img_tag(n, img, share(ar(n), total, 34 if phone == "grid" else max(10, round(100 * ar(n) / total)) if phone == "row" else None), eager=eager)}</a>')
     return f'<div class="row" style="--sum:{total:.4f};--n:{len(row)}">' + "".join(cells) + "</div>"
 
 
@@ -654,7 +659,7 @@ def build_subject(slug, title, photos, v):
         desc = f"{title}: {count(len(photos))} by Jichu Mao, from {', '.join(names[:6])}{' and more' if len(names) > 6 else ''}."
         full = f"{title} – Photographs by Jichu Mao"
     head = f'<div class="head"><h1>{E(title)}</h1><p class="count">{sub}</p></div>' + subjects_nav(home, slug)
-    body = head + '\n<div class="rows grid">\n' + "\n".join(row_html(r, img, eager=i == 0, with_series=True) for i, r in enumerate(rows)) + "\n</div>"
+    body = head + '\n<div class="rows grid">\n' + "\n".join(row_html(r, img, eager=i == 0, with_series=True, phone="grid") for i, r in enumerate(rows)) + "\n</div>"
     return page(title=full, rel=rel, body=body, og=slug, v=v, series=title, scripts=("viewer.js",), desc=desc)
 
 
@@ -704,7 +709,7 @@ def build_timeline(v):
         <div class="stop-main">
           <h3><a href="../{s["slug"]}/">{E(title)}</a></h3>
           <p class="stop-where"><span>{E(where)}</span><span>{count(len(ids(s)))}</span></p>
-          {row_html(strip, img, with_series=True)}
+          {row_html(strip, img, with_series=True, phone="row")}
         </div>
       </article>""")
         groups.append(f'    <section class="tl-year" aria-label="{y}">\n      <h2>{y}</h2>\n' + "\n".join(items) + "\n    </section>")
