@@ -572,7 +572,7 @@
       var aspect = w / h, tanY = Math.tan(17 * Math.PI / 180), wide = aspect > 1.15;
       if (layWide !== wide) { layWide = wide; lay = layout(wide); bar = arch(wide); }
       var target = wide ? [0, 0.62, -0.35] : [0, 0.62, 0];
-      var dist = wide ? Math.max(7.4, 4.75 / (tanY * aspect)) : Math.max(7.5, 2.12 / (tanY * aspect));
+      var dist = wide ? Math.max(7.4, 4.75 / (tanY * aspect)) : Math.max(7.5, 2.35 / (tanY * aspect), 3.8 / tanY);   // margins at the sides, room for the arch
       var shift = wide ? [0, 0.12] : [0, 0.26], pitch = view.pitch + (wide ? 0 : 0.53);
       var cy = Math.cos(view.yaw), sy = Math.sin(view.yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
       var eye = [target[0] + dist * sy * cp, target[1] + dist * sp, target[2] + dist * cy * cp];
@@ -695,7 +695,15 @@
   // otherwise from a few frames timed while waiting for the GPU. Slow frame intervals alone are never the reason to
   // trace fewer pixels: browsers slow frames down on their own (a window in the background, power saving, a 30 Hz
   // display). In the first couple of seconds the size may also go up, as a GPU leaves its idle clocks.
+  // On phones and tablets (a coarse pointer) the pixel count is also capped at ~1.2 million, to keep the buffers (about
+  // 170 bytes a pixel) to some 200 MB. A GPU that would need more than ~45 ms a frame even at the smallest size gets
+  // the still picture instead: it would only run hot and make scrolling stutter.
   var spp = media.querySelector(".spp"), DONE = 512, budget = 0, slow = 0, times = [], onScreen = true, running = false, startedAt = 0;
+  var MAXPX = window.matchMedia("(pointer: coarse)").matches ? 1.2e6 : 4.5e6, MINPX = 1.5e5, perMs = 0, gaveUp = false;
+  function giveUp() {
+    if (gaveUp) return; gaveUp = true; onScreen = false; still();
+    var x = R.gl.getExtension("WEBGL_lose_context"); if (x) x.loseContext();   // frees the GPU memory
+  }
 
   function native() {
     var box = media.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -703,19 +711,18 @@
   }
   function pixels() { return R.gl.drawingBufferWidth * R.gl.drawingBufferHeight; }
   function fit() {
-    var n = native(), px = Math.min(n.w * n.h, 4.5e6, budget || 6e5);
+    var n = native(), px = Math.min(n.w * n.h, MAXPX, budget || 6e5);
     var k = Math.min(1, Math.sqrt(px / (n.w * n.h)));
     R.size(Math.max(2, Math.round(n.w * k)), Math.max(2, Math.round(n.h * k)));
   }
   function measure(fade) {                          // without timer queries: GPU time of one frame, in ms
     R.step(fade); R.sync();
     var t0 = performance.now();
-    for (var i = 0; i < 3; i++) R.step(fade);
-    R.sync();
-    return Math.max(0.5, (performance.now() - t0) / 3);
+    R.step(fade); R.step(fade); R.sync();
+    return (perMs = Math.max(0.5, (performance.now() - t0) / 2));
   }
   function retarget(ms, up) {                       // a budget of ~10 ms per frame; true if the size changed
-    var before = pixels(), want = Math.max(1.5e5, before * 10 / ms);
+    var before = pixels(), want = Math.max(MINPX, before * 10 / ms);
     if (want < before ? want > before * 0.85 : !up || want < before * 1.3) return false;
     budget = want; fit();
     return pixels() !== before;
@@ -727,16 +734,18 @@
   // samples per frame: once the picture is at the screen's resolution and a sample costs well under the budget, several
   // are traced each frame (up to ~10 ms of GPU work), so a fast GPU converges in seconds rather than half a minute
   function pace(ms, early) {
-    var per = ms / spf;
+    var per = perMs = ms / spf;
     if (early && retarget(per, true)) return;          // first the resolution (a new size restarts the timing)
     // too slow: fewer samples per frame first, then fewer pixels. Only while the browser runs at its full frame rate:
     // when it slows the page down (a window in the background), the GPU idles at low clocks and every frame times long
     if (!early && ms > 20 && slow < 6 && iv && iv < 40) {
       slow++;
-      if (spf > 1) { spf = Math.max(1, Math.floor(10 / per)); R.retime(); } else retarget(per);
+      if (spf > 1) { spf = Math.max(1, Math.floor(10 / per)); R.retime(); }
+      else if (pixels() <= MINPX * 1.1 && per > 45) giveUp();
+      else retarget(per);
       return;
     }
-    if (pixels() >= native().w * native().h * 0.9 || pixels() >= 4.4e6) {
+    if (pixels() >= Math.min(native().w * native().h * 0.9, MAXPX * 0.98)) {
       var want = Math.max(1, Math.min(8, Math.floor(10 / per)));
       if (want !== spf) { spf = want; R.retime(); }
     }
@@ -755,23 +764,35 @@
         times.push(t - last);
         if (times.length === 12) {
           times.sort(function (a, b) { return a - b; });
-          if (times[6] > 34 && slow < 6) { var m = measure(fade); if (m > 20) { slow++; retarget(m); } }
+          if (times[6] > 34 && slow < 6) {
+            var m = measure(fade);
+            if (m > 45 && pixels() <= MINPX * 1.1) giveUp(); else if (m > 20) { slow++; retarget(m); }
+          }
           times = [];
         }
       }
       label();
       if (R.frame >= DONE) media.classList.add("done");
-    } else if (++tick % 3 === 0) R.present(1);        // converged: nothing is traced; the colours are mixed anew ~20 times a second
+    } else if (++tick % idleEvery() === 0) R.present(1);   // converged: nothing is traced, only the colours are mixed anew
     if (last) iv = iv ? iv * 0.8 + (t - last) * 0.2 : t - last;
     last = t;
-    requestAnimationFrame(frame);
+    if (!gaveUp) requestAnimationFrame(frame);
   }
+  // how often the converged picture is mixed anew: about 20 times a second, less where that would keep the GPU busy
+  // (mixing and denoising cost roughly a third of a traced sample; kept to ~5% of the frame time)
+  function idleEvery() { return Math.max(3, Math.min(30, Math.ceil(perMs * 0.3 / 0.8))); }
   function go() {
-    if (running || !onScreen || document.hidden) return;
+    if (gaveUp || running || !onScreen || document.hidden) return;
     running = true; last = 0; times = []; requestAnimationFrame(frame);
   }
-  fit();
-  if (!R.timed) try { budget = Math.max(1.5e5, pixels() * 10 / measure(0)); fit(); } catch (e) { budget = 6e5; fit(); }
+  if (!R.timed) {                                    // timed at a small size first, so a slow GPU stalls the page briefly
+    budget = 1e5; fit();
+    try {
+      var ms0 = measure(0), probe = pixels();
+      if (MINPX * ms0 / probe > 45) return giveUp();
+      budget = Math.max(MINPX, probe * 10 / ms0); fit(); perMs = ms0 * pixels() / probe;
+    } catch (e) { budget = 6e5; fit(); }
+  } else fit();
   window.addEventListener("resize", function () { fit(); go(); });
   document.addEventListener("visibilitychange", go);
   if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; go(); }).observe(media);

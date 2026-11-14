@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "36"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "37"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -981,7 +981,7 @@ def build_home():
       <img data-srcset="assets/img/home/studio-1000.webp 1000w, assets/img/home/studio-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="{E(HERO_ALT)}">
     </picture>
     <noscript><img class="hero-still" src="assets/img/home/studio-1600.webp" width="1600" height="900" alt="{E(HERO_ALT)}"></noscript>
-    <figcaption><span class="cap-live">Path traced live in your browser: frosted glass, chrome, brushed metal, subsurface scattering and porcelain in coloured light that flows across them. Each light is traced into its own buffer, so their colours flow without tracing again; denoised as it converges. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer: frosted glass, chrome, brushed metal, subsurface scattering and porcelain in coloured light.</span></figcaption>
+    <figcaption><span class="cap-live">Path traced live in your browser<span class="cap-more">: frosted glass, chrome, brushed metal, subsurface scattering and porcelain in coloured light that flows across them. Each light is traced into its own buffer, so their colours flow without tracing again; denoised as it converges</span>. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer<span class="cap-more">: frosted glass, chrome, brushed metal, subsurface scattering and porcelain in coloured light</span>.</span></figcaption>
   </figure>
   <div class="wrap hero-text">
     <h1>Jichu Mao</h1>
