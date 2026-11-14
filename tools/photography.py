@@ -105,13 +105,13 @@ SERIES = [
          rows=[[223, 225], [230], [232, 240], [238]], cover=240),
     dict(slug="tea-hills", title="Huatian Meidi", title_zh="花田美地", where="Wuyi, Jinhua, Zhejiang", when="December 2025",
          note="A tea estate built around a château-style hotel.",
-         rows=[[200, 197, 202], [206, 205]], cover=206),
+         rows=[[200, 197, 202], [206, 205]], cover=197),
     dict(slug="off-season", title="Off-season", where="Atlantic City and Cape May, New Jersey", when="March 2025",
          note="The Jersey Shore before the summer crowds.",
-         rows=[[261], [390, 363], [267, 368], [373, 374], [284, 289], [288]], cover=374),
+         rows=[[261], [390, 363], [267, 368], [373, 374], [284, 289], [288]], cover=288),
     dict(slug="pennsylvania", title="Keystone Autumn", title_zh="拱石秋深，枫谷果香", where="Near Allentown", when="October 2025",
          note="A gorge overlook, an orchard and a small town in autumn.",
-         rows=[[187], [181, 174], [182, 193], [188, 194, 189]], cover=174),
+         rows=[[187], [181, 174], [182, 193], [188, 194, 189]], cover=187),
 ]
 
 # The index page, in chapters. Every series appears once. The order here is also the order of the whole section:
@@ -124,10 +124,12 @@ CHAPTERS = [
          series=["above-the-fog", "salt", "dry-hills", "pacific"], per_row=2),
     dict(title="Cities after dark", note="Macau, Zhuhai and Guangzhou in January, and San Francisco on the Fourth of July.",
          series=["macau", "zhuhai", "guangzhou", "fourth-of-july"], per_row=2),
+    dict(title="Journeys", note="The Jersey Shore in March, a Pennsylvania gorge in October, a tea estate in Zhejiang in December.",
+         series=["off-season", "pennsylvania", "tea-hills"], per_row=3),
     dict(title="Portraits", note="Three sessions: a café, a park at dusk, a rooftop at night.",
          series=["rose", "evening-walk", "rooftop"], per_row=3),
-    dict(title="Other work", note="Shorter sets and experiments.",
-         series=["off-season", "pennsylvania", "tea-hills", "subway"], per_row=4),
+    dict(title="Experiment", note="A subway car built in Unreal Engine, photographed off a monitor.",
+         series=["subway"], per_row=1),
 ]
 
 # Opening slideshow of the index page: (photograph for wide screens, photograph for upright phones, series it links to).
@@ -136,10 +138,12 @@ CHAPTERS = [
 SLIDES = [
     (12, 1, "above-the-fog"),
     (240, 238, "zhuhai"),
-    (58, 57, "salt"),
+    (288, 284, "off-season"),
     (221, 308, "guangzhou"),
-    (79, 77, "dry-hills"),
+    (58, 57, "salt"),
+    (187, 194, "pennsylvania"),
     (120, 120, "fourth-of-july"),
+    (79, 77, "dry-hills"),
 ]
 
 # Subject pages. A photograph can be listed under more than one subject; every photograph needs at least one.
