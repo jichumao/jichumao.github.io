@@ -217,8 +217,8 @@ a.ph { cursor: zoom-in; }
 
 .more { padding-top: clamp(64px, 10vh, 120px); }
 .more h2 { font: 600 13px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 16px; padding: 0 var(--edge); }
-.more .row { width: 100%; }
-.more .tile { aspect-ratio: auto; flex: 1 1 0; height: clamp(220px, 36vh, 380px); }
+/* The next two series, each cover whole at its own aspect ratio (many are composed as squares), side by side. */
+.more .row { width: min(100% - 2 * var(--edge), clamp(240px, 44vh, 480px) * var(--sum) + var(--gap)); margin: 0 var(--edge); }
 
 /* Timeline (timeline/) ------------------------------------------------------
    The series newest first. On wide screens a dotted globe stays beside the list and turns to the series in the
@@ -298,7 +298,7 @@ a.ph { cursor: zoom-in; }
   .stop .row .ph { flex: var(--ar) 1 0; width: auto; }
   .top nav .opt2 { display: none; }
   .about { grid-template-columns: minmax(0, 1fr); }
-  .more .tile { height: 46vw; flex: none; }
+  .more .row { width: auto; }
   .card-row:not(.r4) { flex-direction: column; width: 100%; gap: clamp(26px, 4vh, 42px); }
   .card-row:not(.r4) .card { flex: none; width: 100%; }
   .chapter-head { display: block; }
