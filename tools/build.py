@@ -10,6 +10,7 @@ MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
 ASSET_V = "40"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+STILL_V = "e1"    # bump when the home stills or the home share picture are re-rendered (they are cached for 30 days)
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
 # To switch on: create a free account at goatcounter.com, choose a code (the "mysite" of mysite.goatcounter.com),
@@ -976,10 +977,10 @@ def build_home():
   <figure class="hero-media">
     <canvas class="hero-live" aria-hidden="true"></canvas>
     <picture class="hero-still" hidden>
-      <source media="(max-aspect-ratio: 1/1)" data-srcset="assets/img/home/studio-tall-720.webp 720w" sizes="100vw" width="720" height="1440">
-      <img data-srcset="assets/img/home/studio-1000.webp 1000w, assets/img/home/studio-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="{E(HERO_ALT)}">
+      <source media="(max-aspect-ratio: 1/1)" data-srcset="assets/img/home/studio-tall-720.webp?v={STILL_V} 720w" sizes="100vw" width="720" height="1440">
+      <img data-srcset="assets/img/home/studio-1000.webp?v={STILL_V} 1000w, assets/img/home/studio-1600.webp?v={STILL_V} 1600w" sizes="100vw" width="1600" height="900" alt="{E(HERO_ALT)}">
     </picture>
-    <noscript><img class="hero-still" src="assets/img/home/studio-1600.webp" width="1600" height="900" alt="{E(HERO_ALT)}"></noscript>
+    <noscript><img class="hero-still" src="assets/img/home/studio-1600.webp?v={STILL_V}" width="1600" height="900" alt="{E(HERO_ALT)}"></noscript>
     <figcaption><span class="cap-live">Path traced live in your browser<span class="cap-more">: brushed champagne metal, neon and haze, lit by an arch of light whose colours slowly flow. Each light is traced into its own buffer, so their colours flow without tracing again; denoised as it converges</span>. <span class="spp"></span><span class="hint"> Drag to turn it.</span></span><span class="cap-still">Path traced by this page’s own renderer<span class="cap-more">: brushed champagne metal, neon and haze, lit by an arch of light</span>.</span></figcaption>
   </figure>
   <div class="wrap hero-text">
@@ -1018,7 +1019,7 @@ def build_home():
 </section>"""
     write("index.html", page(root=root, path="", title="Jichu Mao – Graphics Performance Engineer | Jichu · Art",
                              desc="Portfolio of Jichu Mao, graphics engineer: real-time rendering, GPU path tracing, shaders, graphics tools, games and animation.",
-                             body=body, og_image="assets/img/home/og.jpg", current="", scripts=("works.js", "previews.js", "studio.js", "home.js"), person=True, cls="home"))
+                             body=body, og_image=f"assets/img/home/og.jpg?v={STILL_V}", current="", scripts=("works.js", "previews.js", "studio.js", "home.js"), person=True, cls="home"))
 
 def build_projects():
     root = "../../"
@@ -1112,7 +1113,7 @@ def build_about():
 </div>"""
     write("about/index.html", page(root=root, path="about/", title="About – Jichu · Art",
                                    desc="About Jichu Mao, Graphics Performance Engineer at TikTok: background, work experience, education, skills and hobbies.",
-                                   body=body, og_image="assets/img/home/og.jpg", current="about", person=True))
+                                   body=body, og_image=f"assets/img/home/og.jpg?v={STILL_V}", current="about", person=True))
 
 def redirect(rel_dir, target_rel, target_abs_path):
     """Keep old WordPress URLs alive: /index.php/<slug>/ -> new page."""
@@ -1159,7 +1160,7 @@ def build_resume():
 <meta property="og:title" content="Jichu Mao – Résumé">
 <meta property="og:description" content="Résumé of Jichu Mao, graphics engineer: experience, selected projects, education and skills.">
 <meta property="og:url" content="{SITE}/resume/">
-<meta property="og:image" content="{SITE}/assets/img/home/og.jpg">
+<meta property="og:image" content="{SITE}/assets/img/home/og.jpg?v={STILL_V}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
