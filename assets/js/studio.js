@@ -723,13 +723,15 @@
   function label() {
     if (spp) spp.textContent = R.frame.toLocaleString("en-US") + (R.frame === 1 ? " sample" : " samples") + " per pixel.";
   }
-  var last = 0, tick = 0, spf = 1;
+  var last = 0, tick = 0, spf = 1, iv = 0;
   // samples per frame: once the picture is at the screen's resolution and a sample costs well under the budget, several
   // are traced each frame (up to ~10 ms of GPU work), so a fast GPU converges in seconds rather than half a minute
   function pace(ms, early) {
     var per = ms / spf;
     if (early && retarget(per, true)) return;          // first the resolution (a new size restarts the timing)
-    if (!early && ms > 20 && slow < 6) {               // too slow: fewer samples per frame first, then fewer pixels
+    // too slow: fewer samples per frame first, then fewer pixels. Only while the browser runs at its full frame rate:
+    // when it slows the page down (a window in the background), the GPU idles at low clocks and every frame times long
+    if (!early && ms > 20 && slow < 6 && iv && iv < 40) {
       slow++;
       if (spf > 1) { spf = Math.max(1, Math.floor(10 / per)); R.retime(); } else retarget(per);
       return;
@@ -760,6 +762,7 @@
       label();
       if (R.frame >= DONE) media.classList.add("done");
     } else if (++tick % 3 === 0) R.present(1);        // converged: nothing is traced; the colours are mixed anew ~20 times a second
+    if (last) iv = iv ? iv * 0.8 + (t - last) * 0.2 : t - last;
     last = t;
     requestAnimationFrame(frame);
   }
