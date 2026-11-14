@@ -9,7 +9,7 @@ OUT = sys.argv[1]
 MAN = json.load(open(sys.argv[2], encoding="utf-8"))
 SITE = "https://jichu.art"
 E = html.escape
-ASSET_V = "40"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
+ASSET_V = "41"   # bump when site.css or the scripts change, so browsers do not reuse a cached copy
 STILL_V = "e1"    # bump when the home stills or the home share picture are re-rendered (they are cached for 30 days)
 
 # Visitor statistics (GoatCounter: no cookies, so no consent banner). Empty = off.
@@ -19,7 +19,6 @@ GOATCOUNTER = "jichu"
 ANALYTICS = (f'\n<script data-goatcounter="https://{GOATCOUNTER}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'
              if GOATCOUNTER else "")
 
-EMAIL = "maojichu@gmail.com"
 SOCIAL = [
     ("LinkedIn", "https://www.linkedin.com/in/jichu-mao-a3a980226/", "briefcase"),
     ("GitHub", "https://github.com/jichumao", "code"),
@@ -762,7 +761,7 @@ def page(*, root, path, title, desc, body, og_image, current="", scripts=(), per
   <div class="contact-band">
     <div class="wrap">
       <h2>Contact me</h2>
-      <p><a class="mail" href="mailto:{EMAIL}">{icon("mail")}{EMAIL}</a></p>
+      <p><a class="mail" href="{E(SOCIAL[0][1])}">{link_icon(SOCIAL[0][1], SOCIAL[0][2], root)}Message me on LinkedIn</a></p>
     </div>
   </div>
   <div class="wrap footer-end">
@@ -1214,7 +1213,7 @@ strong {{ font-weight: 600; }}
       <h1>Jichu Mao</h1>
       <p class="role">Graphics Performance Engineer</p>
     </div>
-    <p class="contact"><a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="{SITE}/">jichu.art</a><br>{links}</p>
+    <p class="contact"><a href="{SITE}/">jichu.art</a><br>{links}</p>
   </header>
   <section>
     <h2>Experience</h2>
